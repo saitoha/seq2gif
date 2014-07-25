@@ -156,6 +156,8 @@ int main(int argc, char *argv[])
     ssize_t nread;
     struct terminal term;
     struct pseudobuffer pb;
+    int32_t sec = 0;
+    int32_t usec = 0;
     Header rec;
 
     void *gsdata;
@@ -176,10 +178,11 @@ int main(int argc, char *argv[])
     if (!(gsdata = newgif((void **) &gifimage, pb.width, pb.height, colormap, 0)))
         return EXIT_FAILURE;
 
-    animategif(gsdata, /* repetitions */ 0, GIF_DELAY,
+    animategif(gsdata, /* repetitions */ 0, 0,
         /* transparent background */  -1, /* disposal */ 2);
 
     /* main loop */
+    int delay;
     for(;;) {
         nread = read(STDIN_FILENO, &rec, sizeof(Header));
         if (nread != sizeof(Header) || rec.len <= 0) {
@@ -194,9 +197,13 @@ int main(int argc, char *argv[])
 
         /* take screenshot */
         apply_colormap(&pb, img);
-        controlgif(gsdata, -1,
-                   (rec.tv_sec * 1000000 + rec.tv_usec) / 10000,
-                   0, 0);
+        delay = (rec.tv_sec - sec) * 1000000 + rec.tv_usec - usec;
+        if (delay >= 0 && delay < 1000000) {
+            controlgif(gsdata, -1, (delay + 5000) / 10000 + 1, 0, 0);
+        }
+        sec = rec.tv_sec;
+        usec = rec.tv_usec;
+
         putgif(gsdata, img);
     }
 
