@@ -1,19 +1,19 @@
 /* --- program id --- */
-#define	PROGRAMID     "gifsave89"	/* program name */
-#define	VERSION       "1.00"	/* version number */
-#define REVISIONDATE  "  10 Oct 2012  "	/* date of most recent revision */
+#define        PROGRAMID     "gifsave89"        /* program name */
+#define        VERSION       "1.00"        /* version number */
+#define REVISIONDATE  "  10 Oct 2012  "        /* date of most recent revision */
 #define COPYRIGHTTEXT "Copyright(c) 2012-2012, John Forkosh Associates, Inc"
 /* --- program messages --- */
-static char *copyright =		/* gnu/gpl copyright notice */
-	"+-----------------------------------------------------------------------+\n"
-	"|" PROGRAMID " ver" VERSION ", " COPYRIGHTTEXT "|\n"
-	"|               (  current revision:" REVISIONDATE
-	")                    |\n"
-	"+-----------------------------------------------------------------------+\n"
-	"|gifsave89 is free software, licensed to you under terms of the GNU/GPL,|\n"
-	"|           and comes with absolutely no warranty whatsoever.           |\n"
-	"|     See http://www.forkosh.com/gifsave89.html for further details.    |\n"
-	"+-----------------------------------------------------------------------+";
+static char *copyright =                /* gnu/gpl copyright notice */
+        "+-----------------------------------------------------------------------+\n"
+        "|" PROGRAMID " ver" VERSION ", " COPYRIGHTTEXT "|\n"
+        "|               (  current revision:" REVISIONDATE
+        ")                    |\n"
+        "+-----------------------------------------------------------------------+\n"
+        "|gifsave89 is free software, licensed to you under terms of the GNU/GPL,|\n"
+        "|           and comes with absolutely no warranty whatsoever.           |\n"
+        "|     See http://www.forkosh.com/gifsave89.html for further details.    |\n"
+        "+-----------------------------------------------------------------------+";
 
 /* -------------------------------------------------------------------------
 url of cgi to pixelize plaintext expressions (see plainmimetext() below)...
@@ -33,40 +33,40 @@ gifsave89 data and structures...
 /* ---
  * gifsave89 datatypes
  * ---------------------- */
-typedef uint8_t BYTE;			/* one byte (8 bits) */
-typedef uint16_t WORD;			/* used for two byte integers */
+typedef uint8_t BYTE;                        /* one byte (8 bits) */
+typedef uint16_t WORD;                        /* used for two byte integers */
 
 /* ---
  * gif image buffer (note: ptr to caller's buffer address is BYTE **block)
  * ----------------------------------------------------------------------- */
-#define	BLOCK struct _Block
-#define	BK BLOCK				/* shorthand for funcs and args */
-#define	MAXBLKBYTES  (1024)		/* initial gif buffer allocation */
+#define        BLOCK struct _Block
+#define        BK BLOCK                                /* shorthand for funcs and args */
+#define        MAXBLKBYTES  (1024)                /* initial gif buffer allocation */
 BLOCK {
-	BYTE **block;				/* block buffer */
-	int nblkbytes,				/* #bytes already in our block */
-	 maxblkbytes;				/* #bytes currently (re)allocated */
-};								/* --- end-of-struct BLOCK --- */
+        BYTE **block;                                /* block buffer */
+        int nblkbytes,                                /* #bytes already in our block */
+         maxblkbytes;                                /* #bytes currently (re)allocated */
+};                                                                /* --- end-of-struct BLOCK --- */
 
 /* ---
  * data subblock (as per gif standard)
  * -------------------------------------- */
-#define	SUBBLOCK struct _SubBlock
-#define	SB SUBBLOCK				/* shorthand for funcs and args */
-#define	SUBBLOCKSIZE (255)		/* maximum gif subblock size */
-#define	BITSPERBYTE    (8)		/* #bits per byte */
+#define        SUBBLOCK struct _SubBlock
+#define        SB SUBBLOCK                                /* shorthand for funcs and args */
+#define        SUBBLOCKSIZE (255)                /* maximum gif subblock size */
+#define        BITSPERBYTE    (8)                /* #bits per byte */
 SUBBLOCK {
-	BYTE subblock[SUBBLOCKSIZE + 1];	/* subblock buffer */
-	BLOCK *block;				/* parent block to flush subblock */
-	int nsubbytes,				/* #bytes already in our subblock */
-	 nsubbits;					/* #bits  already in current byte */
-	int index;					/* >=0 writes subblock index# byte */
-};								/* --- end-of-struct SUBBLOCK --- */
+        BYTE subblock[SUBBLOCKSIZE + 1];        /* subblock buffer */
+        BLOCK *block;                                /* parent block to flush subblock */
+        int nsubbytes,                                /* #bytes already in our subblock */
+         nsubbits;                                        /* #bits  already in current byte */
+        int index;                                        /* >=0 writes subblock index# byte */
+};                                                                /* --- end-of-struct SUBBLOCK --- */
 
 /* ---
  * LZW parameters
  * ----------------- */
-#define	POW2(n)   ((int)(1<<(n)))	/* 2**n */
+#define        POW2(n)   ((int)(1<<(n)))        /* 2**n */
 #define RESCODES  (2)
 #define HASHFREE  (0xFFFF)
 #define NEXTFIRST (0xFFFF)
@@ -81,49 +81,50 @@ SUBBLOCK {
  * Note: gifsave89 is reentrant by keeping all variables that need to
  * be maintained from call to call in this struct, i.e., no globals.
  * --------------------------------------------------------------------- */
-#define	GIFSAVE89 struct _GifSave89
-#define	GS GIFSAVE89			/* shorthand for funcs and args */
+#define        GIFSAVE89 struct _GifSave89
+#define        GS GIFSAVE89                        /* shorthand for funcs and args */
 GIFSAVE89 {
-	/* ---
-	 * gif image block and subblock buffers
-	 * --------------------------------------- */
-	BLOCK gifimage;				/* buffer for gif image block */
-	SUBBLOCK gifsubblock;		/* buffer for gifimage subblock */
-	/* ---
-	 * LZW string table
-	 * ------------------- */
-	BYTE strbyte[NSTRINGS];
-	int strnext[NSTRINGS], strhash[HASHSIZE], nstrings;
-	/* ---
-	 * additional control data
-	 * -------------------------- */
-	int version;				/* 87=GIF87a, 89=GIF89a */
-	int width, height;			/* #row, #col pixels for screen */
-	int ncolorbits_gct,			/* #bits/index (global color table) */
-	 ncolorbits;				/* local(if given) or global #bits */
-	int bgindex;				/* global&local colortable bgindex */
-	int npixels;				/* width*height of current image */
-	int ncontrol;				/* #controlgif calls before putgif */
-	int isanimated,				/* true if animategif() called */
-	 delay, tcolor, disposal;	/* animation frame defaults */
-	/* ---
-	 * plaintext control data
-	 * ------------------------- */
-	int isplaintext;			/* plaintext flag, 1or2 if present */
-	int pt_left, pt_top;		/* col,row of top-left corner */
-	int pt_bg, pt_fg;			/* bg,fg colortable indexes */
-	int pt_width, pt_height;	/* width,height of pixelized data */
-	char pt_data[1024];			/* local copy of user text data */
-	BYTE *pt_pixels;			/* pixelized data (kept if flag=2) */
-	/* ---
-	 * debugging control data
-	 * ------------------------- */
-	int msglevel;				/* desired verbosity (0=none) */
-	FILE *msgfp;				/* debug file ptr */
-};								/* --- end-of-struct GIFSAVE89 --- */
+        /* ---
+         * gif image block and subblock buffers
+         * --------------------------------------- */
+        BLOCK gifimage;                                /* buffer for gif image block */
+        SUBBLOCK gifsubblock;                /* buffer for gifimage subblock */
+        /* ---
+         * LZW string table
+         * ------------------- */
+        BYTE strbyte[NSTRINGS];
+        int strnext[NSTRINGS], strhash[HASHSIZE], nstrings;
+        /* ---
+         * additional control data
+         * -------------------------- */
+        int version;                                /* 87=GIF87a, 89=GIF89a */
+        int width, height;                        /* #row, #col pixels for screen */
+        int ncolorbits_gct,                        /* #bits/index (global color table) */
+         ncolorbits;                                /* local(if given) or global #bits */
+        int bgindex;                                /* global&local colortable bgindex */
+        int npixels;                                /* width*height of current image */
+        int ncontrol;                                /* #controlgif calls before putgif */
+        int isanimated,                                /* true if animategif() called */
+         delay, tcolor, disposal;        /* animation frame defaults */
+        /* ---
+         * plaintext control data
+         * ------------------------- */
+        int isplaintext;                        /* plaintext flag, 1or2 if present */
+        int pt_left, pt_top;                /* col,row of top-left corner */
+        int pt_bg, pt_fg;                        /* bg,fg colortable indexes */
+        int pt_width, pt_height;        /* width,height of pixelized data */
+        char pt_data[1024];                        /* local copy of user text data */
+        BYTE *pt_pixels;                        /* pixelized data (kept if flag=2) */
+        /* ---
+         * debugging control data
+         * ------------------------- */
+        int msglevel;                                /* desired verbosity (0=none) */
+        FILE *msgfp;                                /* debug file ptr */
+};                                                                /* --- end-of-struct GIFSAVE89 --- */
 
 
 void *newgif(void **gifimage, int width, int height, int *colors, int bgindex);
+int controlgif(GS * gs, int tcolor, int delay, int userinput, int disposal);
 int animategif(GS * gs, int nrepetitions, int delay, int tcolor, int disposal);
 int putgif(GS * gs, void *pixels);
 int endgif(GS * gs);
