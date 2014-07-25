@@ -18,9 +18,9 @@ void esigaction(int signo, struct sigaction *act, struct sigaction *oact);
 void etcgetattr(int fd, struct termios *tm);
 void etcsetattr(int fd, int action, const struct termios *tm);
 int eopenpty(int *amaster, int *aslave, char *aname,
-	const struct termios *termp, const struct winsize *winsize);
+             const struct termios *termp, const struct winsize *winsize);
 pid_t eforkpty(int *amaster, char *name,
-	const struct termios *termp, const struct winsize *winsize);
+               const struct termios *termp, const struct winsize *winsize);
 int esetenv(const char *name, const char *value, int overwrite);
 int eexecvp(const char *file, const char *argv[]);
 long estrtol(const char *nptr, char **endptr, int base);
