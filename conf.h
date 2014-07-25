@@ -53,5 +53,7 @@ const char *term_name = "yaft-256color";
 	const char *shell_cmd = "/bin/bash";
 #elif defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
 	const char *shell_cmd = "/bin/csh";
+#else
+	const char *shell_cmd = "/bin/bash";
 #endif
 //const char *shell_cmd = "/system/bin/sh"; /* for Android */
