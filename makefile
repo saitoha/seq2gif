@@ -1,19 +1,15 @@
-CC      ?= gcc
-CFLAGS  ?= -Wall -Wextra -std=c99 -pedantic \
--march=native -Os -pipe -s
-#-O1 -pg -g -rdynamic
+CC      = gcc
+CFLAGS  = -Wall -Wextra -std=c99 -pedantic -Os
 LDFLAGS =
 
-HDR = color.h conf.h dcs.h draw.h function.h \
-	gifsave89.h osc.h parse.h pseudo.h recterm.h terminal.h util.h \
-	glyph/mplus.h glyph/milkjf.h
-SRC = recterm.c
-DST = recterm
+HDR = util.h pseudo.h terminal.h function.h osc.h dcs.h parse.h gifsave89.h
+SRC = main.c util.c pseudo.c terminal.c function.c osc.c dcs.c parse.c gifsave89.c
+DST = seq2gif
 
 all:  $(DST)
 
-recterm: $(SRC) $(HDR)
-	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
+$(DST): $(SRC) $(HDR)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(SRC) -o $@
 
 clean:
-	rm -f $(DST)
+	rm -f $(DST) *.o

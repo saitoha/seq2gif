@@ -1,26 +1,11 @@
-/*
-	Copyright (C) 2014 haru <uobikiemukot at gmail dot com>
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/* See LICENSE for licence details. */
 /*
 	Standard VGA colors
 	http://en.wikipedia.org/wiki/ANSI_escape_code
 
 	byte order: (MSB) RR GG BB (LSB)
 */
-const uint32_t color_list[256] = {
+static const uint32_t color_list[256] = {
 	/* system color: 16 */
 	0x000000, 0xAA0000, 0x00AA00, 0xAA5500, 0x0000AA, 0xAA00AA, 0x00AAAA, 0xAAAAAA/* 0xAAAAAA */,
 	0x555555, 0xFF5555, 0x55FF55, 0xFFFF55, 0x5555FF, 0xFF55FF, 0x55FFFF, 0xDFDFDF/* 0xFFFFFF */,
