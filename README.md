@@ -17,6 +17,6 @@ Usage
 -----
 
 ```
-seq2gif < ttyrecord > img2sixel
+seq2gif < ttyrecord | img2sixel
 ```
 
