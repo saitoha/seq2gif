@@ -124,6 +124,7 @@ GIFSAVE89 {
 
 
 void *newgif(void **gifimage, int width, int height, int *colors, int bgindex);
+int controlgif(GS * gs, int tcolor, int delay, int userinput, int disposal);
 int animategif(GS * gs, int nrepetitions, int delay, int tcolor, int disposal);
 int putgif(GS * gs, void *pixels);
 int endgif(GS * gs);
