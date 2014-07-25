@@ -150,31 +150,6 @@ size_t write_gif(unsigned char *gifimage, int size)
     return wsize;
 }
 
-void sig_handler(int signo)
-{
-    if (signo == SIGINT) {
-    }
-}
-
-void sig_set()
-{
-    struct sigaction sigact;
-
-    memset(&sigact, 0, sizeof(struct sigaction));
-    sigact.sa_handler = sig_handler;
-    sigact.sa_flags   = SA_RESTART;
-    sigaction(SIGINT, &sigact, NULL);
-}
-
-void sig_reset()
-{
-    struct sigaction sigact;
-
-    memset(&sigact, 0, sizeof(struct sigaction));
-    sigact.sa_handler = SIG_DFL;
-    sigaction(SIGINT, &sigact, NULL);
-}
-
 int main(int argc, char *argv[])
 {
     uint8_t obuf[OUTPUT_BUF];
@@ -194,7 +169,6 @@ int main(int argc, char *argv[])
     /* init */
     pb_init(&pb);
     term_init(&term, pb.width, pb.height);
-    sig_set();
 
     /* init gif */
     img = (unsigned char *) ecalloc(pb.width * pb.height, 1);
@@ -235,7 +209,6 @@ int main(int argc, char *argv[])
     free(img);
 
     /* normal exit */
-    sig_reset();
     term_die(&term);
     pb_die(&pb);
 
