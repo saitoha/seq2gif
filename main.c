@@ -10,15 +10,6 @@
 #include "parse.h"
 #include "gifsave89.h"
 
-/* ttyrec header */
-#pragma pack(push,1)
-typedef struct header {
-    int32_t tv_sec;
-    int32_t tv_usec;
-    int32_t len;
-} Header;
-#pragma pack(pop)
-
 enum {
     TERM_WIDTH      = 640,
     TERM_HEIGHT     = 384,
@@ -158,7 +149,9 @@ int main(int argc, char *argv[])
     struct pseudobuffer pb;
     int32_t sec = 0;
     int32_t usec = 0;
-    Header rec;
+    int32_t tv_sec = 0;
+    int32_t tv_usec = 0;
+    int32_t len = 0;
 
     void *gsdata;
     unsigned char *gifimage = NULL;
@@ -184,12 +177,29 @@ int main(int argc, char *argv[])
     /* main loop */
     int delay;
     for(;;) {
-        nread = read(STDIN_FILENO, &rec, sizeof(Header));
-        if (nread != sizeof(Header) || rec.len <= 0) {
+        nread = read(STDIN_FILENO, obuf, sizeof(tv_sec));
+        if (nread != sizeof(tv_sec)) {
             break;
         }
-        nread = read(STDIN_FILENO, obuf, rec.len);
-        if (nread != rec.len) {
+        tv_sec = obuf[0] | obuf[1] << 8
+               | obuf[2] << 16 | obuf[3] << 24;
+        nread = read(STDIN_FILENO, obuf, sizeof(tv_usec));
+        if (nread != sizeof(tv_usec)) {
+            break;
+        }
+        tv_usec = obuf[0] | obuf[1] << 8
+                | obuf[2] << 16 | obuf[3] << 24;
+        nread = read(STDIN_FILENO, obuf, sizeof(len));
+        if (nread != sizeof(len)) {
+            break;
+        }
+        len = obuf[0] | obuf[1] << 8
+            | obuf[2] << 16 | obuf[3] << 24;
+        if (len <= 0) {
+            break;
+        }
+        nread = read(STDIN_FILENO, obuf, len);
+        if (nread != len) {
             break;
         }
         parse(&term, obuf, nread);
@@ -197,12 +207,12 @@ int main(int argc, char *argv[])
 
         /* take screenshot */
         apply_colormap(&pb, img);
-        delay = (rec.tv_sec - sec) * 1000000 + rec.tv_usec - usec;
+        delay = (tv_sec - sec) * 1000000 + tv_usec - usec;
         if (delay >= 0 && delay < 1000000) {
             controlgif(gsdata, -1, (delay + 5000) / 10000 + 1, 0, 0);
         }
-        sec = rec.tv_sec;
-        usec = rec.tv_usec;
+        sec = tv_sec;
+        usec = tv_usec;
 
         putgif(gsdata, img);
     }
