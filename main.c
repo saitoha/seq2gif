@@ -143,7 +143,7 @@ size_t write_gif(unsigned char *gifimage, int size)
 
 int main(int argc, char *argv[])
 {
-    uint8_t obuf[OUTPUT_BUF];
+    uint8_t *obuf;
     ssize_t nread;
     struct terminal term;
     struct pseudobuffer pb;
@@ -174,6 +174,7 @@ int main(int argc, char *argv[])
     animategif(gsdata, /* repetitions */ 0, 0,
         /* transparent background */  -1, /* disposal */ 2);
 
+    obuf = malloc(4);
     /* main loop */
     int delay;
     for(;;) {
@@ -198,6 +199,7 @@ int main(int argc, char *argv[])
         if (len <= 0) {
             break;
         }
+        obuf = realloc(obuf, len);
         nread = read(STDIN_FILENO, obuf, len);
         if (nread != len) {
             break;
