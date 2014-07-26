@@ -229,6 +229,7 @@ int main(int argc, char *argv[])
     /* normal exit */
     term_die(&term);
     pb_die(&pb);
+    free(obuf);
 
     return EXIT_SUCCESS;
 }
