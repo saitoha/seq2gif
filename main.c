@@ -15,7 +15,6 @@ enum {
     TERM_HEIGHT     = 384,
     INPUT_WAIT      = 0,
     INPUT_BUF       = 1,
-    GIF_DELAY       = 10,
     OUTPUT_BUF      = 1024,
     NO_OUTPUT_LIMIT = 16,
 };
@@ -171,7 +170,7 @@ int main(int argc, char *argv[])
     if (!(gsdata = newgif((void **) &gifimage, pb.width, pb.height, colormap, 0)))
         return EXIT_FAILURE;
 
-    animategif(gsdata, /* repetitions */ 0, 0,
+    animategif(gsdata, /* repetitions */ 0, 10,
         /* transparent background */  -1, /* disposal */ 2);
 
     obuf = malloc(4);
