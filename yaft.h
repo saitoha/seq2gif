@@ -28,10 +28,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/ioctl.h>
-#include <sys/mman.h>
-#include <sys/select.h>
-#include <termios.h>
 #include <unistd.h>
 #include <wchar.h>
 
@@ -40,6 +36,7 @@
 #else
 # include "glyph/mplus.h"
 #endif
+#include "malloc_stub.h"
 #include "color.h"
 
 #define SIGWINCH 28
@@ -187,3 +184,6 @@ struct parm_t { /* for parse_arg() */
     char *argv[MAX_ARGS];
 };
 
+/* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+/* vim: set expandtab ts=4 : */
+/* EOF */
