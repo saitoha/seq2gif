@@ -20,13 +20,13 @@
 
 /* --- program id --- */
 #define        PROGRAMID     "gifsave89"        /* program name */
-#define        VERSION       "1.00"        /* version number */
+#define        GIFSAVE_VERSION       "1.00"        /* version number */
 #define REVISIONDATE  "  10 Oct 2012  "        /* date of most recent revision */
 #define COPYRIGHTTEXT "Copyright(c) 2012-2012, John Forkosh Associates, Inc"
 /* --- program messages --- */
 static char *copyright =                /* gnu/gpl copyright notice */
         "+-----------------------------------------------------------------------+\n"
-        "|" PROGRAMID " ver" VERSION ", " COPYRIGHTTEXT "|\n"
+        "|" PROGRAMID " ver" GIFSAVE_VERSION ", " COPYRIGHTTEXT "|\n"
         "|               (  current revision:" REVISIONDATE
         ")                    |\n"
         "+-----------------------------------------------------------------------+\n"

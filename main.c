@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
 #include "yaft.h"
 #include "conf.h"
 #include "util.h"
@@ -27,9 +28,10 @@
 #include "parse.h"
 #include "gifsave89.h"
 
-enum {
-    TERM_WIDTH      = 640,
-    TERM_HEIGHT     = 384,
+struct settings_t {
+    int width;
+    int height;
+    int show_version;
 };
 
 enum cmap_bitfield {
@@ -41,10 +43,10 @@ enum cmap_bitfield {
     BLUE_MASK   = 2
 };
 
-void pb_init(struct pseudobuffer *pb)
+void pb_init(struct pseudobuffer *pb, int width, int height)
 {
-    pb->width  = TERM_WIDTH;
-    pb->height = TERM_HEIGHT;
+    pb->width  = width;
+    pb->height = height;
     pb->bytes_per_pixel = BYTES_PER_PIXEL;
     pb->line_length = pb->width * pb->bytes_per_pixel;
     pb->buf = ecalloc(pb->width * pb->height, pb->bytes_per_pixel);
@@ -146,6 +148,83 @@ size_t write_gif(unsigned char *gifimage, int size)
     return wsize;
 }
 
+int parse_args(int argc, char *argv[], struct settings_t *psettings)
+{
+    int long_opt;
+    int n;
+    char const *optstring = "w:h:V";
+
+#if HAVE_GETOPT_LONG
+    struct option long_options[] = {
+        {"width",        required_argument,  &long_opt, 'w'},
+        {"height",       required_argument,  &long_opt, 'h'},
+        {"version",      no_argument,        &long_opt, 'V'},
+        {0, 0, 0, 0}
+    };
+#endif  /* HAVE_GETOPT_LONG */
+
+    for (;;) {
+
+#if HAVE_GETOPT_LONG
+        n = getopt_long(argc, argv, optstring,
+                        long_options, &option_index);
+#else
+        n = getopt(argc, argv, optstring);
+#endif  /* HAVE_GETOPT_LONG */
+        if (n == -1) {
+            break;
+        }
+        if (n == 0) {
+            n = long_opt;
+        }
+        switch(n) {
+        case 'w':
+            psettings->width = atoi(optarg);
+            if (psettings->width < 1) {
+                goto argerr;
+            }
+            break;
+        case 'h':
+            psettings->height = atoi(optarg);
+            if (psettings->height < 1) {
+                goto argerr;
+            }
+            break;
+        case 'V':
+            psettings->show_version = 1;
+            break;
+        default:
+            goto argerr;
+        }
+    }
+    return 0;
+argerr:
+    return 1;
+}
+
+void show_version()
+{
+    printf(PACKAGE_NAME " " PACKAGE_VERSION "\n"
+           "Copyright (C) 2014 haru <uobikiemukot at gmail dot com>\n"
+           "Copyright (C) 2012-2014 Hayaki Saito <user@zuse.jp>.\n"
+           "\n" 
+           "This program is free software; you can redistribute it and/or modify\n"
+           "it under the terms of the GNU General Public License as published by\n"
+           "the Free Software Foundation; either version 3 of the License, or\n"
+           "(at your option) any later version.\n"
+           "\n" 
+           "This program is distributed in the hope that it will be useful,\n"
+           "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+           "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+           "GNU General Public License for more details.\n"
+           "\n" 
+           "You should have received a copy of the GNU General Public License\n"
+           "along with this program. If not, see http://www.gnu.org/licenses/.\n"
+           "%s\n", copyright
+          );
+         
+}
+
 int main(int argc, char *argv[])
 {
     uint8_t *obuf;
@@ -163,11 +242,22 @@ int main(int argc, char *argv[])
     int gifsize, colormap[COLORS * BYTES_PER_PIXEL + 1];
     unsigned char *img;
 
-    (void) argc;
-    (void) argv;
+    struct settings_t settings = {
+        640, /* width */
+        382, /* height */
+    };
+
+    if (parse_args(argc, argv, &settings) != 0) {
+        exit(1);
+    }
+
+    if (settings.show_version) {
+        show_version();
+        exit(0);
+    }
 
     /* init */
-    pb_init(&pb);
+    pb_init(&pb, settings.width * CELL_WIDTH, settings.height * CELL_HEIGHT);
     term_init(&term, pb.width, pb.height);
 
     /* init gif */
