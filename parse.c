@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
 #include "conf.h"
 #include "yaft.h"
 #include "util.h"
@@ -23,6 +24,14 @@
 #include "function.h"
 #include "osc.h"
 #include "dcs.h"
+
+#include <stdio.h>
+#if HAVE_CTYPE_H
+# include <ctype.h>
+#endif
+#if HAVE_STRING_H
+# include <string.h>
+#endif
 
 void (*ctrl_func[CTRL_CHARS])(struct terminal *term) = {
     [BS]  = bs,

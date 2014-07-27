@@ -28,8 +28,20 @@
 #include "parse.h"
 #include "gifsave89.h"
 
-#if defined(HAVE_GETOPT_H)
+#include <stdio.h>
+
+#if HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+#if HAVE_STRING_H
+# include <string.h>
+#endif
+#if HAVE_GETOPT_H
 # include <getopt.h>
+#endif
+
+#if !defined(HAVE_MEMCPY)
+# define memcpy(d, s, n) (bcopy ((s), (d), (n)))
 #endif
 
 struct settings_t {

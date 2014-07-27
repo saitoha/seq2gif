@@ -13,10 +13,17 @@ AC_PROG_CC
 # Checks for libraries.
 
 # Checks for header files.
+AC_CHECK_HEADER([stdio.h], [],
+                [AC_MSG_ERROR(stdio.h not found.)])
+AC_CHECK_HEADER([stdint.h], [],
+                [AC_MSG_ERROR(stdint.h not found.)])
+AC_CHECK_HEADER([stdbool.h], [],
+                [AC_MSG_ERROR(stdbool.h not found.)])
 AC_CHECK_HEADERS([fcntl.h \
+                  errno.h \
+                  ctype.h \
                   limits.h \
                   locale.h \
-                  stdint.h \
                   stdlib.h \
                   string.h \
                   unistd.h \
@@ -49,7 +56,7 @@ AC_CHECK_FUNC([getopt_long],
                              [AC_DEFINE(HAVE_GETOPT, 1, [whether getopt is avilable])],
                              [AC_MSG_ERROR(getopt or getopt_long is not available.)])])
 
-AC_CHECK_FUNCS([dup2 memmove memset munmap select setenv strchr strstr strtol wcwidth])
+AC_CHECK_FUNCS([memcpy memmove strchr strstr strtol])
 
 AC_DEFUN([LS_UPDATE_TIMESTAMP], [
           touch aclocal.m4 Makefile.in configure config.h.in
