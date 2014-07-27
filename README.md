@@ -11,36 +11,53 @@ Convert a ttyrec record into a gif animation directly
 Acknowledgements
 ----------------
 
+=== recterm
+
 This program is derived from [recterm](https://github.com/uobikiemukot/recterm)
 written by haru <uobikiemukot at gmail dot com> (@uobikiemukot)
+
+=== gifsave89
 
 GIF encoder (gifsave89.c) is imported from [gifsave89](http://www.forkosh.com/gifsave90.html)
 distributed under GPLv3+ by [John Forkosh Associates, Inc.](http://www.forkosh.com)(john@forkosh.com)
 
-    Copyright(c) 2012-2012, John Forkosh Associates, Inc. All rights reserved.
-              http://www.forkosh.com   mailto: john@forkosh.com
-    Copyright (C) 2014 haru <uobikiemukot at gmail dot com>
-    Copyright (C) 2014 Hayaki Saito <user@zuse.jp>
-   
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-   
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-   
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+=== milkjf
+This package includes a C header file derived from milkjf font(gryph/milkjf.h).
+Original milkjf font was designed by japanfarm (Nihon-Nouen) and used on Sharp X68000 series.
+Chisato Yamauchi converted milkjf font to bdf for X Window System.
+haru(@uobikiemukot) converted it to a C-styled header file.
 
-![GPLv3](https://raw.githubusercontent.com/saitoha/seq2gif/master/images/gplv3.png)
+=== M+ BITMAP FONTS
+This package includes a C header file derived from M+ font(gryph/mplus.h).
+
+Original License:
+
+```
+M+ BITMAP FONTS            Copyright 2002-2005  COZ <coz@users.sourceforge.jp>
+
+LICENSE
+
+These fonts are free softwares.
+Unlimited permission is granted to use, copy, and distribute it, with
+or without modification, either commercially and noncommercially.
+THESE FONTS ARE PROVIDED "AS IS" WITHOUT WARRANTY.
+```
+
 
 Usage
 -----
 
 ```
-seq2gif < ttyrecord | img2sixel
+seq2gif < ttyrecord > record.gif
+
+Options:
+-w, --width           specify width in cell size
+-h, --height          specify height in cell size
+-V  --version         show version
 ```
+
+License
+-------
+
+![GPLv3](https://raw.githubusercontent.com/saitoha/seq2gif/master/images/gplv3.png)
 
