@@ -34,3 +34,6 @@ enum {
     REPLACEMENT_CHAR = 0x003F, /* used for malformed UTF-8 sequence    : U+003F (QUESTION MARK)  */
 };
 
+/* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+/* vim: set expandtab ts=4 : */
+/* EOF */

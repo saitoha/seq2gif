@@ -30,10 +30,6 @@
 enum {
     TERM_WIDTH      = 640,
     TERM_HEIGHT     = 384,
-    INPUT_WAIT      = 0,
-    INPUT_BUF       = 1,
-    OUTPUT_BUF      = 1024,
-    NO_OUTPUT_LIMIT = 16,
 };
 
 enum cmap_bitfield {
@@ -43,13 +39,6 @@ enum cmap_bitfield {
     RED_MASK    = 3,
     GREEN_MASK  = 3,
     BLUE_MASK   = 2
-};
-
-struct tty_state tty = {
-    .visible        = true,
-    .redraw_flag    = false,
-    .loop_flag      = true,
-    .window_resized = false,
 };
 
 void pb_init(struct pseudobuffer *pb)

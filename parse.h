@@ -26,3 +26,7 @@ void osc_sequence(struct terminal *term, uint8_t ch);
 void dcs_sequence(struct terminal *term, uint8_t ch);
 void utf8_charset(struct terminal *term, uint8_t ch);
 void parse(struct terminal *term, uint8_t *buf, int size);
+
+/* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+/* vim: set expandtab ts=4 : */
+/* EOF */

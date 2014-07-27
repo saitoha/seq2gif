@@ -60,7 +60,6 @@ enum misc {
     BYTES_PER_PIXEL   = 3,       /* pixel size of sixel bitmap data */
     BITS_PER_SIXEL    = 6,       /* number of bits of a sixel */
     ESCSEQ_SIZE       = 2,       /* limit size of terminal escape sequence */
-    SELECT_TIMEOUT    = 15000,   /* used by select() */
     MAX_ARGS          = 16,      /* max parameters of csi/osc sequence */
     COLORS            = 256,     /* number of color */
     UCS2_CHARS        = 0x10000, /* number of UCS2 glyph */
@@ -188,12 +187,3 @@ struct parm_t { /* for parse_arg() */
     char *argv[MAX_ARGS];
 };
 
-struct tty_state { /* this variables changed at catching signals */
-    volatile sig_atomic_t visible;        /* SIGUSR1: vt is active or not */
-    volatile sig_atomic_t redraw_flag;    /* SIGUSR1: vt activated */
-    volatile sig_atomic_t loop_flag;      /* SIGCHLD: child process (shell) is alive or not */
-    volatile sig_atomic_t window_resized; /* SIGWINCH: only used for yaftx */
-};
-
-/* global variables */
-extern struct tty_state tty;
