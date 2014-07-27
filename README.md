@@ -35,7 +35,7 @@ distributed under GPLv3+ by [John Forkosh Associates, Inc.](http://www.forkosh.c
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-[!GPLv3](https://raw.githubusercontent.com/saitoha/seq2gif/master/images/gplv3.png)
+![GPLv3](https://raw.githubusercontent.com/saitoha/seq2gif/master/images/gplv3.png)
 
 Usage
 -----
