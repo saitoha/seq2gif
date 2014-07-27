@@ -1,138 +1,22 @@
-/****************************************************************************
- *
+/*
  * Copyright(c) 2012-2012, John Forkosh Associates, Inc. All rights reserved.
  *           http://www.forkosh.com   mailto: john@forkosh.com
- * --------------------------------------------------------------------------
- * This file is part of gifsave89, which is free software.
- * You may redistribute and/or modify gifsave89 under the terms of the
- * GNU General Public License, version 3 or later, as published by the
- * Free Software Foundation.
- *      gifsave89 is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY, not even the implied warranty of MERCHANTABILITY.
- * See the GNU General Public License for specific details.
- *      By using gifsave89, you warrant that you have read, understood
- * and agreed to these terms and conditions, and that you possess the legal
- * right and ability to enter into this agreement and to use gifsave89
- * in accordance with it.
- *      Your gifsave89.zip distribution file should contain the file
- * COPYING, an ascii text copy of the GNU General Public License,
- * version 3. If not, point your browser to  http://www.gnu.org/licenses/
- * or write to the Free Software Foundation, Inc., 59 Temple Place,
- * Suite 330,  Boston, MA 02111-1307 USA.
- * --------------------------------------------------------------------------
+ * Copyright (C) 2014 haru <uobikiemukot at gmail dot com>
+ * Copyright (C) 2014 Hayaki Saito <user@zuse.jp>
  *
- * Purpose:   o        gifsave89 generates gif images in memory.
- *                It's based on the original gifsave
- *                by Sverre H. Huseby,
- *                  http://shh.thathost.com/pub-unix/#gifsave
- *                Also see
- *                  http://www.forkosh.com/gifsave89.html
- *                for further details about this version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Source:    o        gifsave89.c
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Functions: o        The following "table of contents" lists each function
- *                comprising gifsave89 in the order it appears in this file.
- *                See individual function entry points for specific comments
- *                about purpose, calling sequence, side effects, etc.
- *                =============================================================
- *                +---
- *                | user-callable entry points (a complete example is shown
- *                | under the newgif() Notes section below, and also see
- *                | main() test driver for more detailed comments and examples)
- *                +------------------------------------------------------------
- *                void  (*gs=)    *newgif(gifimage,width,height,colors,bgindex)
- *                  animategif(gs,nrepetitions,delay,tcolor,disposal)*optional*
- *                 plaintxtgif(gs,left,top,width,height,fg,bg,data)  *optional*
- *                  controlgif(gs,tcolor,delay,userinput,disposal)   *optional*
- *                putgif(gs,pixels) or                             *short form*
- *                fputgif(gs,left,top,width,height,pixels,colors)   *long form*
- *                int  nbytes_in_gifimage = endgif(gs)
- *                  --- alternative "short form" for a single image gif ---
- *                void  (*gifimage=)  *makegif(&nbytes_in_gifimage,
- *                                          width,height,pixels,colors,bgindex)
- *                +---
- *                | gif helper functions
- *                +------------------------------------------------------------
- *                newgifstruct(gifimage,width,height) malloc and init GS struct
- *                debuggif(dblevel,dbfile)          set static msglevel,msgfile
- *                fprintpixels(gs,format,pixels)           ascii dump of pixels
- *                plainmimetext(expression,width,height)   pixel image for expr
- *                overlay(pix1,w1,h1,pix2,w2,h2,col1,row1,bg,fg) pix2 onto pix1
- *                +---
- *                | write gif colortable and (help write) other gif blocks
- *                +------------------------------------------------------------
- *                putgifcolortable(gs,colors)              write gif colortable
- *                putgifapplication(gs,ga)  write gif application extension hdr
- *                +---
- *                | lzw encoder
- *                +------------------------------------------------------------
- *                encodelzw(gs,codesize,nbytes,data)  lzw-encode nbytes of data
- *                clearlzw(gs,codesize)                 clear lzw string tables
- *                putlzw(gs,index,byte)  add prefix_index+byte to string tables
- *                getlzw(gs,index,byte) find prefix_index+byte in string tables
- *                +---
- *                | low-level routines to store image data in memory buffer
- *                +------------------------------------------------------------
- *                putblkbytes(bk,bytes,nbytes)   nbytes from bytes to bk buffer
- *                putblkbyte(bk,byte)                  single byte to bk buffer
- *                putblkword(bk,word)two bytes from word in little-endian order
- *                putsubblock(sb,bits,nbits)     nbits from bits to sb subblock
- *                putsubbytes(sb,bytes,nbytes) nbytes from bytes to sb subblock
- *                flushsubblock(sb)  write subblock to block, preceded by count
- *                +---
- *                | user utility functions
- *                +------------------------------------------------------------
- *                gifwidth(gs)                                returns gs->width
- *                gifheight(gs)                              returns gs->height
- *                pixgraph(ncols,nrows,f,n)    generate pixels of function f[n]
- *                +---
- *                | test driver (compile with -DGSTESTDRIVE)
- *                +------------------------------------------------------------
- *                #if defined(GSTESTDRIVE)
- *                 main(argc,argv)                                  test driver
- *                 f(fparam,n)           sample waveform to be graphed by tests
- *                 writefile(buffer,nbytes,file)     nbytes from buffer to file
- *                #endif
- *
- * --------------------------------------------------------------------------
- *
- * Notes:     o        gifsave89 is based on the original gifsave
- *                by Sverre H. Huseby,
- *                  http://shh.thathost.com/pub-unix/#gifsave
- *                Also see
- *                  http://www.forkosh.com/gifsave89.html
- *                for further details about this version.
- *                Additional information about the GIF89a file format
- *                was gathered from
- *                  http://www.matthewflickinger.com/lab/whatsinagif/
- *                  http://www.fileformat.info/format/gif/egff.htm
- *                  http://www.w3.org/Graphics/GIF/spec-gif89a.txt
- *                (several discrepancies between spec-gif89a.txt and
- *                egff.htm are pointed out and resolved below).
- *                If you prefer printed books, see Chapter 26 in
- *                  The File Formats Handbook, Gunter Born,
- *                  ITP Publishing 1995, ISBN 1-850-32128-0.
- *                From its publication date, you can see it's old,
- *                but its gif format treatment remains unchanged.
- *              o        See individual function entry points for specific comments
- *                concerning the purpose, calling sequence, side effects, etc
- *                of each gifsave89 function listed above.
- *              o        Compile as
- *                  cc -DGSTESTDRIVE gifsave89.c -lm -o gifsave89
- *                for an executable image with test driver, or as
- *                  cc yourprogram.c gifsave89.c -o yourprogram
- *                for your own usage.
- *              o        See Notes: section under main() function for
- *                further usage and test driver instructions.
- *
- * --------------------------------------------------------------------------
- * Revision History:
- * 09/11/12        J.Forkosh        Installation.
- * 10/10/12        J.Forkosh        Most recent revision (also see REVISIONDATE)
- * See  http://www.forkosh.com/gifsave89changelog.html  for further details.
- *
- ***************************************************************************/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /* -------------------------------------------------------------------------
 standard headers...
@@ -619,7 +503,7 @@ GIFCOMMENT {
  * --------------------------------------------------------------------------
  * Returns:        ( void * )        newgif() returns a ptr that must be passed
  *                                as the first argument to every subsequent
- *                                gifsave89 function called, 
+ *                                gifsave89 function called,
  *                ( void * )        makegif() returns (unsigned char *)gifimage
  *                                or both return NULL for any error.
  *                ( int )                putgif() returns current #bytes in gifimage,
@@ -1953,7 +1837,7 @@ int putblkword(BK * bk, int word)
  *                putsubbytes   ( SB *sb, int bytes, int nbytes )
  *                flushsubblock ( SB *sb )
  * Purpose:        Bitwise operations to construct gif subblocks...
- *                
+ *
  * --------------------------------------------------------------------------
  * Arguments:        sb (I/O)        (SB *) to SUBBLOCK data struct
  *                bits (I)        int whose low-order bits

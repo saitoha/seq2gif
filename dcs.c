@@ -1,4 +1,21 @@
-/* See LICENSE for licence details. */
+/*
+ * Copyright (C) 2014 haru <uobikiemukot at gmail dot com>
+ * Copyright (C) 2014 Hayaki Saito <user@zuse.jp>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /* function for dcs sequence */
 
 #include "conf.h"
@@ -357,7 +374,7 @@ void sixel_copy2cell(struct terminal *term, struct sixel_canvas_t *sc)
 
     if (cols + term->cursor.x > term->cols)
         cols -= (cols + term->cursor.x - term->cols);
-    
+
     for (y = 0; y < lines; y++) {
         for (x = 0; x < cols; x++) {
             erase_cell(term, term->cursor.y, term->cursor.x + x);
@@ -569,7 +586,7 @@ void decdld_parse_header(struct terminal *term, char *start_buf)
         cp++;
 
     if (0x40 <= *cp && *cp <= 0x7E) /* final char of Dscs must be between 0x40 to 0x7E (DRCSMMv1) */
-        charset = *cp - 0x40; 
+        charset = *cp - 0x40;
     else
         charset = 0;
 
