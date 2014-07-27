@@ -74,7 +74,7 @@ static inline void draw_line(struct pseudobuffer *pb, struct terminal *term, int
             || (cellp->width == WIDE && (col + 1) == term->cursor.x)
             || (cellp->width == NEXT_TO_WIDE && (col - 1) == term->cursor.x))) {
             color_pair.fg = DEFAULT_BG;
-            color_pair.bg = (!tty.visible && BACKGROUND_DRAW) ? PASSIVE_CURSOR_COLOR: ACTIVE_CURSOR_COLOR;
+            color_pair.bg = BACKGROUND_DRAW ? PASSIVE_CURSOR_COLOR: ACTIVE_CURSOR_COLOR;
         }
 
         for (h = 0; h < CELL_HEIGHT; h++) {

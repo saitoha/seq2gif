@@ -349,14 +349,6 @@ void reset(struct terminal *term)
     reset_charset(term);
 }
 
-void redraw(struct terminal *term)
-{
-    int i;
-
-    for (i = 0; i < term->lines; i++)
-        term->line_dirty[i] = true;
-}
-
 void term_init(struct terminal *term, int width, int height)
 {
     int i;

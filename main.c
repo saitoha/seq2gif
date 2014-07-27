@@ -41,13 +41,6 @@ enum cmap_bitfield {
     BLUE_MASK   = 2
 };
 
-struct tty_state tty = {
-    .visible        = true,
-    .redraw_flag    = false,
-    .loop_flag      = true,
-    .window_resized = false,
-};
-
 void pb_init(struct pseudobuffer *pb)
 {
     pb->width  = TERM_WIDTH;

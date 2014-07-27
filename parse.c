@@ -23,7 +23,6 @@
 #include "function.h"
 #include "osc.h"
 #include "dcs.h"
-#include "parse.h"
 
 void (*ctrl_func[CTRL_CHARS])(struct terminal *term) = {
     [BS]  = bs,
