@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([seq2gif], [0.3.2], [user@zuse.jp])
+AC_INIT([seq2gif], [0.4.0], [user@zuse.jp])
 AC_CONFIG_SRCDIR([color.h])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([foreign])
@@ -13,7 +13,15 @@ AC_PROG_CC
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([fcntl.h limits.h locale.h stdint.h stdlib.h string.h sys/ioctl.h termios.h unistd.h wchar.h getopt.h])
+AC_CHECK_HEADERS([fcntl.h \
+                  limits.h \
+                  locale.h \
+                  stdint.h \
+                  stdlib.h \
+                  string.h \
+                  unistd.h \
+                  wchar.h \
+                  getopt.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL

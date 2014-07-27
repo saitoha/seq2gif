@@ -20,6 +20,7 @@
 #include "yaft.h"
 #include "util.h"
 #include "terminal.h"
+#include "wcwidth.h"
 
 /* See LICENSE for licence details. */
 void erase_cell(struct terminal *term, int y, int x)
@@ -215,7 +216,7 @@ void addch(struct terminal *term, uint32_t code)
     if (DEBUG)
         fprintf(stderr, "addch: U+%.4X\n", code);
 
-    width = wcwidth(code);
+    width = mk_wcwidth(code);
 
     if (width <= 0) /* zero width */
         return;
