@@ -11,23 +11,23 @@ Convert a ttyrec record into a gif animation directly
 Acknowledgements
 ----------------
 
-=== recterm
+### recterm
 
 This program is derived from [recterm](https://github.com/uobikiemukot/recterm)
 written by haru <uobikiemukot at gmail dot com> (@uobikiemukot)
 
-=== gifsave89
+### gifsave89
 
 GIF encoder (gifsave89.c) is imported from [gifsave89](http://www.forkosh.com/gifsave90.html)
 distributed under GPLv3+ by [John Forkosh Associates, Inc.](http://www.forkosh.com)(john@forkosh.com)
 
-=== milkjf
+### milkjf
 This package includes a C header file derived from milkjf font(gryph/milkjf.h).
 Original milkjf font was designed by japanfarm (Nihon-Nouen) and used on Sharp X68000 series.
 Chisato Yamauchi converted milkjf font to bdf for X Window System.
 haru(@uobikiemukot) converted it to a C-styled header file.
 
-=== M+ BITMAP FONTS
+### M+ BITMAP FONTS
 This package includes a C header file derived from M+ font(gryph/mplus.h).
 
 Original License:
