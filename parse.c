@@ -33,7 +33,7 @@
 # include <string.h>
 #endif
 
-void (*ctrl_func[CTRL_CHARS])(struct terminal *term) = {
+static void (*ctrl_func[CTRL_CHARS])(struct terminal *term) = {
     [BS]  = bs,
     [HT]  = tab,
     [LF]  = nl,
@@ -43,7 +43,7 @@ void (*ctrl_func[CTRL_CHARS])(struct terminal *term) = {
     [ESC] = enter_esc,
 };
 
-void (*esc_func[ESC_CHARS])(struct terminal *term) = {
+static void (*esc_func[ESC_CHARS])(struct terminal *term) = {
     ['7'] = save_state,
     ['8'] = restore_state,
     ['D'] = nl,
@@ -57,7 +57,7 @@ void (*esc_func[ESC_CHARS])(struct terminal *term) = {
     ['c'] = ris,
 };
 
-void (*csi_func[ESC_CHARS])(struct terminal *term, struct parm_t *) = {
+static void (*csi_func[ESC_CHARS])(struct terminal *term, struct parm_t *) = {
     ['@'] = insert_blank,
     ['A'] = curs_up,
     ['B'] = curs_down,
@@ -90,7 +90,7 @@ void (*csi_func[ESC_CHARS])(struct terminal *term, struct parm_t *) = {
 };
 
 /* ctr char/esc sequence/charset function */
-void control_character(struct terminal *term, uint8_t ch)
+static void control_character(struct terminal *term, uint8_t ch)
 {
     static const char *ctrl_char[] = {
         "NUL", "SOH", "STX", "ETX", "EOT", "ENQ", "ACK", "BEL",
@@ -108,7 +108,7 @@ void control_character(struct terminal *term, uint8_t ch)
         ctrl_func[ch](term);
 }
 
-void esc_sequence(struct terminal *term, uint8_t ch)
+static void esc_sequence(struct terminal *term, uint8_t ch)
 {
     *term->esc.bp = '\0';
 
@@ -125,7 +125,7 @@ void esc_sequence(struct terminal *term, uint8_t ch)
     reset_esc(term);
 }
 
-void csi_sequence(struct terminal *term, uint8_t ch)
+static void csi_sequence(struct terminal *term, uint8_t ch)
 {
     struct parm_t parm;
 
@@ -143,7 +143,7 @@ void csi_sequence(struct terminal *term, uint8_t ch)
     reset_esc(term);
 }
 
-int is_osc_parm(int c)
+static int is_osc_parm(int c)
 {
     if (isdigit(c) || isalpha(c) ||
         c == '?' || c == ':' || c == '/' || c == '#')
@@ -152,7 +152,7 @@ int is_osc_parm(int c)
         return false;
 }
 
-void omit_string_terminator(char *bp, uint8_t ch)
+static void omit_string_terminator(char *bp, uint8_t ch)
 {
     if (ch == BACKSLASH) /* ST: ESC BACKSLASH */
         *(bp - 2) = '\0';
@@ -160,7 +160,7 @@ void omit_string_terminator(char *bp, uint8_t ch)
         *(bp - 1) = '\0';
 }
 
-void osc_sequence(struct terminal *term, uint8_t ch)
+static void osc_sequence(struct terminal *term, uint8_t ch)
 {
     int osc_mode;
     struct parm_t parm;
@@ -190,7 +190,7 @@ void osc_sequence(struct terminal *term, uint8_t ch)
     reset_esc(term);
 }
 
-void dcs_sequence(struct terminal *term, uint8_t ch)
+static void dcs_sequence(struct terminal *term, uint8_t ch)
 {
     char *cp;
 
@@ -223,7 +223,7 @@ void dcs_sequence(struct terminal *term, uint8_t ch)
     reset_esc(term);
 }
 
-void utf8_charset(struct terminal *term, uint8_t ch)
+static void utf8_charset(struct terminal *term, uint8_t ch)
 {
     if (0x80 <= ch && ch <= 0xBF) {
         /* check illegal UTF-8 sequence
@@ -302,7 +302,7 @@ void utf8_charset(struct terminal *term, uint8_t ch)
     }
 }
 
-void parse(struct terminal *term, uint8_t *buf, int size)
+void parse(struct terminal *term, uint8_t *buf, int size, int *pdirty)
 {
     /*
         CTRL CHARS      : 0x00 ~ 0x1F
@@ -342,8 +342,10 @@ void parse(struct terminal *term, uint8_t *buf, int size)
                 osc_sequence(term, ch);
         }
         else if (term->esc.state == STATE_DCS) {
-            if (push_esc(term, ch))
+            if (push_esc(term, ch)) {
                 dcs_sequence(term, ch);
+                *pdirty = 1;
+            }
         }
     }
 }
