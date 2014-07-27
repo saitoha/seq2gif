@@ -16,14 +16,18 @@ Usage
 Usage: seq2gif [Options] < ttyrecord > record.gif
 
 Options:
--w WIDTH, --width=WIDTH              specify terminal width in cell size
-                                     (default: 80)
--h HEIGHT, --height=HEIGHT           specify terminal height in cell size
-                                     (default: 24)
--l DELAY, --last-frame-delay=DELAY   specified delay in msec which is 
-                                     added to the last frame(default: 300)
--H, --help                           show help
--V, --version                        show version and license information
+-w WIDTH, --width=WIDTH               specify terminal width in cell size
+                                      (default: 80)
+-h HEIGHT, --height=HEIGHT            specify terminal height in cell size
+                                      (default: 24)
+-l DELAY, --last-frame-delay=DELAY    specify delay in msec which is added
+                                      to the last frame(default: 300)
+-f COLORNO --foreground-color COLORNO specify foreground color palette
+                                      number
+-b COLORNO --background-color COLORNO specify background color palette
+                                      number
+-H, --help                            show help
+-V, --version                         show version and license information
 ```
 
 
