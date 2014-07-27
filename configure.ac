@@ -13,7 +13,7 @@ AC_PROG_CC
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([fcntl.h limits.h locale.h stdint.h stdlib.h string.h sys/ioctl.h termios.h unistd.h wchar.h])
+AC_CHECK_HEADERS([fcntl.h limits.h locale.h stdint.h stdlib.h string.h sys/ioctl.h termios.h unistd.h wchar.h getopt.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
@@ -29,10 +29,18 @@ AC_TYPE_UINT8_T
 
 # Checks for library functions.
 AC_FUNC_ERROR_AT_LINE
-AC_FUNC_FORK
 AC_FUNC_MALLOC
-AC_FUNC_MMAP
 AC_FUNC_REALLOC
+
+AC_CHECK_FUNC([memset], [],
+              [AC_MSG_ERROR(memset is not available.)])
+
+AC_CHECK_FUNC([getopt_long],
+              [AC_DEFINE(HAVE_GETOPT_LONG, 1, [whether getopt_long is avilable])],
+              [AC_CHECK_FUNC([getopt],
+                             [AC_DEFINE(HAVE_GETOPT, 1, [whether getopt is avilable])],
+                             [AC_MSG_ERROR(getopt or getopt_long is not available.)])])
+
 AC_CHECK_FUNCS([dup2 memmove memset munmap select setenv strchr strstr strtol wcwidth])
 
 AC_CONFIG_FILES([Makefile])

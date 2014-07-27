@@ -28,6 +28,10 @@
 #include "parse.h"
 #include "gifsave89.h"
 
+#if defined(HAVE_GETOPT_H)
+# include <getopt.h>
+#endif
+
 struct settings_t {
     int width;
     int height;
@@ -153,6 +157,9 @@ int parse_args(int argc, char *argv[], struct settings_t *psettings)
     int long_opt;
     int n;
     char const *optstring = "w:h:V";
+#if HAVE_GETOPT_LONG
+    int option_index;
+#endif  /* HAVE_GETOPT_LONG */
 
 #if HAVE_GETOPT_LONG
     struct option long_options[] = {
