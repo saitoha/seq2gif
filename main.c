@@ -243,6 +243,7 @@ int main(int argc, char *argv[])
     int32_t tv_sec = 0;
     int32_t tv_usec = 0;
     int32_t len = 0;
+    int delay = 0;
 
     void *gsdata;
     unsigned char *gifimage = NULL;
@@ -250,8 +251,8 @@ int main(int argc, char *argv[])
     unsigned char *img;
 
     struct settings_t settings = {
-        640, /* width */
-        382, /* height */
+        80, /* width */
+        24, /* height */
     };
 
     if (parse_args(argc, argv, &settings) != 0) {
@@ -278,7 +279,6 @@ int main(int argc, char *argv[])
 
     obuf = malloc(4);
     /* main loop */
-    int delay;
     for(;;) {
         nread = read(STDIN_FILENO, obuf, sizeof(tv_sec));
         if (nread != sizeof(tv_sec)) {
@@ -307,18 +307,20 @@ int main(int argc, char *argv[])
             break;
         }
         parse(&term, obuf, nread);
-        refresh(&pb, &term);
+        delay += (tv_sec - sec) * 1000000 + tv_usec - usec;
+        if (term.esc.state != STATE_DCS) {
+            refresh(&pb, &term);
 
-        /* take screenshot */
-        apply_colormap(&pb, img);
-        delay = (tv_sec - sec) * 1000000 + tv_usec - usec;
-        if (delay >= 0 && delay < 1000000) {
-            controlgif(gsdata, -1, (delay + 5000) / 10000 + 1, 0, 0);
+            /* take screenshot */
+            apply_colormap(&pb, img);
+            if (delay > 5000) {
+                controlgif(gsdata, -1, (delay + 5000) / 10000 + 1, 0, 0);
+                sec = tv_sec;
+                usec = tv_usec;
+                putgif(gsdata, img);
+                delay = 0;
+            }
         }
-        sec = tv_sec;
-        usec = tv_usec;
-
-        putgif(gsdata, img);
     }
 
     /* output gif */

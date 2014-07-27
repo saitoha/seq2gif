@@ -8,6 +8,19 @@ Convert a ttyrec record into a gif animation directly
 (almost vt102 compatible terminal emulation).
 
 
+Usage
+-----
+
+```
+seq2gif < ttyrecord > record.gif
+
+Options:
+-w, --width           specify terminal width in cell size
+-h, --height          specify terminal height in cell size
+-V  --version         show version
+```
+
+
 Acknowledgements
 ----------------
 
@@ -43,18 +56,6 @@ or without modification, either commercially and noncommercially.
 THESE FONTS ARE PROVIDED "AS IS" WITHOUT WARRANTY.
 ```
 
-
-Usage
------
-
-```
-seq2gif < ttyrecord > record.gif
-
-Options:
--w, --width           specify width in cell size
--h, --height          specify height in cell size
--V  --version         show version
-```
 
 License
 -------
