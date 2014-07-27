@@ -389,8 +389,9 @@ int main(int argc, char *argv[])
         if (nread != len) {
             break;
         }
-        parse(&term, obuf, nread);
-        if (term.esc.state != STATE_DCS) {
+        int dirty = 0;
+        parse(&term, obuf, nread, &dirty);
+        if (term.esc.state != STATE_DCS || dirty) {
             delay += (tv_sec - sec) * 1000000 + tv_usec - usec;
             refresh(&pb, &term);
 
