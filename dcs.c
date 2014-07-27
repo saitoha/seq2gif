@@ -18,12 +18,30 @@
 
 /* function for dcs sequence */
 
+
+#include "config.h"
+
 #include "conf.h"
 #include "yaft.h"
 #include "util.h"
 #include "terminal.h"
 #include "function.h"
 #include "dcs.h"
+
+#include <stdio.h>
+#if HAVE_CTYPE_H
+# include <ctype.h>
+#endif
+#if HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+#if HAVE_STRING_H
+# include <string.h>
+#endif
+
+#if !defined(HAVE_MEMCPY)
+# define memcpy(d, s, n) (bcopy ((s), (d), (n)))
+#endif
 
 enum {
     RGBMAX = 255,

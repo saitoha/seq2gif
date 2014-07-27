@@ -16,10 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
 #include "conf.h"
 #include "yaft.h"
 #include "util.h"
 #include "pseudo.h"
+
+#if HAVE_STRING_H
+# include <string.h>
+#endif
+
+#if !defined(HAVE_MEMCPY)
+# define memcpy(d, s, n) (bcopy ((s), (d), (n)))
+#endif
 
 static inline void draw_sixel(struct pseudobuffer *pb, int line, int col, uint8_t *bitmap)
 {

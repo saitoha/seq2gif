@@ -16,11 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
 #include "conf.h"
 #include "yaft.h"
 #include "util.h"
 #include "terminal.h"
 #include "function.h"
+
+#include <stdio.h>
+#if HAVE_STRING_H
+# include <string.h>
+#endif
 
 /* misc */
 int sum(struct parm_t *parm)

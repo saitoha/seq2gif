@@ -4376,10 +4376,35 @@ fi
 done
 
 
+ac_fn_c_check_header_mongrel "$LINENO" "stdio.h" "ac_cv_header_stdio_h" "$ac_includes_default"
+if test "x$ac_cv_header_stdio_h" = xyes; then :
+
+else
+  as_fn_error $? "stdio.h not found." "$LINENO" 5
+fi
+
+
+ac_fn_c_check_header_mongrel "$LINENO" "stdint.h" "ac_cv_header_stdint_h" "$ac_includes_default"
+if test "x$ac_cv_header_stdint_h" = xyes; then :
+
+else
+  as_fn_error $? "stdint.h not found." "$LINENO" 5
+fi
+
+
+ac_fn_c_check_header_mongrel "$LINENO" "stdbool.h" "ac_cv_header_stdbool_h" "$ac_includes_default"
+if test "x$ac_cv_header_stdbool_h" = xyes; then :
+
+else
+  as_fn_error $? "stdbool.h not found." "$LINENO" 5
+fi
+
+
 for ac_header in fcntl.h \
+                  errno.h \
+                  ctype.h \
                   limits.h \
                   locale.h \
-                  stdint.h \
                   stdlib.h \
                   string.h \
                   unistd.h \
@@ -4821,7 +4846,7 @@ fi
 fi
 
 
-for ac_func in dup2 memmove memset munmap select setenv strchr strstr strtol wcwidth
+for ac_func in memcpy memmove strchr strstr strtol
 do :
   as_ac_var=`$as_echo "ac_cv_func_$ac_func" | $as_tr_sh`
 ac_fn_c_check_func "$LINENO" "$ac_func" "$as_ac_var"

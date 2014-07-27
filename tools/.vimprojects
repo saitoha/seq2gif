@@ -1,0 +1,53 @@
+
+seq2gif=. CD=. {
+ .travis.yml
+ COPYING
+ INSTALL
+ Makefile.am
+ Makefile.in
+ README.md
+ aclocal.m4
+ compile
+ config.h.in
+ config.h
+ configure
+ configure.ac
+ depcomp
+ install-sh
+ missing
+ dcs.c
+ dcs.h
+ function.c
+ function.h
+ gifsave89.c
+ gifsave89.h
+ osc.c
+ osc.h
+ parse.c
+ parse.h
+ pseudo.c
+ pseudo.h
+ terminal.c
+ terminal.h
+ util.c
+ util.h
+ wcwidth.c
+ wcwidth.h
+ color.h
+ conf.h
+ main.c
+ yaft.h
+ glyph=glyph {
+  milkjf.h
+  mplus.h
+ }
+ sample=sample {
+  256.gif
+  man.gif
+  netlab.gif
+  peco.gif
+  sl.gif
+ }
+ tools=tools {
+ }
+}

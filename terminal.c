@@ -16,11 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
 #include "conf.h"
 #include "yaft.h"
 #include "util.h"
 #include "terminal.h"
 #include "wcwidth.h"
+
+#include <stdio.h>
+#if HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+#if HAVE_STRING_H
+# include <string.h>
+#endif
+
+#if !defined(HAVE_MEMMOVE)
+# define memmove(d, s, n) (bcopy ((s), (d), (n)))
+#endif
 
 /* See LICENSE for licence details. */
 void erase_cell(struct terminal *term, int y, int x)
