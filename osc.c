@@ -24,8 +24,8 @@
 #include "wcwidth.h"
 
 #include <stdio.h>
-#if HAVE_STDLIB_H
-# include <stdlib.h>
+#if HAVE_CTYPE_H
+# include <ctype.h>
 #endif
 #if HAVE_STRING_H
 # include <string.h>
