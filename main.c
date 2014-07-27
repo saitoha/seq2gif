@@ -53,6 +53,8 @@ struct settings_t {
     int show_version;
     int show_help;
     int last_frame_delay;
+    int foreground_color;
+    int background_color;
 };
 
 enum cmap_bitfield {
@@ -197,14 +199,18 @@ static void show_help()
             "Usage: seq2gif [Options] < ttyrecord > record.gif\n"
             "\n"
             "Options:\n"
-            "-w WIDTH, --width=WIDTH              specify terminal width in cell size\n"
-            "                                     (default: 80)\n"
-            "-h HEIGHT, --height=HEIGHT           specify terminal height in cell size\n"
-            "                                     (default: 24)\n"
-            "-l DELAY, --last-frame-delay=DELAY   specified delay in msec which is \n"
-            "                                     added to the last frame(default: 300)\n"
-            "-H, --help                           show help\n"
-            "-V, --version                        show version and license information\n"
+            "-w WIDTH, --width=WIDTH               specify terminal width in cell size\n"
+            "                                      (default: 80)\n"
+            "-h HEIGHT, --height=HEIGHT            specify terminal height in cell size\n"
+            "                                      (default: 24)\n"
+            "-l DELAY, --last-frame-delay=DELAY    specify delay in msec which is added\n"
+            "                                      to the last frame(default: 300)\n"
+            "-f COLORNO --foreground-color COLORNO specify foreground color palette\n"
+            "                                      number\n"
+            "-b COLORNO --background-color COLORNO specify background color palette\n"
+            "                                      number\n"
+            "-H, --help                            show help\n"
+            "-V, --version                         show version and license information\n"
            );
 }
 
@@ -212,7 +218,7 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int long_opt;
     int n;
-    char const *optstring = "w:h:HV";
+    char const *optstring = "w:h:HVl:f:b:";
 #if HAVE_GETOPT_LONG
     int option_index;
 #endif  /* HAVE_GETOPT_LONG */
@@ -222,6 +228,8 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         {"width",             required_argument,  &long_opt, 'w'},
         {"height",            required_argument,  &long_opt, 'h'},
         {"last-frame-delay",  required_argument,  &long_opt, 'l'},
+        {"foreground-color",  required_argument,  &long_opt, 'f'},
+        {"background-color",  required_argument,  &long_opt, 'b'},
         {"help",              no_argument,        &long_opt, 'H'},
         {"version",           no_argument,        &long_opt, 'V'},
         {0, 0, 0, 0}
@@ -261,6 +269,24 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
                 goto argerr;
             }
             break;
+        case 'f':
+            psettings->foreground_color = atoi(optarg);
+            if (psettings->foreground_color < 0) {
+                goto argerr;
+            }
+            if (psettings->foreground_color > 255) {
+                goto argerr;
+            }
+            break;
+        case 'b':
+            psettings->background_color = atoi(optarg);
+            if (psettings->background_color < 0) {
+                goto argerr;
+            }
+            if (psettings->background_color > 255) {
+                goto argerr;
+            }
+            break;
         case 'H':
             psettings->show_help = 1;
             break;
@@ -297,11 +323,13 @@ int main(int argc, char *argv[])
     unsigned char *img;
 
     struct settings_t settings = {
-        80, /* width */
-        24, /* height */
-        0,  /* show_version */
-        0,  /* show_help */
+        80,  /* width */
+        24,  /* height */
+        0,   /* show_version */
+        0,   /* show_help */
         300, /* last_frame_delay */
+        7,   /* foreground_color */
+        0,   /* background_color */
     };
 
     if (parse_args(argc, argv, &settings) != 0) {
@@ -320,7 +348,8 @@ int main(int argc, char *argv[])
 
     /* init */
     pb_init(&pb, settings.width * CELL_WIDTH, settings.height * CELL_HEIGHT);
-    term_init(&term, pb.width, pb.height);
+    term_init(&term, pb.width, pb.height,
+              settings.foreground_color, settings.background_color);
 
     /* init gif */
     img = (unsigned char *) ecalloc(pb.width * pb.height, 1);

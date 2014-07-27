@@ -358,8 +358,8 @@ void set_attr(struct terminal *term, struct parm_t *parm)
 
     if (parm->argc == 0) {
         term->attribute = ATTR_RESET;
-        term->color_pair.fg = DEFAULT_FG;
-        term->color_pair.bg = DEFAULT_BG;
+        term->color_pair.fg = term->default_fg;
+        term->color_pair.bg = term->default_bg;
         return;
     }
 
@@ -368,8 +368,8 @@ void set_attr(struct terminal *term, struct parm_t *parm)
 
         if (num == 0) {                    /* reset all attribute and color */
             term->attribute = ATTR_RESET;
-            term->color_pair.fg = DEFAULT_FG;
-            term->color_pair.bg = DEFAULT_BG;
+            term->color_pair.fg = term->default_fg;
+            term->color_pair.bg = term->default_bg;
         }
         else if (1 <= num && num <= 7)     /* set attribute */
             term->attribute |= attr_mask[num];
@@ -384,7 +384,7 @@ void set_attr(struct terminal *term, struct parm_t *parm)
             }
         }
         else if (num == 39)                /* reset foreground */
-            term->color_pair.fg = DEFAULT_FG;
+            term->color_pair.fg = term->default_fg;
         else if (40 <= num && num <= 47)   /* set background */
             term->color_pair.bg = (num - 40);
         else if (num == 48) {              /* set 256 color to background */
@@ -394,7 +394,7 @@ void set_attr(struct terminal *term, struct parm_t *parm)
             }
         }
         else if (num == 49)                /* reset background */
-            term->color_pair.bg = DEFAULT_BG;
+            term->color_pair.bg = term->default_bg;
         else if (90 <= num && num <= 97)   /* set bright foreground */
             term->color_pair.fg = (num - 90) + BRIGHT_INC;
         else if (100 <= num && num <= 107) /* set bright background */

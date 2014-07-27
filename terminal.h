@@ -32,7 +32,8 @@ void reset_esc(struct terminal *term);
 bool push_esc(struct terminal *term, uint8_t ch);
 void reset_charset(struct terminal *term);
 void reset(struct terminal *term);
-void term_init(struct terminal *term, int width, int height);
+void term_init(struct terminal *term, int width, int height,
+               int foreground_color, int background_color);
 void term_die(struct terminal *term);
 
 /* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */

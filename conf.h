@@ -18,8 +18,6 @@
 
 /* color: index number of color_palette[] (see color.h) */
 enum {
-    DEFAULT_FG           = 7,
-    DEFAULT_BG           = 0,
     ACTIVE_CURSOR_COLOR  = 2,
     PASSIVE_CURSOR_COLOR = 1,
 };
