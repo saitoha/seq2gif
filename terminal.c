@@ -343,8 +343,8 @@ void reset(struct terminal *term)
     term->state.cursor = term->cursor;
     term->state.attribute = ATTR_RESET;
 
-    term->color_pair.fg = DEFAULT_FG;
-    term->color_pair.bg = DEFAULT_BG;
+    term->color_pair.fg = term->default_fg;
+    term->color_pair.bg = term->default_bg;
 
     term->attribute = ATTR_RESET;
 
@@ -363,7 +363,8 @@ void reset(struct terminal *term)
     reset_charset(term);
 }
 
-void term_init(struct terminal *term, int width, int height)
+void term_init(struct terminal *term, int width, int height,
+               int foreground_color, int background_color)
 {
     int i;
     uint32_t code, gi;
@@ -373,6 +374,9 @@ void term_init(struct terminal *term, int width, int height)
 
     term->cols  = term->width / CELL_WIDTH;
     term->lines = term->height / CELL_HEIGHT;
+
+    term->default_fg  = foreground_color;
+    term->default_bg  = background_color;
 
     if (DEBUG)
         fprintf(stderr, "width:%d height:%d cols:%d lines:%d\n",

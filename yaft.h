@@ -165,6 +165,8 @@ struct terminal {
     const struct glyph_t *glyph_map[UCS2_CHARS]; /* array of pointer to glyphs[] */
     struct glyph_t *drcs[DRCS_CHARSETS];         /* DRCS chars */
     struct sixel_canvas_t sixel;
+    int default_fg;                              /* default foreground color */
+    int default_bg;                              /* default background color */
 };
 
 struct parm_t { /* for parse_arg() */
