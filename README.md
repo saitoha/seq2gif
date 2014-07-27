@@ -4,7 +4,7 @@ seq2gif
 Description
 ------------
 
-Convert a ttyrec record into gif animation directly
+Convert a ttyrec record into a gif animation directly
 (almost vt102 compatible terminal emulation).
 
 
