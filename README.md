@@ -1,5 +1,6 @@
 seq2gif
 =======
+[![Build Status](https://travis-ci.org/saitoha/seq2gif.svg?branch=master)](https://travis-ci.org/saitoha/seq2gif)
 
 Description
 ------------
@@ -12,12 +13,17 @@ Usage
 -----
 
 ```
-seq2gif < ttyrecord > record.gif
+Usage: seq2gif [Options] < ttyrecord > record.gif
 
 Options:
--w, --width           specify terminal width in cell size
--h, --height          specify terminal height in cell size
--V  --version         show version
+-w WIDTH, --width=WIDTH              specify terminal width in cell size
+                                     (default: 80)
+-h HEIGHT, --height=HEIGHT           specify terminal height in cell size
+                                     (default: 24)
+-l DELAY, --last-frame-delay=DELAY   specified delay in msec which is 
+                                     added to the last frame(default: 300)
+-H, --help                           show help
+-V, --version                        show version and license information
 ```
 
 
@@ -56,6 +62,18 @@ or without modification, either commercially and noncommercially.
 THESE FONTS ARE PROVIDED "AS IS" WITHOUT WARRANTY.
 ```
 
+### Markus Kuhn's wcwidth
+This package includes Markus Kuhn's wcwidth(mk_wcwidth)
+
+```
+Markus Kuhn -- 2007-05-26 (Unicode 5.0)
+
+Permission to use, copy, modify, and distribute this software
+for any purpose and without fee is hereby granted. The author
+disclaims all warranties with regard to this software.
+
+Latest version: http://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c
+```
 
 License
 -------
