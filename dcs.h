@@ -19,3 +19,7 @@
 /* function for dcs sequence */
 void sixel_parse_header(struct terminal *term, char *start_buf);
 void decdld_parse_header(struct terminal *term, char *start_buf);
+
+/* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+/* vim: set expandtab ts=4 : */
+/* EOF */

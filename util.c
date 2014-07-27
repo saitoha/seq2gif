@@ -355,3 +355,7 @@ int hex2num(char *str)
 
     return estrtol(str, NULL, 16);
 }
+
+/* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+/* vim: set expandtab ts=4 : */
+/* EOF */

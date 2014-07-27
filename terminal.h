@@ -36,3 +36,6 @@ void redraw(struct terminal *term);
 void term_init(struct terminal *term, int width, int height);
 void term_die(struct terminal *term);
 
+/* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+/* vim: set expandtab ts=4 : */
+/* EOF */

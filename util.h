@@ -53,3 +53,7 @@ uint32_t bit_reverse(uint32_t val, int bits);
 int my_ceil(int val, int div);
 int dec2num(char *str);
 int hex2num(char *str);
+
+/* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+/* vim: set expandtab ts=4 : */
+/* EOF */
