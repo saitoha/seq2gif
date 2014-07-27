@@ -339,3 +339,6 @@ int main(int argc, char *argv[])
     return EXIT_SUCCESS;
 }
 
+/* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+/* vim: set expandtab ts=4 : */
+/* EOF */

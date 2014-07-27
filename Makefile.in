@@ -80,8 +80,7 @@ bin_PROGRAMS = seq2gif$(EXEEXT)
 subdir = .
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) \
-	$(srcdir)/config.h.in depcomp COPYING INSTALL compile \
-	install-sh missing
+	$(srcdir)/config.h.in depcomp compile install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -96,7 +95,8 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_seq2gif_OBJECTS = main.$(OBJEXT) util.$(OBJEXT) pseudo.$(OBJEXT) \
 	terminal.$(OBJEXT) function.$(OBJEXT) osc.$(OBJEXT) \
-	dcs.$(OBJEXT) parse.$(OBJEXT) gifsave89.$(OBJEXT)
+	dcs.$(OBJEXT) parse.$(OBJEXT) gifsave89.$(OBJEXT) \
+	malloc_stub.$(OBJEXT) wcwidth.$(OBJEXT)
 seq2gif_OBJECTS = $(am_seq2gif_OBJECTS)
 seq2gif_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -262,8 +262,10 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 seq2gif_SOURCES = main.c util.c pseudo.c terminal.c function.c \
 				  osc.c dcs.c parse.c gifsave89.c \
+				  malloc_stub.c wcwidth.c \
 				  util.h pseudo.h terminal.h function.h \
-				  osc.h dcs.h parse.h gifsave89.h
+				  osc.h dcs.h parse.h gifsave89.h \
+				  wcwidth.h malloc_stub.h
 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -376,11 +378,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/function.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gifsave89.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/malloc_stub.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/osc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/parse.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pseudo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/terminal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wcwidth.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
