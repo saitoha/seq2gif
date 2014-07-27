@@ -12,12 +12,17 @@ Usage
 -----
 
 ```
-seq2gif < ttyrecord > record.gif
+Usage: seq2gif [Options] < ttyrecord > record.gif
 
 Options:
--w, --width           specify terminal width in cell size
--h, --height          specify terminal height in cell size
--V  --version         show version
+-w WIDTH, --width=WIDTH              specify terminal width in cell size
+                                     (default: 80)
+-h HEIGHT, --height=HEIGHT           specify terminal height in cell size
+                                     (default: 24)
+-l DELAY, --last-frame-delay=DELAY   specified delay in msec which is 
+                                     added to the last frame(default: 300)
+-H, --help                           show help
+-V, --version                        show version and license information
 ```
 
 
