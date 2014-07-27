@@ -43,5 +43,10 @@ AC_CHECK_FUNC([getopt_long],
 
 AC_CHECK_FUNCS([dup2 memmove memset munmap select setenv strchr strstr strtol wcwidth])
 
+AC_DEFUN([LS_UPDATE_TIMESTAMP], [
+          touch aclocal.m4 Makefile.in configure config.h.in
+          ])
+LS_UPDATE_TIMESTAMP
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
