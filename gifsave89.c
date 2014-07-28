@@ -21,16 +21,26 @@
 /* -------------------------------------------------------------------------
 standard headers...
 -------------------------------------------------------------------------- */
+#include "config.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdint.h>
-#include <string.h>
-#include <ctype.h>
+#if HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+#if HAVE_STRING_H
+# include <string.h>
+#endif
+#if HAVE_SYS_CTYPE_H
+# include <sys/ctype.h>
+#elif HAVE_CTYPE_H
+# include <ctype.h>
+#endif
 #if defined(GSTESTDRIVE)
   /* --- only needed for main() test driver below --- */
 #include <math.h>
 #endif
 
+#include "malloc_stub.h"
 #include "gifsave89.h"
 
 /* -------------------------------------------------------------------------
