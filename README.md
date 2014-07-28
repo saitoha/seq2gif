@@ -26,6 +26,9 @@ Options:
                                       number
 -b COLORNO --background-color COLORNO specify background color palette
                                       number
+-c COLORNO --cursor-color COLORNO     specify cursor color palette
+                                      number
+-t TABSTOP --tabstop TABSTOP          specify hardware tabstop(default: 8)
 -H, --help                            show help
 -V, --version                         show version and license information
 ```
