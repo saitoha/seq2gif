@@ -16,10 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "conf.h"
+#include "config.h"
 #include "yaft.h"
 #include "util.h"
 #include "pseudo.h"
+
+#if HAVE_STRING_H
+# include <string.h>
+#endif
+
+#if !defined(HAVE_MEMCPY)
+# define memcpy(d, s, n) (bcopy ((s), (d), (n)))
+#endif
 
 static inline void draw_sixel(struct pseudobuffer *pb, int line, int col, uint8_t *bitmap)
 {
@@ -73,8 +81,8 @@ static inline void draw_line(struct pseudobuffer *pb, struct terminal *term, int
             && (col == term->cursor.x
             || (cellp->width == WIDE && (col + 1) == term->cursor.x)
             || (cellp->width == NEXT_TO_WIDE && (col - 1) == term->cursor.x))) {
-            color_pair.fg = DEFAULT_BG;
-            color_pair.bg = BACKGROUND_DRAW ? PASSIVE_CURSOR_COLOR: ACTIVE_CURSOR_COLOR;
+            color_pair.fg = term->default_bg;
+            color_pair.bg = term->cursor_color;
         }
 
         for (h = 0; h < CELL_HEIGHT; h++) {

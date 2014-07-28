@@ -16,7 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "conf.h"
+#include "config.h"
+
+#include <stdio.h>
+#if HAVE_ERRNO_H
+# include <errno.h>
+#endif
+#if HAVE_LIMITS_H
+# include <limits.h>
+#endif
+#if HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+#if HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+#if HAVE_STRING_H
+# include <string.h>
+#endif
+
 #include "yaft.h"
 
 /* error functions */
@@ -36,7 +54,9 @@ void fatal(char *str)
 void *ecalloc(size_t nmemb, size_t size)
 {
     void *ptr;
+#if HAVE_ERRNO_H
     errno = 0;
+#endif
 
     if ((ptr = calloc(nmemb, size)) == NULL)
         error("calloc");
@@ -47,7 +67,9 @@ void *ecalloc(size_t nmemb, size_t size)
 void *erealloc(void *ptr, size_t size)
 {
     void *new;
+#if HAVE_ERRNO_H
     errno = 0;
+#endif
 
     if ((new = realloc(ptr, size)) == NULL)
         error("realloc");
@@ -58,7 +80,9 @@ void *erealloc(void *ptr, size_t size)
 void ewrite(int fd, const void *buf, int size)
 {
     int ret;
+#if HAVE_ERRNO_H
     errno = 0;
+#endif
 
     if ((ret = write(fd, buf, size)) < 0)
         error("write");
@@ -69,13 +93,17 @@ void ewrite(int fd, const void *buf, int size)
 static long estrtol(const char *nptr, char **endptr, int base)
 {
     long int ret;
+#if HAVE_ERRNO_H
     errno = 0;
+#endif
 
     ret = strtol(nptr, endptr, base);
+#if HAVE_LIMITS_H
     if (ret == LONG_MIN || ret == LONG_MAX) {
         perror("strtol");
         return 0;
     }
+#endif
 
     return ret;
 }

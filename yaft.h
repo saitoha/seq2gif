@@ -16,33 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define _XOPEN_SOURCE 600
-#include <ctype.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <locale.h>
-#include <limits.h>
-#include <signal.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/ioctl.h>
-#include <sys/mman.h>
-#include <sys/select.h>
-#include <termios.h>
-#include <unistd.h>
-#include <wchar.h>
 
 #if 1
 # include "glyph/milkjf.h"
 #else
 # include "glyph/mplus.h"
 #endif
+#include "malloc_stub.h"
 #include "color.h"
 
 #define SIGWINCH 28
+
+/* misc */
+enum {
+    DEBUG            = 0,      /* write dump of input to stdout, debug message to stderr */
+    SUBSTITUTE_HALF  = 0x0020, /* used for missing glyph (single width): U+0020 (SPACE) */
+    SUBSTITUTE_WIDE  = 0x3000, /* used for missing glyph (double width): U+3000 (IDEOGRAPHIC SPACE) */
+    REPLACEMENT_CHAR = 0x003F, /* used for malformed UTF-8 sequence    : U+003F (QUESTION MARK)  */
+};
 
 enum char_code {
     /* 7 bit */
@@ -180,6 +173,10 @@ struct terminal {
     const struct glyph_t *glyph_map[UCS2_CHARS]; /* array of pointer to glyphs[] */
     struct glyph_t *drcs[DRCS_CHARSETS];         /* DRCS chars */
     struct sixel_canvas_t sixel;
+    int default_fg;                              /* default foreground color */
+    int default_bg;                              /* default background color */
+    int cursor_color;                            /* corsor color */
+    int tabwidth;                                /* hardware tabstop */
 };
 
 struct parm_t { /* for parse_arg() */
@@ -187,3 +184,6 @@ struct parm_t { /* for parse_arg() */
     char *argv[MAX_ARGS];
 };
 
+/* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+/* vim: set expandtab ts=4 : */
+/* EOF */

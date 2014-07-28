@@ -16,10 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "conf.h"
+#include "config.h"
 #include "yaft.h"
 #include "util.h"
 #include "osc.h"
+#include "wcwidth.h"
+
+#include <stdio.h>
+#if HAVE_CTYPE_H
+# include <ctype.h>
+#endif
+#if HAVE_STRING_H
+# include <string.h>
+#endif
 
 /* function for osc sequence */
 int32_t parse_color1(char *seq)
@@ -272,7 +281,7 @@ void glyph_width_report(struct terminal *term, void *arg)
 
     left = right = -1;
     for (i = from; i <= to; i++) {
-        wcw = wcwidth(i);
+        wcw = mk_wcwidth(i);
         if (wcw <= 0) /* zero width */
             w = 0;
         else if (term->glyph_map[i] == NULL) /* missing glyph */

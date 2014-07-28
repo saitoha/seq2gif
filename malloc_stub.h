@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2014 haru <uobikiemukot at gmail dot com>
- * Copyright (C) 2014 Hayaki Saito <user@zuse.jp>
+ * Copyright (c) 2014 Hayaki Saito
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ctr char/esc sequence/charset function */
-void parse(struct terminal *term, uint8_t *buf, int size, int *pdirty);
+#ifndef MALLOC_STUB_H
+#define MALLOC_STUB_H
 
-/* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+#if HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif  /* HAVE_SYS_TYPES_H */
+
+#if !HAVE_MALLOC
+void * rpl_malloc(size_t n);
+#endif /* !HAVE_MALLOC */
+
+#if !HAVE_REALLOC
+void * rpl_realloc(void *p, size_t n);
+#endif /* !HAVE_REALLOC */
+
+#if 0
+int rpl_posix_memalign(void **memptr, size_t alignment, size_t size);
+#endif
+
+#endif /* MALLOC_STUB_H */
+
+/* Hello emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
 /* vim: set expandtab ts=4 : */
 /* EOF */

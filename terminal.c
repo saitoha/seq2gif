@@ -16,10 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "conf.h"
+#include "config.h"
 #include "yaft.h"
 #include "util.h"
 #include "terminal.h"
+#include "wcwidth.h"
+
+#include <stdio.h>
+#if HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+#if HAVE_STRING_H
+# include <string.h>
+#endif
+
+#if !defined(HAVE_MEMMOVE)
+# define memmove(d, s, n) (bcopy ((s), (d), (n)))
+#endif
 
 /* See LICENSE for licence details. */
 void erase_cell(struct terminal *term, int y, int x)
@@ -215,7 +228,7 @@ void addch(struct terminal *term, uint32_t code)
     if (DEBUG)
         fprintf(stderr, "addch: U+%.4X\n", code);
 
-    width = wcwidth(code);
+    width = mk_wcwidth(code);
 
     if (width <= 0) /* zero width */
         return;
@@ -329,15 +342,15 @@ void reset(struct terminal *term)
     term->state.cursor = term->cursor;
     term->state.attribute = ATTR_RESET;
 
-    term->color_pair.fg = DEFAULT_FG;
-    term->color_pair.bg = DEFAULT_BG;
+    term->color_pair.fg = term->default_fg;
+    term->color_pair.bg = term->default_bg;
 
     term->attribute = ATTR_RESET;
 
     for (i = 0; i < term->lines; i++) {
         for (j = 0; j < term->cols; j++) {
             erase_cell(term, i, j);
-            if ((j % TABSTOP) == 0)
+            if ((j % term->tabwidth) == 0)
                 term->tabstop[j] = true;
             else
                 term->tabstop[j] = false;
@@ -349,7 +362,9 @@ void reset(struct terminal *term)
     reset_charset(term);
 }
 
-void term_init(struct terminal *term, int width, int height)
+void term_init(struct terminal *term, int width, int height,
+               int foreground_color, int background_color,
+               int cursor_color, int tabwidth)
 {
     int i;
     uint32_t code, gi;
@@ -359,6 +374,12 @@ void term_init(struct terminal *term, int width, int height)
 
     term->cols  = term->width / CELL_WIDTH;
     term->lines = term->height / CELL_HEIGHT;
+
+    term->default_fg   = foreground_color;
+    term->default_bg   = background_color;
+    term->cursor_color = cursor_color;
+
+    term->tabwidth = tabwidth;
 
     if (DEBUG)
         fprintf(stderr, "width:%d height:%d cols:%d lines:%d\n",

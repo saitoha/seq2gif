@@ -139,7 +139,7 @@ GIFSAVE89 {
          * debugging control data
          * ------------------------- */
         int msglevel;                                /* desired verbosity (0=none) */
-        FILE *msgfp;                                /* debug file ptr */
+        void *msgfp;                                /* debug file ptr */
 };                                                                /* --- end-of-struct GIFSAVE89 --- */
 
 

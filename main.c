@@ -18,7 +18,6 @@
 
 #include "config.h"
 #include "yaft.h"
-#include "conf.h"
 #include "util.h"
 #include "pseudo.h"
 #include "terminal.h"
@@ -28,14 +27,35 @@
 #include "parse.h"
 #include "gifsave89.h"
 
-#if defined(HAVE_GETOPT_H)
+#include <stdio.h>
+
+#if HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+#if HAVE_STRING_H
+# include <string.h>
+#endif
+#if HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+#if HAVE_GETOPT_H
 # include <getopt.h>
+#endif
+
+#if !defined(HAVE_MEMCPY)
+# define memcpy(d, s, n) (bcopy ((s), (d), (n)))
 #endif
 
 struct settings_t {
     int width;
     int height;
     int show_version;
+    int show_help;
+    int last_frame_delay;
+    int foreground_color;
+    int background_color;
+    int cursor_color;
+    int tabwidth;
 };
 
 enum cmap_bitfield {
@@ -47,7 +67,7 @@ enum cmap_bitfield {
     BLUE_MASK   = 2
 };
 
-void pb_init(struct pseudobuffer *pb, int width, int height)
+static void pb_init(struct pseudobuffer *pb, int width, int height)
 {
     pb->width  = width;
     pb->height = height;
@@ -56,12 +76,12 @@ void pb_init(struct pseudobuffer *pb, int width, int height)
     pb->buf = ecalloc(pb->width * pb->height, pb->bytes_per_pixel);
 }
 
-void pb_die(struct pseudobuffer *pb)
+static void pb_die(struct pseudobuffer *pb)
 {
     free(pb->buf);
 }
 
-void set_colormap(int colormap[COLORS * BYTES_PER_PIXEL + 1])
+static void set_colormap(int colormap[COLORS * BYTES_PER_PIXEL + 1])
 {
     int i, ci, r, g, b;
     uint8_t index;
@@ -97,7 +117,7 @@ void set_colormap(int colormap[COLORS * BYTES_PER_PIXEL + 1])
     colormap[COLORS * BYTES_PER_PIXEL] = -1;
 }
 
-uint32_t pixel2index(uint32_t pixel)
+static uint32_t pixel2index(uint32_t pixel)
 {
     /* pixel is always 24bpp */
     uint32_t r, g, b;
@@ -130,7 +150,7 @@ uint32_t pixel2index(uint32_t pixel)
     return (r << RED_SHIFT) | (g << GREEN_SHIFT) | (b << BLUE_SHIFT);
 }
 
-void apply_colormap(struct pseudobuffer *pb, unsigned char *img)
+static void apply_colormap(struct pseudobuffer *pb, unsigned char *img)
 {
     int w, h;
     uint32_t pixel = 0;
@@ -144,7 +164,7 @@ void apply_colormap(struct pseudobuffer *pb, unsigned char *img)
     }
 }
 
-size_t write_gif(unsigned char *gifimage, int size)
+static size_t write_gif(unsigned char *gifimage, int size)
 {
     size_t wsize = 0;
 
@@ -152,20 +172,71 @@ size_t write_gif(unsigned char *gifimage, int size)
     return wsize;
 }
 
-int parse_args(int argc, char *argv[], struct settings_t *psettings)
+static void show_version()
+{
+    printf(PACKAGE_NAME " " PACKAGE_VERSION "\n"
+           "Copyright (C) 2014 haru <uobikiemukot at gmail dot com>\n"
+           "Copyright (C) 2012-2014 Hayaki Saito <user@zuse.jp>.\n"
+           "\n"
+           "This program is free software; you can redistribute it and/or modify\n"
+           "it under the terms of the GNU General Public License as published by\n"
+           "the Free Software Foundation; either version 3 of the License, or\n"
+           "(at your option) any later version.\n"
+           "\n"
+           "This program is distributed in the hope that it will be useful,\n"
+           "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+           "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+           "GNU General Public License for more details.\n"
+           "\n"
+           "You should have received a copy of the GNU General Public License\n"
+           "along with this program. If not, see http://www.gnu.org/licenses/.\n"
+           "%s\n", copyright
+          );
+}
+
+static void show_help()
+{
+    fprintf(stderr,
+            "Usage: seq2gif [Options] < ttyrecord > record.gif\n"
+            "\n"
+            "Options:\n"
+            "-w WIDTH, --width=WIDTH               specify terminal width in cell size\n"
+            "                                      (default: 80)\n"
+            "-h HEIGHT, --height=HEIGHT            specify terminal height in cell size\n"
+            "                                      (default: 24)\n"
+            "-l DELAY, --last-frame-delay=DELAY    specify delay in msec which is added\n"
+            "                                      to the last frame(default: 300)\n"
+            "-f COLORNO --foreground-color COLORNO specify foreground color palette\n"
+            "                                      number\n"
+            "-b COLORNO --background-color COLORNO specify background color palette\n"
+            "                                      number\n"
+            "-c COLORNO --cursor-color COLORNO     specify cursor color palette\n"
+            "                                      number\n"
+            "-H, --help                            show help\n"
+            "-V, --version                         show version and license information\n"
+           );
+}
+
+static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int long_opt;
     int n;
-    char const *optstring = "w:h:V";
+    char const *optstring = "w:h:HVl:f:b:c:t:";
 #if HAVE_GETOPT_LONG
     int option_index;
 #endif  /* HAVE_GETOPT_LONG */
 
 #if HAVE_GETOPT_LONG
     struct option long_options[] = {
-        {"width",        required_argument,  &long_opt, 'w'},
-        {"height",       required_argument,  &long_opt, 'h'},
-        {"version",      no_argument,        &long_opt, 'V'},
+        {"width",             required_argument,  &long_opt, 'w'},
+        {"height",            required_argument,  &long_opt, 'h'},
+        {"last-frame-delay",  required_argument,  &long_opt, 'l'},
+        {"foreground-color",  required_argument,  &long_opt, 'f'},
+        {"background-color",  required_argument,  &long_opt, 'b'},
+        {"cursor-color",      required_argument,  &long_opt, 'c'},
+        {"tabstop",           required_argument,  &long_opt, 't'},
+        {"help",              no_argument,        &long_opt, 'H'},
+        {"version",           no_argument,        &long_opt, 'V'},
         {0, 0, 0, 0}
     };
 #endif  /* HAVE_GETOPT_LONG */
@@ -197,6 +268,51 @@ int parse_args(int argc, char *argv[], struct settings_t *psettings)
                 goto argerr;
             }
             break;
+        case 'l':
+            psettings->last_frame_delay = atoi(optarg);
+            if (psettings->last_frame_delay < 0) {
+                goto argerr;
+            }
+            break;
+        case 'f':
+            psettings->foreground_color = atoi(optarg);
+            if (psettings->foreground_color < 0) {
+                goto argerr;
+            }
+            if (psettings->foreground_color > 255) {
+                goto argerr;
+            }
+            break;
+        case 'b':
+            psettings->background_color = atoi(optarg);
+            if (psettings->background_color < 0) {
+                goto argerr;
+            }
+            if (psettings->background_color > 255) {
+                goto argerr;
+            }
+            break;
+        case 'c':
+            psettings->cursor_color = atoi(optarg);
+            if (psettings->cursor_color < 0) {
+                goto argerr;
+            }
+            if (psettings->cursor_color > 255) {
+                goto argerr;
+            }
+            break;
+        case 't':
+            psettings->tabwidth = atoi(optarg);
+            if (psettings->tabwidth < 0) {
+                goto argerr;
+            }
+            if (psettings->tabwidth > 255) {
+                goto argerr;
+            }
+            break;
+        case 'H':
+            psettings->show_help = 1;
+            break;
         case 'V':
             psettings->show_version = 1;
             break;
@@ -205,31 +321,10 @@ int parse_args(int argc, char *argv[], struct settings_t *psettings)
         }
     }
     return 0;
-argerr:
-    return 1;
-}
 
-void show_version()
-{
-    printf(PACKAGE_NAME " " PACKAGE_VERSION "\n"
-           "Copyright (C) 2014 haru <uobikiemukot at gmail dot com>\n"
-           "Copyright (C) 2012-2014 Hayaki Saito <user@zuse.jp>.\n"
-           "\n" 
-           "This program is free software; you can redistribute it and/or modify\n"
-           "it under the terms of the GNU General Public License as published by\n"
-           "the Free Software Foundation; either version 3 of the License, or\n"
-           "(at your option) any later version.\n"
-           "\n" 
-           "This program is distributed in the hope that it will be useful,\n"
-           "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-           "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-           "GNU General Public License for more details.\n"
-           "\n" 
-           "You should have received a copy of the GNU General Public License\n"
-           "along with this program. If not, see http://www.gnu.org/licenses/.\n"
-           "%s\n", copyright
-          );
-         
+argerr:
+    show_help();
+    return 1;
 }
 
 int main(int argc, char *argv[])
@@ -243,6 +338,7 @@ int main(int argc, char *argv[])
     int32_t tv_sec = 0;
     int32_t tv_usec = 0;
     int32_t len = 0;
+    int delay = 0;
 
     void *gsdata;
     unsigned char *gifimage = NULL;
@@ -250,12 +346,24 @@ int main(int argc, char *argv[])
     unsigned char *img;
 
     struct settings_t settings = {
-        640, /* width */
-        382, /* height */
+        80,  /* width */
+        24,  /* height */
+        0,   /* show_version */
+        0,   /* show_help */
+        300, /* last_frame_delay */
+        7,   /* foreground_color */
+        0,   /* background_color */
+        2,   /* cursor_color */
+        8,   /* tabwidth */
     };
 
     if (parse_args(argc, argv, &settings) != 0) {
         exit(1);
+    }
+
+    if (settings.show_help) {
+        show_help();
+        exit(0);
     }
 
     if (settings.show_version) {
@@ -265,7 +373,11 @@ int main(int argc, char *argv[])
 
     /* init */
     pb_init(&pb, settings.width * CELL_WIDTH, settings.height * CELL_HEIGHT);
-    term_init(&term, pb.width, pb.height);
+    term_init(&term, pb.width, pb.height,
+              settings.foreground_color,
+              settings.background_color,
+              settings.cursor_color,
+              settings.tabwidth);
 
     /* init gif */
     img = (unsigned char *) ecalloc(pb.width * pb.height, 1);
@@ -278,7 +390,6 @@ int main(int argc, char *argv[])
 
     obuf = malloc(4);
     /* main loop */
-    int delay;
     for(;;) {
         nread = read(STDIN_FILENO, obuf, sizeof(tv_sec));
         if (nread != sizeof(tv_sec)) {
@@ -306,18 +417,23 @@ int main(int argc, char *argv[])
         if (nread != len) {
             break;
         }
-        parse(&term, obuf, nread);
-        refresh(&pb, &term);
+        int dirty = 0;
+        parse(&term, obuf, nread, &dirty);
+        if (term.esc.state != STATE_DCS || dirty) {
+            delay += (tv_sec - sec) * 1000000 + tv_usec - usec;
+            refresh(&pb, &term);
 
-        /* take screenshot */
-        apply_colormap(&pb, img);
-        delay = (tv_sec - sec) * 1000000 + tv_usec - usec;
-        if (delay >= 0 && delay < 1000000) {
+            /* take screenshot */
+            apply_colormap(&pb, img);
             controlgif(gsdata, -1, (delay + 5000) / 10000 + 1, 0, 0);
+            sec = tv_sec;
+            usec = tv_usec;
+            putgif(gsdata, img);
+            delay = 0;
         }
-        sec = tv_sec;
-        usec = tv_usec;
-
+    }
+    if (settings.last_frame_delay > 0) {
+        controlgif(gsdata, -1, settings.last_frame_delay / 10, 0, 0);
         putgif(gsdata, img);
     }
 
@@ -337,3 +453,6 @@ int main(int argc, char *argv[])
     return EXIT_SUCCESS;
 }
 
+/* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+/* vim: set expandtab ts=4 : */
+/* EOF */
