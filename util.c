@@ -35,7 +35,6 @@
 # include <string.h>
 #endif
 
-#include "conf.h"
 #include "yaft.h"
 
 /* error functions */

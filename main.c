@@ -18,7 +18,6 @@
 
 #include "config.h"
 #include "yaft.h"
-#include "conf.h"
 #include "util.h"
 #include "pseudo.h"
 #include "terminal.h"

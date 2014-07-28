@@ -21,7 +21,6 @@
 
 #include "config.h"
 
-#include "conf.h"
 #include "yaft.h"
 #include "util.h"
 #include "terminal.h"
