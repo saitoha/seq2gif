@@ -56,6 +56,7 @@ struct settings_t {
     int foreground_color;
     int background_color;
     int cursor_color;
+    int tabwidth;
 };
 
 enum cmap_bitfield {
@@ -221,7 +222,7 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int long_opt;
     int n;
-    char const *optstring = "w:h:HVl:f:b:c:";
+    char const *optstring = "w:h:HVl:f:b:c:t:";
 #if HAVE_GETOPT_LONG
     int option_index;
 #endif  /* HAVE_GETOPT_LONG */
@@ -234,6 +235,7 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         {"foreground-color",  required_argument,  &long_opt, 'f'},
         {"background-color",  required_argument,  &long_opt, 'b'},
         {"cursor-color",      required_argument,  &long_opt, 'c'},
+        {"tabstop",           required_argument,  &long_opt, 't'},
         {"help",              no_argument,        &long_opt, 'H'},
         {"version",           no_argument,        &long_opt, 'V'},
         {0, 0, 0, 0}
@@ -300,6 +302,15 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
                 goto argerr;
             }
             break;
+        case 't':
+            psettings->tabwidth = atoi(optarg);
+            if (psettings->tabwidth < 0) {
+                goto argerr;
+            }
+            if (psettings->tabwidth > 255) {
+                goto argerr;
+            }
+            break;
         case 'H':
             psettings->show_help = 1;
             break;
@@ -344,6 +355,7 @@ int main(int argc, char *argv[])
         7,   /* foreground_color */
         0,   /* background_color */
         2,   /* cursor_color */
+        8,   /* tabwidth */
     };
 
     if (parse_args(argc, argv, &settings) != 0) {
@@ -365,7 +377,8 @@ int main(int argc, char *argv[])
     term_init(&term, pb.width, pb.height,
               settings.foreground_color,
               settings.background_color,
-              settings.cursor_color);
+              settings.cursor_color,
+              settings.tabwidth);
 
     /* init gif */
     img = (unsigned char *) ecalloc(pb.width * pb.height, 1);
