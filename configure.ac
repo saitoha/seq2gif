@@ -19,15 +19,18 @@ AC_CHECK_HEADER([stdint.h], [],
                 [AC_MSG_ERROR(stdint.h not found.)])
 AC_CHECK_HEADER([stdbool.h], [],
                 [AC_MSG_ERROR(stdbool.h not found.)])
-AC_CHECK_HEADERS([fcntl.h \
+AC_CHECK_HEADER([math.h], [],
+                [AC_MSG_ERROR(math.h not found.)])
+AC_CHECK_HEADERS([sys/errno.h \
                   errno.h \
+                  sys/ctype.h \
                   ctype.h \
                   limits.h \
-                  locale.h \
                   stdlib.h \
                   string.h \
-                  unistd.h \
                   wchar.h \
+                  sys/unistd.h \
+                  unistd.h \
                   getopt.h])
 
 # Checks for typedefs, structures, and compiler characteristics.

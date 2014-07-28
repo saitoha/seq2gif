@@ -19,11 +19,16 @@
 #include "config.h"
 
 #include <stdio.h>
-#if HAVE_ERRNO_H
+#if HAVE_SYS_ERRNO_H
+# include <sys/errno.h>
+#elif HAVE_ERRNO_H
 # include <errno.h>
 #endif
 #if HAVE_LIMITS_H
 # include <limits.h>
+#endif
+#if HAVE_SYS_UNISTD_H
+# include <sys/unistd.h>
 #endif
 #if HAVE_UNISTD_H
 # include <unistd.h>
@@ -54,7 +59,7 @@ void fatal(char *str)
 void *ecalloc(size_t nmemb, size_t size)
 {
     void *ptr;
-#if HAVE_ERRNO_H
+#if HAVE_SYS_ERRNO_H || HAVE_ERRNO_H
     errno = 0;
 #endif
 
@@ -67,7 +72,7 @@ void *ecalloc(size_t nmemb, size_t size)
 void *erealloc(void *ptr, size_t size)
 {
     void *new;
-#if HAVE_ERRNO_H
+#if HAVE_SYS_ERRNO_H || HAVE_ERRNO_H
     errno = 0;
 #endif
 
@@ -80,7 +85,7 @@ void *erealloc(void *ptr, size_t size)
 void ewrite(int fd, const void *buf, int size)
 {
     int ret;
-#if HAVE_ERRNO_H
+#if HAVE_SYS_ERRNO_H || HAVE_ERRNO_H
     errno = 0;
 #endif
 
@@ -93,7 +98,7 @@ void ewrite(int fd, const void *buf, int size)
 static long estrtol(const char *nptr, char **endptr, int base)
 {
     long int ret;
-#if HAVE_ERRNO_H
+#if HAVE_SYS_ERRNO_H || HAVE_ERRNO_H
     errno = 0;
 #endif
 

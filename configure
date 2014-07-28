@@ -4400,15 +4400,24 @@ else
 fi
 
 
-for ac_header in fcntl.h \
+ac_fn_c_check_header_mongrel "$LINENO" "math.h" "ac_cv_header_math_h" "$ac_includes_default"
+if test "x$ac_cv_header_math_h" = xyes; then :
+
+else
+  as_fn_error $? "math.h not found." "$LINENO" 5
+fi
+
+
+for ac_header in sys/errno.h \
                   errno.h \
+                  sys/ctype.h \
                   ctype.h \
                   limits.h \
-                  locale.h \
                   stdlib.h \
                   string.h \
-                  unistd.h \
                   wchar.h \
+                  sys/unistd.h \
+                  unistd.h \
                   getopt.h
 do :
   as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`

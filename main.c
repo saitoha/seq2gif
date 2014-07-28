@@ -35,6 +35,9 @@
 #if HAVE_STRING_H
 # include <string.h>
 #endif
+#if HAVE_SYS_UNISTD_H
+# include <sys/unistd.h>
+#endif
 #if HAVE_UNISTD_H
 # include <unistd.h>
 #endif
