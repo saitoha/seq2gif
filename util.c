@@ -63,8 +63,14 @@ void *ecalloc(size_t nmemb, size_t size)
     errno = 0;
 #endif
 
+#if HAVE_CALLOC
     if ((ptr = calloc(nmemb, size)) == NULL)
         error("calloc");
+#else
+    if ((ptr = malloc(nmemb * size)) == NULL)
+        error("malloc");
+    memset(ptr, 0, nmemb * size);
+#endif
 
     return ptr;
 }
