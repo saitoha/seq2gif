@@ -35,6 +35,9 @@
 #if HAVE_STRING_H
 # include <string.h>
 #endif
+#if HAVE_SYS_UNISTD_H
+# include <sys/unistd.h>
+#endif
 #if HAVE_UNISTD_H
 # include <unistd.h>
 #endif
@@ -212,6 +215,7 @@ static void show_help()
             "                                      number\n"
             "-c COLORNO --cursor-color COLORNO     specify cursor color palette\n"
             "                                      number\n"
+            "-t TABSTOP --tabstop TABSTOP          specify hardware tabstop(default: 8)\n"
             "-H, --help                            show help\n"
             "-V, --version                         show version and license information\n"
            );
