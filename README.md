@@ -25,6 +25,14 @@ convert that log into the following GIF animation.
 ![ttyrec](https://raw.githubusercontent.com/saitoha/seq2gif/master/images/ttyrec.gif)
 
 
+Build and Install
+-----------------
+
+   $ ./configure
+   $ make
+   # make install
+
+
 Usage
 -----
 
@@ -97,6 +105,20 @@ disclaims all warranties with regard to this software.
 
 Latest version: http://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c
 ```
+
+References
+----------
+
+### ttyrec
+
+a tty recorder
+http://0xcc.net/ttyrec/index.html.en
+
+### yaft
+
+Yet another framebuffer terminal
+http://uobikiemukot.github.io/yaft/
+
 
 License
 -------
