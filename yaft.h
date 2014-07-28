@@ -167,6 +167,7 @@ struct terminal {
     struct sixel_canvas_t sixel;
     int default_fg;                              /* default foreground color */
     int default_bg;                              /* default background color */
+    int cursor_color;                            /* corsor color */
 };
 
 struct parm_t { /* for parse_arg() */
