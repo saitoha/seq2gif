@@ -17,7 +17,6 @@
  */
 
 #include "config.h"
-#include "conf.h"
 #include "yaft.h"
 #include "util.h"
 #include "terminal.h"
@@ -351,7 +350,7 @@ void reset(struct terminal *term)
     for (i = 0; i < term->lines; i++) {
         for (j = 0; j < term->cols; j++) {
             erase_cell(term, i, j);
-            if ((j % TABSTOP) == 0)
+            if ((j % term->tabwidth) == 0)
                 term->tabstop[j] = true;
             else
                 term->tabstop[j] = false;
@@ -364,7 +363,8 @@ void reset(struct terminal *term)
 }
 
 void term_init(struct terminal *term, int width, int height,
-               int foreground_color, int background_color)
+               int foreground_color, int background_color,
+               int cursor_color, int tabwidth)
 {
     int i;
     uint32_t code, gi;
@@ -375,8 +375,11 @@ void term_init(struct terminal *term, int width, int height,
     term->cols  = term->width / CELL_WIDTH;
     term->lines = term->height / CELL_HEIGHT;
 
-    term->default_fg  = foreground_color;
-    term->default_bg  = background_color;
+    term->default_fg   = foreground_color;
+    term->default_bg   = background_color;
+    term->cursor_color = cursor_color;
+
+    term->tabwidth = tabwidth;
 
     if (DEBUG)
         fprintf(stderr, "width:%d height:%d cols:%d lines:%d\n",

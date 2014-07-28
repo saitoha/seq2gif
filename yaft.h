@@ -29,6 +29,14 @@
 
 #define SIGWINCH 28
 
+/* misc */
+enum {
+    DEBUG            = 0,      /* write dump of input to stdout, debug message to stderr */
+    SUBSTITUTE_HALF  = 0x0020, /* used for missing glyph (single width): U+0020 (SPACE) */
+    SUBSTITUTE_WIDE  = 0x3000, /* used for missing glyph (double width): U+3000 (IDEOGRAPHIC SPACE) */
+    REPLACEMENT_CHAR = 0x003F, /* used for malformed UTF-8 sequence    : U+003F (QUESTION MARK)  */
+};
+
 enum char_code {
     /* 7 bit */
     BEL = 0x07, BS  = 0x08, HT  = 0x09,
@@ -167,6 +175,8 @@ struct terminal {
     struct sixel_canvas_t sixel;
     int default_fg;                              /* default foreground color */
     int default_bg;                              /* default background color */
+    int cursor_color;                            /* corsor color */
+    int tabwidth;                                /* hardware tabstop */
 };
 
 struct parm_t { /* for parse_arg() */

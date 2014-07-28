@@ -18,7 +18,6 @@
 
 #include "config.h"
 #include "yaft.h"
-#include "conf.h"
 #include "util.h"
 #include "pseudo.h"
 #include "terminal.h"
@@ -55,6 +54,8 @@ struct settings_t {
     int last_frame_delay;
     int foreground_color;
     int background_color;
+    int cursor_color;
+    int tabwidth;
 };
 
 enum cmap_bitfield {
@@ -209,6 +210,8 @@ static void show_help()
             "                                      number\n"
             "-b COLORNO --background-color COLORNO specify background color palette\n"
             "                                      number\n"
+            "-c COLORNO --cursor-color COLORNO     specify cursor color palette\n"
+            "                                      number\n"
             "-H, --help                            show help\n"
             "-V, --version                         show version and license information\n"
            );
@@ -218,7 +221,7 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int long_opt;
     int n;
-    char const *optstring = "w:h:HVl:f:b:";
+    char const *optstring = "w:h:HVl:f:b:c:t:";
 #if HAVE_GETOPT_LONG
     int option_index;
 #endif  /* HAVE_GETOPT_LONG */
@@ -230,6 +233,8 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         {"last-frame-delay",  required_argument,  &long_opt, 'l'},
         {"foreground-color",  required_argument,  &long_opt, 'f'},
         {"background-color",  required_argument,  &long_opt, 'b'},
+        {"cursor-color",      required_argument,  &long_opt, 'c'},
+        {"tabstop",           required_argument,  &long_opt, 't'},
         {"help",              no_argument,        &long_opt, 'H'},
         {"version",           no_argument,        &long_opt, 'V'},
         {0, 0, 0, 0}
@@ -287,6 +292,24 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
                 goto argerr;
             }
             break;
+        case 'c':
+            psettings->cursor_color = atoi(optarg);
+            if (psettings->cursor_color < 0) {
+                goto argerr;
+            }
+            if (psettings->cursor_color > 255) {
+                goto argerr;
+            }
+            break;
+        case 't':
+            psettings->tabwidth = atoi(optarg);
+            if (psettings->tabwidth < 0) {
+                goto argerr;
+            }
+            if (psettings->tabwidth > 255) {
+                goto argerr;
+            }
+            break;
         case 'H':
             psettings->show_help = 1;
             break;
@@ -330,6 +353,8 @@ int main(int argc, char *argv[])
         300, /* last_frame_delay */
         7,   /* foreground_color */
         0,   /* background_color */
+        2,   /* cursor_color */
+        8,   /* tabwidth */
     };
 
     if (parse_args(argc, argv, &settings) != 0) {
@@ -349,7 +374,10 @@ int main(int argc, char *argv[])
     /* init */
     pb_init(&pb, settings.width * CELL_WIDTH, settings.height * CELL_HEIGHT);
     term_init(&term, pb.width, pb.height,
-              settings.foreground_color, settings.background_color);
+              settings.foreground_color,
+              settings.background_color,
+              settings.cursor_color,
+              settings.tabwidth);
 
     /* init gif */
     img = (unsigned char *) ecalloc(pb.width * pb.height, 1);
