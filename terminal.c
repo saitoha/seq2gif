@@ -364,7 +364,7 @@ void reset(struct terminal *term)
 }
 
 void term_init(struct terminal *term, int width, int height,
-               int foreground_color, int background_color)
+               int foreground_color, int background_color, int cursor_color)
 {
     int i;
     uint32_t code, gi;
@@ -375,8 +375,9 @@ void term_init(struct terminal *term, int width, int height,
     term->cols  = term->width / CELL_WIDTH;
     term->lines = term->height / CELL_HEIGHT;
 
-    term->default_fg  = foreground_color;
-    term->default_bg  = background_color;
+    term->default_fg   = foreground_color;
+    term->default_bg   = background_color;
+    term->cursor_color = cursor_color;
 
     if (DEBUG)
         fprintf(stderr, "width:%d height:%d cols:%d lines:%d\n",
