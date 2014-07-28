@@ -16,11 +16,11 @@ features such as SIXEL/DRCS.
 Demo
 ----
 
-This demo plays [sl](https://github.com/mtoyoda/sl) and record it using [ttyrec](https://github.com/mjording/ttyrec), and
-convert that record into a GIF animation using seq2gif,
-and convert that GIF into a SIXEL animation, and play it with [img2sixel](https://github.com/saitoha/libsixel#img2sixel).
-Furthermore, generate the log record of above experience using [ttyrec](https://github.com/mjording/ttyrec), and
-convert that log into the following GIF animation.
+This demo plays [sl](https://github.com/mtoyoda/sl) and records it with [ttyrec](https://github.com/mjording/ttyrec), and
+converts that record into a GIF animation using seq2gif,
+and converts that GIF into a SIXEL animation and plays it with [img2sixel](https://github.com/saitoha/libsixel#img2sixel).
+Furthermore, generates the log record of above experience using [ttyrec](https://github.com/mjording/ttyrec), and
+converts that log into the following GIF animation.
 
 ![ttyrec](https://raw.githubusercontent.com/saitoha/seq2gif/master/images/ttyrec.gif)
 
