@@ -25,6 +25,7 @@ AC_CHECK_HEADERS([sys/errno.h \
                   errno.h \
                   sys/ctype.h \
                   ctype.h \
+                  fcntl.h \
                   limits.h \
                   stdlib.h \
                   string.h \

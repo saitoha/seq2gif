@@ -45,9 +45,22 @@
 # include <getopt.h>
 #endif
 
+//#if HAVE_SYS_STAT_H
+//# include <sys/stat.h>
+//#endif
+
+#if HAVE_FCNTL_H
+# include <fcntl.h>
+#endif
+
+
 #if !defined(HAVE_MEMCPY)
 # define memcpy(d, s, n) (bcopy ((s), (d), (n)))
 #endif
+
+#if !defined(O_BINARY) && defined(_O_BINARY)
+# define O_BINARY _O_BINARY
+#endif  /* !defined(O_BINARY) && !defined(_O_BINARY) */
 
 struct settings_t {
     int width;
@@ -338,10 +351,6 @@ argerr:
     show_help();
     return 1;
 }
-
-#if !defined(O_BINARY) && defined(_O_BINARY)
-# define O_BINARY _O_BINARY
-#endif  /* !defined(O_BINARY) && !defined(_O_BINARY) */
 
 static FILE *
 open_binary_file(char const *filename)
