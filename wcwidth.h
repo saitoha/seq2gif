@@ -16,6 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#if HAVE_WCHAR_H
+#include <wchar.h>
+#endif
+
 int mk_wcwidth(wchar_t ucs);
 
 /* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */

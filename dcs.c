@@ -18,12 +18,31 @@
 
 /* function for dcs sequence */
 
-#include "conf.h"
+
+#include "config.h"
+
 #include "yaft.h"
 #include "util.h"
 #include "terminal.h"
 #include "function.h"
 #include "dcs.h"
+
+#include <stdio.h>
+#if HAVE_SYS_CTYPE_H
+# include <sys/ctype.h>
+#elif HAVE_CTYPE_H
+# include <ctype.h>
+#endif
+#if HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+#if HAVE_STRING_H
+# include <string.h>
+#endif
+
+#if !defined(HAVE_MEMCPY)
+# define memcpy(d, s, n) (bcopy ((s), (d), (n)))
+#endif
 
 enum {
     RGBMAX = 255,
@@ -282,14 +301,16 @@ void sixel_parse_data(struct terminal *term, struct sixel_canvas_t *sc, char *st
             ~ (hex 7E) represents the binary value 11 1111.
     */
     int size = 0;
-    char *cp, *end_buf;
+    char *cp;
     uint8_t bitmap;
 
     cp = start_buf;
-    end_buf = cp + strlen(start_buf);
 
-    while (cp < end_buf) {
-        if (*cp == '!')
+    while (1) {
+        if ('?' <= *cp && *cp <= '~')  {
+            bitmap =  bit_mask[BITS_PER_SIXEL] & (*cp - '?');
+            size = sixel_bitmap(term, sc, bitmap);
+        } else if (*cp == '!')
             size = sixel_repeat(term, sc, cp);
         else if (*cp == '"')
             size = sixel_attr(sc, cp);
@@ -299,10 +320,6 @@ void sixel_parse_data(struct terminal *term, struct sixel_canvas_t *sc, char *st
             size = sixel_cr(sc);
         else if (*cp == '-')
             size = sixel_nl(sc);
-        else if ('?' <= *cp && *cp <= '~')  {
-            bitmap =  bit_mask[BITS_PER_SIXEL] & (*cp - '?');
-            size = sixel_bitmap(term, sc, bitmap);
-        }
         else if (*cp == '\0') /* end of sixel data */
             break;
         else
