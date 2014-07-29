@@ -331,18 +331,55 @@ argerr:
     return 1;
 }
 
+static int32_t readtime(uint8_t *obuf)
+{
+    int nread;
+    int32_t tv_sec;
+    int32_t tv_usec;
+
+    nread = read(STDIN_FILENO, obuf, sizeof(tv_sec));
+    if (nread != sizeof(tv_sec)) {
+        return -1;
+    }
+    tv_sec = obuf[0] | obuf[1] << 8
+           | obuf[2] << 16 | obuf[3] << 24;
+    nread = read(STDIN_FILENO, obuf, sizeof(tv_usec));
+    if (nread != sizeof(tv_usec)) {
+        return -1;
+    }
+    tv_usec = obuf[0] | obuf[1] << 8
+            | obuf[2] << 16 | obuf[3] << 24;
+
+    return tv_sec * 1000000 + tv_usec;
+}
+
+static int32_t readlen(uint8_t *obuf)
+{
+    int nread;
+    uint32_t len;
+
+    nread = read(STDIN_FILENO, obuf, sizeof(len));
+    if (nread != sizeof(len)) {
+        return -1;
+    }
+    len = obuf[0] | obuf[1] << 8
+        | obuf[2] << 16 | obuf[3] << 24;
+
+    return len;
+}
+
 int main(int argc, char *argv[])
 {
     uint8_t *obuf;
     ssize_t nread;
     struct terminal term;
     struct pseudobuffer pb;
-    int32_t sec = 0;
-    int32_t usec = 0;
-    int32_t tv_sec = 0;
-    int32_t tv_usec = 0;
+    int32_t prev = 0;
+    int32_t now = 0;
     int32_t len = 0;
+    int32_t maxlen = 0;
     int delay = 0;
+    int dirty = 0;
 
     void *gsdata;
     unsigned char *gifimage = NULL;
@@ -393,48 +430,39 @@ int main(int argc, char *argv[])
         /* transparent background */  -1, /* disposal */ 2);
 
     obuf = malloc(4);
+    maxlen = 4;
+    prev = now = readtime(obuf);
+
     /* main loop */
     for(;;) {
-        nread = read(STDIN_FILENO, obuf, sizeof(tv_sec));
-        if (nread != sizeof(tv_sec)) {
+        if (now <= 0) {
             break;
         }
-        tv_sec = obuf[0] | obuf[1] << 8
-               | obuf[2] << 16 | obuf[3] << 24;
-        nread = read(STDIN_FILENO, obuf, sizeof(tv_usec));
-        if (nread != sizeof(tv_usec)) {
-            break;
-        }
-        tv_usec = obuf[0] | obuf[1] << 8
-                | obuf[2] << 16 | obuf[3] << 24;
-        nread = read(STDIN_FILENO, obuf, sizeof(len));
-        if (nread != sizeof(len)) {
-            break;
-        }
-        len = obuf[0] | obuf[1] << 8
-            | obuf[2] << 16 | obuf[3] << 24;
+        len = readlen(obuf);
         if (len <= 0) {
             break;
         }
-        obuf = realloc(obuf, len);
+        if (len > maxlen) {
+            obuf = realloc(obuf, len);
+            maxlen = len;
+        }
         nread = read(STDIN_FILENO, obuf, len);
         if (nread != len) {
             break;
         }
-        int dirty = 0;
         parse(&term, obuf, nread, &dirty);
         if (term.esc.state != STATE_DCS || dirty) {
-            delay += (tv_sec - sec) * 1000000 + tv_usec - usec;
+            delay += prev - now;
             refresh(&pb, &term);
 
             /* take screenshot */
             apply_colormap(&pb, img);
             controlgif(gsdata, -1, (delay + 5000) / 10000 + 1, 0, 0);
-            sec = tv_sec;
-            usec = tv_usec;
+            prev = now;
             putgif(gsdata, img);
             delay = 0;
         }
+        now = readtime(obuf);
     }
     if (settings.last_frame_delay > 0) {
         controlgif(gsdata, -1, settings.last_frame_delay / 10, 0, 0);
