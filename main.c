@@ -171,6 +171,14 @@ static size_t write_gif(unsigned char *gifimage, int size)
 {
     size_t wsize = 0;
 
+#if defined(O_BINARY)
+# if HAVE__SETMODE
+    _setmode(fileno(stdout), O_BINARY);
+# elif HAVE_SETMODE
+    setmode(fileno(stdout), O_BINARY);
+# endif  /* HAVE_SETMODE */
+#endif  /* defined(O_BINARY) */
+
     wsize = fwrite(gifimage, sizeof(unsigned char), size, stdout);
     return wsize;
 }
