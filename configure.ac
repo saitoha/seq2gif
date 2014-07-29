@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([seq2gif], [0.7.1], [user@zuse.jp])
+AC_INIT([seq2gif], [0.7.2], [user@zuse.jp])
 AC_CONFIG_SRCDIR([color.h])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([foreign])
@@ -59,7 +59,7 @@ AC_CHECK_FUNC([getopt_long],
                              [AC_DEFINE(HAVE_GETOPT, 1, [whether getopt is avilable])],
                              [AC_MSG_ERROR(getopt or getopt_long is not available.)])])
 
-AC_CHECK_FUNCS([memcpy memmove strchr strstr strtol calloc])
+AC_CHECK_FUNCS([setmode _setmode memcpy memmove strchr strstr strtol calloc])
 
 AC_DEFUN([LS_UPDATE_TIMESTAMP], [
           touch aclocal.m4 Makefile.in configure config.h.in

@@ -28,9 +28,11 @@ converts that log into the following GIF animation.
 Build and Install
 -----------------
 
-   $ ./configure
-   $ make
-   # make install
+```
+  $ ./configure
+  $ make
+  # make install
+```
 
 
 Usage
@@ -112,12 +114,14 @@ References
 ### ttyrec
 
 a tty recorder
-http://0xcc.net/ttyrec/index.html.en
+
+    http://0xcc.net/ttyrec/index.html.en
 
 ### yaft
 
 Yet another framebuffer terminal
-http://uobikiemukot.github.io/yaft/
+
+    http://uobikiemukot.github.io/yaft/
 
 
 License

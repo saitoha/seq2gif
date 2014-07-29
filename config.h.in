@@ -41,6 +41,9 @@
    and to 0 otherwise. */
 #undef HAVE_REALLOC
 
+/* Define to 1 if you have the `setmode' function. */
+#undef HAVE_SETMODE
+
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
 
@@ -85,6 +88,9 @@
 
 /* Define to 1 if the system has the type `_Bool'. */
 #undef HAVE__BOOL
+
+/* Define to 1 if you have the `_setmode' function. */
+#undef HAVE__SETMODE
 
 /* Name of package */
 #undef PACKAGE

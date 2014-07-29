@@ -331,19 +331,50 @@ argerr:
     return 1;
 }
 
-static int32_t readtime(uint8_t *obuf)
+#if !defined(O_BINARY) && defined(_O_BINARY)
+# define O_BINARY _O_BINARY
+#endif  /* !defined(O_BINARY) && !defined(_O_BINARY) */
+
+static FILE *
+open_binary_file(char const *filename)
+{
+    FILE *f;
+
+    if (filename == NULL || strcmp(filename, "-") == 0) {
+        /* for windows */
+#if defined(O_BINARY)
+# if HAVE__SETMODE
+        _setmode(fileno(stdin), O_BINARY);
+# elif HAVE_SETMODE
+        setmode(fileno(stdin), O_BINARY);
+# endif  /* HAVE_SETMODE */
+#endif  /* defined(O_BINARY) */
+        return stdin;
+    }
+    f = fopen(filename, "rb");
+    if (!f) {
+#if _ERRNO_H
+        fprintf(stderr, "fopen('%s') failed.\n" "reason: %s.\n",
+                filename, strerror(errno));
+#endif  /* HAVE_ERRNO_H */
+        return NULL;
+    }
+    return f;
+}
+
+static int32_t readtime(FILE *f, uint8_t *obuf)
 {
     int nread;
     int32_t tv_sec;
     int32_t tv_usec;
 
-    nread = read(STDIN_FILENO, obuf, sizeof(tv_sec));
+    nread = fread(obuf, 1, sizeof(tv_sec), f);
     if (nread != sizeof(tv_sec)) {
         return -1;
     }
     tv_sec = obuf[0] | obuf[1] << 8
            | obuf[2] << 16 | obuf[3] << 24;
-    nread = read(STDIN_FILENO, obuf, sizeof(tv_usec));
+    nread = fread(obuf, 1, sizeof(tv_usec), f);
     if (nread != sizeof(tv_usec)) {
         return -1;
     }
@@ -353,12 +384,12 @@ static int32_t readtime(uint8_t *obuf)
     return tv_sec * 1000000 + tv_usec;
 }
 
-static int32_t readlen(uint8_t *obuf)
+static int32_t readlen(FILE *f, uint8_t *obuf)
 {
     int nread;
     uint32_t len;
 
-    nread = read(STDIN_FILENO, obuf, sizeof(len));
+    nread = fread(obuf, 1, sizeof(len), f);
     if (nread != sizeof(len)) {
         return -1;
     }
@@ -380,6 +411,7 @@ int main(int argc, char *argv[])
     int32_t maxlen = 0;
     int delay = 0;
     int dirty = 0;
+    FILE *f = NULL;
 
     void *gsdata;
     unsigned char *gifimage = NULL;
@@ -429,16 +461,18 @@ int main(int argc, char *argv[])
     animategif(gsdata, /* repetitions */ 0, 10,
         /* transparent background */  -1, /* disposal */ 2);
 
+    f = open_binary_file("-");
+
     obuf = malloc(4);
     maxlen = 4;
-    prev = now = readtime(obuf);
+    prev = now = readtime(f, obuf);
 
     /* main loop */
     for(;;) {
         if (now <= 0) {
             break;
         }
-        len = readlen(obuf);
+        len = readlen(f, obuf);
         if (len <= 0) {
             break;
         }
@@ -446,7 +480,7 @@ int main(int argc, char *argv[])
             obuf = realloc(obuf, len);
             maxlen = len;
         }
-        nread = read(STDIN_FILENO, obuf, len);
+        nread = fread(obuf, 1, len, f);
         if (nread != len) {
             break;
         }
@@ -462,7 +496,7 @@ int main(int argc, char *argv[])
             putgif(gsdata, img);
             delay = 0;
         }
-        now = readtime(obuf);
+        now = readtime(f, obuf);
     }
     if (settings.last_frame_delay > 0) {
         controlgif(gsdata, -1, settings.last_frame_delay / 10, 0, 0);

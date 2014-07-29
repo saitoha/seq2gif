@@ -17,10 +17,11 @@
  */
 
 #if HAVE_WCHAR_H
-#include <wchar.h>
+# include <wchar.h>
 #endif
 
 int mk_wcwidth(wchar_t ucs);
+int mk_wcwidth_cjk(wchar_t ucs);
 
 /* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
 /* vim: set expandtab ts=4 : */

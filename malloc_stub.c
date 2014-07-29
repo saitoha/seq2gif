@@ -28,11 +28,11 @@
 #include <stdlib.h>
 
 #if HAVE_MEMORY_H
-#include <memory.h>
+# include <memory.h>
 #endif  /* HAVE_MEMORY_H */
 
 #if !HAVE_MALLOC
-#undef malloc
+# undef malloc
 void *
 rpl_malloc(size_t n)
 {
@@ -44,7 +44,7 @@ rpl_malloc(size_t n)
 #endif /* !HAVE_MALLOC */
 
 #if !HAVE_REALLOC
-#undef realloc
+# undef realloc
 void *
 rpl_realloc(void *p, size_t n)
 {
@@ -57,26 +57,6 @@ rpl_realloc(void *p, size_t n)
     return (void *)realloc(p, n);
 }
 #endif /* !HAVE_REALLOC */
-
-#if 0
-int
-rpl_posix_memalign(void **memptr, size_t alignment, size_t size)
-{
-#if HAVE_POSIX_MEMALIGN
-    return posix_memalign(memptr, alignment, size);
-#elif HAVE_ALIGNED_ALLOC
-    *memptr = aligned_alloc(alignment, size);
-    return *memptr ? 0: ENOMEM;
-#elif HAVE_MEMALIGN
-    *memptr = memalign(alignment, size);
-    return *memptr ? 0: ENOMEM;
-#elif HAVE__ALIGNED_MALLOC
-    return _aligned_malloc(size, alignment);
-#else
-# error
-#endif /* _MSC_VER */
-}
-#endif
 
 /* Hello emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
 /* vim: set expandtab ts=4 : */
