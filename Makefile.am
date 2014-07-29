@@ -6,3 +6,6 @@ seq2gif_SOURCES = main.c util.c pseudo.c terminal.c function.c \
 				  util.h pseudo.h terminal.h function.h \
 				  osc.h dcs.h parse.h gifsave89.h \
 				  wcwidth.h malloc_stub.h
+
+run:
+	cat ttyrecord | ./seq2gif | img2sixel

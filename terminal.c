@@ -229,7 +229,7 @@ void addch(struct terminal *term, uint32_t code)
     if (DEBUG)
         fprintf(stderr, "addch: U+%.4X\n", code);
 
-    width = mk_wcwidth(code);
+    width = term->wcwidth(code);
 
     if (width <= 0) /* zero width */
         return;
@@ -381,6 +381,7 @@ void term_init(struct terminal *term, int width, int height,
     term->cursor_color = cursor_color;
 
     term->tabwidth = tabwidth;
+    term->wcwidth = mk_wcwidth_cjk;
 
     if (DEBUG)
         fprintf(stderr, "width:%d height:%d cols:%d lines:%d\n",

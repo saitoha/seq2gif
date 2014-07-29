@@ -18,6 +18,9 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#if HAVE_WCHAR_H
+# include <wchar.h>
+#endif
 
 #if 1
 # include "glyph/milkjf.h"
@@ -153,6 +156,8 @@ struct sixel_canvas_t {
     uint32_t color_table[COLORS];
 };
 
+typedef int (*wcwidth_func_t)(wchar_t);
+
 struct terminal {
     int fd;                                      /* master fd */
     int width, height;                           /* terminal size (pixel) */
@@ -177,6 +182,7 @@ struct terminal {
     int default_bg;                              /* default background color */
     int cursor_color;                            /* corsor color */
     int tabwidth;                                /* hardware tabstop */
+    wcwidth_func_t wcwidth;                      /* wcwidth strategy */
 };
 
 struct parm_t { /* for parse_arg() */
