@@ -28,12 +28,14 @@ converts that log into the following GIF animation.
 Build and Install
 -----------------
 
+This software works in Windows, Linux, BSDs and OSX.
+If you want to build windows native build, [MinGW](http://www.mingw.org/) is required.
+
 ```
   $ ./configure
   $ make
   # make install
 ```
-
 
 Usage
 -----
@@ -55,6 +57,8 @@ Options:
 -c COLORNO --cursor-color COLORNO     specify cursor color palette
                                       number
 -t TABSTOP --tabstop TABSTOP          specify hardware tabstop(default: 8)
+-j --cjk                              treat East Asian Ambiguous width characters
+                                      (UAX#11) as wide
 -H, --help                            show help
 -V, --version                         show version and license information
 ```
@@ -111,17 +115,14 @@ Latest version: http://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c
 References
 ----------
 
-### ttyrec
+### ttyrec(http://0xcc.net/ttyrec/index.html.en)
 
-a tty recorder
+A tty recorder
 
-    http://0xcc.net/ttyrec/index.html.en
 
-### yaft
+### yaft(http://uobikiemukot.github.io/yaft/)
 
 Yet another framebuffer terminal
-
-    http://uobikiemukot.github.io/yaft/
 
 
 License
