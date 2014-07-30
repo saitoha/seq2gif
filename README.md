@@ -25,6 +25,11 @@ converts that log into the following GIF animation.
 ![ttyrec](https://raw.githubusercontent.com/saitoha/seq2gif/master/images/ttyrec.gif)
 
 
+Download
+--------
+Source package and Windows binary is [available](https://github.com/saitoha/seq2gif/releases/tag/v0.8.0).
+
+
 Build and Install
 -----------------
 
