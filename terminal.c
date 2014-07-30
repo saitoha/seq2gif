@@ -365,7 +365,7 @@ void reset(struct terminal *term)
 
 void term_init(struct terminal *term, int width, int height,
                int foreground_color, int background_color,
-               int cursor_color, int tabwidth)
+               int cursor_color, int tabwidth, int cjkwidth)
 {
     int i;
     uint32_t code, gi;
@@ -381,7 +381,11 @@ void term_init(struct terminal *term, int width, int height,
     term->cursor_color = cursor_color;
 
     term->tabwidth = tabwidth;
-    term->wcwidth = mk_wcwidth_cjk;
+    if (cjkwidth) {
+        term->wcwidth = mk_wcwidth_cjk;
+    } else {
+        term->wcwidth = mk_wcwidth;
+    }
 
     if (DEBUG)
         fprintf(stderr, "width:%d height:%d cols:%d lines:%d\n",

@@ -22,7 +22,7 @@
 # include <wchar.h>
 #endif
 
-#if 1
+#if 0
 # include "glyph/milkjf.h"
 #else
 # include "glyph/mplus.h"
