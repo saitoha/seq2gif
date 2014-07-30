@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([seq2gif], [0.7.3], [user@zuse.jp])
+AC_INIT([seq2gif], [0.8.0], [user@zuse.jp])
 AC_CONFIG_SRCDIR([color.h])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([foreign])
