@@ -68,6 +68,7 @@ struct settings_t {
     int background_color;
     int cursor_color;
     int tabwidth;
+    int cjkwidth;
 };
 
 enum cmap_bitfield {
@@ -233,6 +234,8 @@ static void show_help()
             "-c COLORNO --cursor-color COLORNO     specify cursor color palette\n"
             "                                      number\n"
             "-t TABSTOP --tabstop TABSTOP          specify hardware tabstop(default: 8)\n"
+            "-j --cjk                              treat East Asian Ambiguous width characters\n"
+            "                                      (UAX#11) as wide\n"
             "-H, --help                            show help\n"
             "-V, --version                         show version and license information\n"
            );
@@ -242,7 +245,7 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int long_opt;
     int n;
-    char const *optstring = "w:h:HVl:f:b:c:t:";
+    char const *optstring = "w:h:HVl:f:b:c:t:j";
 #if HAVE_GETOPT_LONG
     int option_index;
 #endif  /* HAVE_GETOPT_LONG */
@@ -256,6 +259,7 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         {"background-color",  required_argument,  &long_opt, 'b'},
         {"cursor-color",      required_argument,  &long_opt, 'c'},
         {"tabstop",           required_argument,  &long_opt, 't'},
+        {"cjkwidth",          no_argument,        &long_opt, 'j'},
         {"help",              no_argument,        &long_opt, 'H'},
         {"version",           no_argument,        &long_opt, 'V'},
         {0, 0, 0, 0}
@@ -330,6 +334,9 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
             if (psettings->tabwidth > 255) {
                 goto argerr;
             }
+            break;
+        case 'j':
+            psettings->cjkwidth = 1;
             break;
         case 'H':
             psettings->show_help = 1;
@@ -441,6 +448,7 @@ int main(int argc, char *argv[])
         0,   /* background_color */
         2,   /* cursor_color */
         8,   /* tabwidth */
+        0,   /* cjkwidth */
     };
 
     if (parse_args(argc, argv, &settings) != 0) {
@@ -463,7 +471,8 @@ int main(int argc, char *argv[])
               settings.foreground_color,
               settings.background_color,
               settings.cursor_color,
-              settings.tabwidth);
+              settings.tabwidth,
+              settings.cjkwidth);
 
     /* init gif */
     img = (unsigned char *) ecalloc(pb.width * pb.height, 1);
