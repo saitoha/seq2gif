@@ -763,6 +763,7 @@ valgrind: all
         | tee valgrind.log
 	grep "All heap blocks were freed" valgrind.log || grep "definitely lost: 0 bytes in 0 blocks" valgrind.log
 	grep "All heap blocks were freed" valgrind.log || grep "indirectly lost: 0 bytes in 0 blocks" valgrind.log
+	test ! $$(grep Invalid valgrind.log)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

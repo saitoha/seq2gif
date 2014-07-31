@@ -16,3 +16,4 @@ valgrind: all
         | tee valgrind.log
 	grep "All heap blocks were freed" valgrind.log || grep "definitely lost: 0 bytes in 0 blocks" valgrind.log
 	grep "All heap blocks were freed" valgrind.log || grep "indirectly lost: 0 bytes in 0 blocks" valgrind.log
+	test ! $$(grep Invalid valgrind.log)
