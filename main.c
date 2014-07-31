@@ -234,7 +234,7 @@ static void show_help()
             "-c COLORNO --cursor-color COLORNO     specify cursor color palette\n"
             "                                      number\n"
             "-t TABSTOP --tabstop TABSTOP          specify hardware tabstop(default: 8)\n"
-            "-j --cjk                              treat East Asian Ambiguous width characters\n"
+            "-j --cjkwidth                         treat East Asian Ambiguous width characters\n"
             "                                      (UAX#11) as wide\n"
             "-H, --help                            show help\n"
             "-V, --version                         show version and license information\n"

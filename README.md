@@ -57,8 +57,8 @@ Options:
 -c COLORNO --cursor-color COLORNO     specify cursor color palette
                                       number
 -t TABSTOP --tabstop TABSTOP          specify hardware tabstop(default: 8)
--j --cjk                              treat East Asian Ambiguous width characters
-                                      (UAX#11) as wide
+-j --cjkwidth                         treat East Asian Ambiguous width
+                                      characters (UAX#11) as wide
 -H, --help                            show help
 -V, --version                         show version and license information
 ```
