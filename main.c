@@ -575,6 +575,9 @@ int main(int argc, char *argv[])
             delay = 0;
         }
         now = readtime(in_file, obuf);
+        if (now == -1) {
+            break;
+        }
     }
     if (settings.last_frame_delay > 0) {
         controlgif(gsdata, -1, settings.last_frame_delay / 10, 0, 0);
