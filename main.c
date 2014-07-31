@@ -69,6 +69,7 @@ struct settings_t {
     int cursor_color;
     int tabwidth;
     int cjkwidth;
+    int repeat;
 };
 
 enum cmap_bitfield {
@@ -221,23 +222,25 @@ static void show_help()
             "Usage: seq2gif [Options] < ttyrecord > record.gif\n"
             "\n"
             "Options:\n"
-            "-w WIDTH, --width=WIDTH               specify terminal width in cell size\n"
+            "-w WIDTH, --width=WIDTH               specify terminal width in cell size.\n"
             "                                      (default: 80)\n"
-            "-h HEIGHT, --height=HEIGHT            specify terminal height in cell size\n"
+            "-h HEIGHT, --height=HEIGHT            specify terminal height in cell size.\n"
             "                                      (default: 24)\n"
             "-l DELAY, --last-frame-delay=DELAY    specify delay in msec which is added\n"
-            "                                      to the last frame(default: 300)\n"
-            "-f COLORNO --foreground-color COLORNO specify foreground color palette\n"
-            "                                      number\n"
-            "-b COLORNO --background-color COLORNO specify background color palette\n"
-            "                                      number\n"
-            "-c COLORNO --cursor-color COLORNO     specify cursor color palette\n"
-            "                                      number\n"
-            "-t TABSTOP --tabstop TABSTOP          specify hardware tabstop(default: 8)\n"
+            "                                      to the last frame. (default: 300)\n"
+            "-f COLORNO --foreground-color=COLORNO specify foreground color palette.\n"
+            "                                      number.\n"
+            "-b COLORNO --background-color=COLORNO specify background color palette\n"
+            "                                      number.\n"
+            "-c COLORNO --cursor-color=COLORNO     specify cursor color palette\n"
+            "                                      number.\n"
+            "-t TABSTOP --tabstop=TABSTOP          specify hardware tabstop(default: 8)\n"
             "-j --cjkwidth                         treat East Asian Ambiguous width characters\n"
-            "                                      (UAX#11) as wide\n"
-            "-H, --help                            show help\n"
-            "-V, --version                         show version and license information\n"
+            "                                      (UAX#11) as wide.\n"
+            "-r COUNT --repeat=COUNT               specify animation repeat count. loop\n"
+            "                                      infinitely if 0 is given. (default: 0)\n"
+            "-H, --help                            show help.\n"
+            "-V, --version                         show version and license information.\n"
            );
 }
 
@@ -245,7 +248,7 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int long_opt;
     int n;
-    char const *optstring = "w:h:HVl:f:b:c:t:j";
+    char const *optstring = "w:h:HVl:f:b:c:t:jr:";
 #if HAVE_GETOPT_LONG
     int option_index;
 #endif  /* HAVE_GETOPT_LONG */
@@ -260,6 +263,7 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         {"cursor-color",      required_argument,  &long_opt, 'c'},
         {"tabstop",           required_argument,  &long_opt, 't'},
         {"cjkwidth",          no_argument,        &long_opt, 'j'},
+        {"repeat",            required_argument,  &long_opt, 'r'},
         {"help",              no_argument,        &long_opt, 'H'},
         {"version",           no_argument,        &long_opt, 'V'},
         {0, 0, 0, 0}
@@ -338,6 +342,15 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         case 'j':
             psettings->cjkwidth = 1;
             break;
+        case 'r':
+            psettings->repeat = atoi(optarg);
+            if (psettings->repeat < 0) {
+                goto argerr;
+            }
+            if (psettings->repeat > 0xffff) {
+                goto argerr;
+            }
+            break;
         case 'H':
             psettings->show_help = 1;
             break;
@@ -413,8 +426,10 @@ static int32_t readlen(FILE *f, uint8_t *obuf)
     if (nread != sizeof(len)) {
         return -1;
     }
-    len = obuf[0] | obuf[1] << 8
-        | obuf[2] << 16 | obuf[3] << 24;
+    len = obuf[0]
+        | obuf[1] << 8
+        | obuf[2] << 16
+        | obuf[3] << 24;
 
     return len;
 }
@@ -425,13 +440,14 @@ int main(int argc, char *argv[])
     ssize_t nread;
     struct terminal term;
     struct pseudobuffer pb;
-    int32_t prev = 0;
-    int32_t now = 0;
-    int32_t len = 0;
-    int32_t maxlen = 0;
+    uint32_t prev = 0;
+    uint32_t now = 0;
+    ssize_t len = 0;
+    size_t maxlen = 0;
     int delay = 0;
     int dirty = 0;
     FILE *f = NULL;
+    int nret = EXIT_SUCCESS;
 
     void *gsdata;
     unsigned char *gifimage = NULL;
@@ -449,6 +465,7 @@ int main(int argc, char *argv[])
         2,   /* cursor_color */
         8,   /* tabwidth */
         0,   /* cjkwidth */
+        0,   /* repeat */
     };
 
     if (parse_args(argc, argv, &settings) != 0) {
@@ -480,22 +497,20 @@ int main(int argc, char *argv[])
     if (!(gsdata = newgif((void **) &gifimage, pb.width, pb.height, colormap, 0)))
         return EXIT_FAILURE;
 
-    animategif(gsdata, /* repetitions */ 0, 10,
+    animategif(gsdata, /* repetitions */ settings.repeat, 0,
         /* transparent background */  -1, /* disposal */ 2);
 
     f = open_binary_file("-");
 
     obuf = malloc(4);
-    maxlen = 4;
+    maxlen = 2048;
     prev = now = readtime(f, obuf);
 
     /* main loop */
     for(;;) {
-        if (now <= 0) {
-            break;
-        }
         len = readlen(f, obuf);
         if (len <= 0) {
+            nret = EXIT_FAILURE;
             break;
         }
         if (len > maxlen) {
@@ -504,6 +519,7 @@ int main(int argc, char *argv[])
         }
         nread = fread(obuf, 1, len, f);
         if (nread != len) {
+            nret = EXIT_FAILURE;
             break;
         }
         parse(&term, obuf, nread, &dirty);
@@ -538,7 +554,7 @@ int main(int argc, char *argv[])
     pb_die(&pb);
     free(obuf);
 
-    return EXIT_SUCCESS;
+    return nret;
 }
 
 /* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
