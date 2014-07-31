@@ -49,23 +49,28 @@ Usage
 Usage: seq2gif [Options] < ttyrecord > record.gif
 
 Options:
--w WIDTH, --width=WIDTH               specify terminal width in cell size
+-w WIDTH, --width=WIDTH               specify terminal width in cell size.
                                       (default: 80)
--h HEIGHT, --height=HEIGHT            specify terminal height in cell size
+-h HEIGHT, --height=HEIGHT            specify terminal height in cell size.
                                       (default: 24)
 -l DELAY, --last-frame-delay=DELAY    specify delay in msec which is added
-                                      to the last frame(default: 300)
--f COLORNO --foreground-color COLORNO specify foreground color palette
-                                      number
--b COLORNO --background-color COLORNO specify background color palette
-                                      number
--c COLORNO --cursor-color COLORNO     specify cursor color palette
-                                      number
--t TABSTOP --tabstop TABSTOP          specify hardware tabstop(default: 8)
--j --cjkwidth                         treat East Asian Ambiguous width
-                                      characters (UAX#11) as wide
--H, --help                            show help
--V, --version                         show version and license information
+                                      to the last frame. (default: 300)
+-f COLORNO --foreground-color=COLORNO specify foreground color palette.
+                                      number.
+-b COLORNO --background-color=COLORNO specify background color palette
+                                      number.
+-c COLORNO --cursor-color=COLORNO     specify cursor color palette
+                                      number.
+-t TABSTOP --tabstop=TABSTOP          specify hardware tabstop(default: 8)
+-j --cjkwidth                         treat East Asian Ambiguous width characters
+                                      (UAX#11) as wide.
+-r COUNT --repeat=COUNT               specify animation repeat count. loop
+                                      infinitely if 0 is given. (default: 0)
+-i FILE --input=FILE                  specify input file name. use STDIN
+                                      if '-' is given. (default: '-')
+-o FILE --output=FILE                 specify output file name. use STDOUT
+                                      if '-' is given. (default: '-')
+-V, --version                         show version and license information.
 ```
 
 
