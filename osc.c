@@ -33,7 +33,7 @@
 #endif
 
 /* function for osc sequence */
-int32_t parse_color1(char *seq)
+static int32_t parse_color1(char *seq)
 {
     /*
     format
@@ -83,7 +83,7 @@ int32_t parse_color1(char *seq)
     return color;
 }
 
-int32_t parse_color2(char *seq)
+static int32_t parse_color2(char *seq)
 {
     /*
     format
@@ -222,7 +222,7 @@ void reset_palette(struct terminal *term, void *arg)
     }
 }
 
-int isdigit_or_questionmark(int c)
+static int isdigit_or_questionmark(int c)
 {
     if (isdigit(c) || c == '?')
         return 1;

@@ -29,7 +29,7 @@
 # define memcpy(d, s, n) (bcopy ((s), (d), (n)))
 #endif
 
-static inline void draw_sixel(struct pseudobuffer *pb, int line, int col, uint8_t *bitmap)
+static void draw_sixel(struct pseudobuffer *pb, int line, int col, uint8_t *bitmap)
 {
     int h, w, src_offset, dst_offset;
     uint32_t pixel, color = 0;
@@ -47,7 +47,7 @@ static inline void draw_sixel(struct pseudobuffer *pb, int line, int col, uint8_
     }
 }
 
-static inline void draw_line(struct pseudobuffer *pb, struct terminal *term, int line)
+static void draw_line(struct pseudobuffer *pb, struct terminal *term, int line)
 {
     int pos, bdf_padding, glyph_width, margin_right;
     int col, w, h;
