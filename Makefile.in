@@ -94,12 +94,16 @@ CONFIG_CLEAN_FILES = package.json
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_seq2gif_OBJECTS = main.$(OBJEXT) util.$(OBJEXT) pseudo.$(OBJEXT) \
-	terminal.$(OBJEXT) function.$(OBJEXT) osc.$(OBJEXT) \
-	dcs.$(OBJEXT) parse.$(OBJEXT) gifsave89.$(OBJEXT) \
-	malloc_stub.$(OBJEXT) wcwidth.$(OBJEXT)
+am_seq2gif_OBJECTS = seq2gif-main.$(OBJEXT) seq2gif-util.$(OBJEXT) \
+	seq2gif-pseudo.$(OBJEXT) seq2gif-terminal.$(OBJEXT) \
+	seq2gif-function.$(OBJEXT) seq2gif-osc.$(OBJEXT) \
+	seq2gif-dcs.$(OBJEXT) seq2gif-parse.$(OBJEXT) \
+	seq2gif-gifsave89.$(OBJEXT) seq2gif-malloc_stub.$(OBJEXT) \
+	seq2gif-wcwidth.$(OBJEXT)
 seq2gif_OBJECTS = $(am_seq2gif_OBJECTS)
 seq2gif_LDADD = $(LDADD)
+seq2gif_LINK = $(CCLD) $(seq2gif_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -116,6 +120,10 @@ DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
+AM_V_lt = $(am__v_lt_@AM_V@)
+am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
+am__v_lt_0 = --silent
+am__v_lt_1 = 
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 AM_V_CC = $(am__v_CC_@AM_V@)
@@ -261,6 +269,8 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+@COND_GCOV_TRUE@MAYBE_COVERAGE = --coverage
+CLEANFILES = *.gcno *.gcda *.gcov
 seq2gif_SOURCES = main.c util.c pseudo.c terminal.c function.c \
 				  osc.c dcs.c parse.c gifsave89.c \
 				  malloc_stub.c wcwidth.c \
@@ -268,6 +278,7 @@ seq2gif_SOURCES = main.c util.c pseudo.c terminal.c function.c \
 				  osc.h dcs.h parse.h gifsave89.h \
 				  wcwidth.h malloc_stub.h
 
+seq2gif_CFLAGS = $(MAYBE_COVERAGE)
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -369,7 +380,7 @@ clean-binPROGRAMS:
 
 seq2gif$(EXEEXT): $(seq2gif_OBJECTS) $(seq2gif_DEPENDENCIES) $(EXTRA_seq2gif_DEPENDENCIES) 
 	@rm -f seq2gif$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(seq2gif_OBJECTS) $(seq2gif_LDADD) $(LIBS)
+	$(AM_V_CCLD)$(seq2gif_LINK) $(seq2gif_OBJECTS) $(seq2gif_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -377,17 +388,17 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dcs.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/function.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gifsave89.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/malloc_stub.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/osc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/parse.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pseudo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/terminal.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wcwidth.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-dcs.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-function.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-gifsave89.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-malloc_stub.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-osc.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-parse.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-pseudo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-terminal.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-util.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-wcwidth.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -402,6 +413,160 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+seq2gif-main.o: main.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-main.o -MD -MP -MF $(DEPDIR)/seq2gif-main.Tpo -c -o seq2gif-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-main.Tpo $(DEPDIR)/seq2gif-main.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='main.c' object='seq2gif-main.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
+
+seq2gif-main.obj: main.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-main.obj -MD -MP -MF $(DEPDIR)/seq2gif-main.Tpo -c -o seq2gif-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-main.Tpo $(DEPDIR)/seq2gif-main.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='main.c' object='seq2gif-main.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
+
+seq2gif-util.o: util.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-util.o -MD -MP -MF $(DEPDIR)/seq2gif-util.Tpo -c -o seq2gif-util.o `test -f 'util.c' || echo '$(srcdir)/'`util.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-util.Tpo $(DEPDIR)/seq2gif-util.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='util.c' object='seq2gif-util.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-util.o `test -f 'util.c' || echo '$(srcdir)/'`util.c
+
+seq2gif-util.obj: util.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-util.obj -MD -MP -MF $(DEPDIR)/seq2gif-util.Tpo -c -o seq2gif-util.obj `if test -f 'util.c'; then $(CYGPATH_W) 'util.c'; else $(CYGPATH_W) '$(srcdir)/util.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-util.Tpo $(DEPDIR)/seq2gif-util.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='util.c' object='seq2gif-util.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-util.obj `if test -f 'util.c'; then $(CYGPATH_W) 'util.c'; else $(CYGPATH_W) '$(srcdir)/util.c'; fi`
+
+seq2gif-pseudo.o: pseudo.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-pseudo.o -MD -MP -MF $(DEPDIR)/seq2gif-pseudo.Tpo -c -o seq2gif-pseudo.o `test -f 'pseudo.c' || echo '$(srcdir)/'`pseudo.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-pseudo.Tpo $(DEPDIR)/seq2gif-pseudo.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pseudo.c' object='seq2gif-pseudo.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-pseudo.o `test -f 'pseudo.c' || echo '$(srcdir)/'`pseudo.c
+
+seq2gif-pseudo.obj: pseudo.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-pseudo.obj -MD -MP -MF $(DEPDIR)/seq2gif-pseudo.Tpo -c -o seq2gif-pseudo.obj `if test -f 'pseudo.c'; then $(CYGPATH_W) 'pseudo.c'; else $(CYGPATH_W) '$(srcdir)/pseudo.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-pseudo.Tpo $(DEPDIR)/seq2gif-pseudo.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pseudo.c' object='seq2gif-pseudo.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-pseudo.obj `if test -f 'pseudo.c'; then $(CYGPATH_W) 'pseudo.c'; else $(CYGPATH_W) '$(srcdir)/pseudo.c'; fi`
+
+seq2gif-terminal.o: terminal.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-terminal.o -MD -MP -MF $(DEPDIR)/seq2gif-terminal.Tpo -c -o seq2gif-terminal.o `test -f 'terminal.c' || echo '$(srcdir)/'`terminal.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-terminal.Tpo $(DEPDIR)/seq2gif-terminal.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='terminal.c' object='seq2gif-terminal.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-terminal.o `test -f 'terminal.c' || echo '$(srcdir)/'`terminal.c
+
+seq2gif-terminal.obj: terminal.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-terminal.obj -MD -MP -MF $(DEPDIR)/seq2gif-terminal.Tpo -c -o seq2gif-terminal.obj `if test -f 'terminal.c'; then $(CYGPATH_W) 'terminal.c'; else $(CYGPATH_W) '$(srcdir)/terminal.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-terminal.Tpo $(DEPDIR)/seq2gif-terminal.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='terminal.c' object='seq2gif-terminal.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-terminal.obj `if test -f 'terminal.c'; then $(CYGPATH_W) 'terminal.c'; else $(CYGPATH_W) '$(srcdir)/terminal.c'; fi`
+
+seq2gif-function.o: function.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-function.o -MD -MP -MF $(DEPDIR)/seq2gif-function.Tpo -c -o seq2gif-function.o `test -f 'function.c' || echo '$(srcdir)/'`function.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-function.Tpo $(DEPDIR)/seq2gif-function.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='function.c' object='seq2gif-function.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-function.o `test -f 'function.c' || echo '$(srcdir)/'`function.c
+
+seq2gif-function.obj: function.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-function.obj -MD -MP -MF $(DEPDIR)/seq2gif-function.Tpo -c -o seq2gif-function.obj `if test -f 'function.c'; then $(CYGPATH_W) 'function.c'; else $(CYGPATH_W) '$(srcdir)/function.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-function.Tpo $(DEPDIR)/seq2gif-function.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='function.c' object='seq2gif-function.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-function.obj `if test -f 'function.c'; then $(CYGPATH_W) 'function.c'; else $(CYGPATH_W) '$(srcdir)/function.c'; fi`
+
+seq2gif-osc.o: osc.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-osc.o -MD -MP -MF $(DEPDIR)/seq2gif-osc.Tpo -c -o seq2gif-osc.o `test -f 'osc.c' || echo '$(srcdir)/'`osc.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-osc.Tpo $(DEPDIR)/seq2gif-osc.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='osc.c' object='seq2gif-osc.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-osc.o `test -f 'osc.c' || echo '$(srcdir)/'`osc.c
+
+seq2gif-osc.obj: osc.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-osc.obj -MD -MP -MF $(DEPDIR)/seq2gif-osc.Tpo -c -o seq2gif-osc.obj `if test -f 'osc.c'; then $(CYGPATH_W) 'osc.c'; else $(CYGPATH_W) '$(srcdir)/osc.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-osc.Tpo $(DEPDIR)/seq2gif-osc.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='osc.c' object='seq2gif-osc.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-osc.obj `if test -f 'osc.c'; then $(CYGPATH_W) 'osc.c'; else $(CYGPATH_W) '$(srcdir)/osc.c'; fi`
+
+seq2gif-dcs.o: dcs.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-dcs.o -MD -MP -MF $(DEPDIR)/seq2gif-dcs.Tpo -c -o seq2gif-dcs.o `test -f 'dcs.c' || echo '$(srcdir)/'`dcs.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-dcs.Tpo $(DEPDIR)/seq2gif-dcs.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='dcs.c' object='seq2gif-dcs.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-dcs.o `test -f 'dcs.c' || echo '$(srcdir)/'`dcs.c
+
+seq2gif-dcs.obj: dcs.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-dcs.obj -MD -MP -MF $(DEPDIR)/seq2gif-dcs.Tpo -c -o seq2gif-dcs.obj `if test -f 'dcs.c'; then $(CYGPATH_W) 'dcs.c'; else $(CYGPATH_W) '$(srcdir)/dcs.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-dcs.Tpo $(DEPDIR)/seq2gif-dcs.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='dcs.c' object='seq2gif-dcs.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-dcs.obj `if test -f 'dcs.c'; then $(CYGPATH_W) 'dcs.c'; else $(CYGPATH_W) '$(srcdir)/dcs.c'; fi`
+
+seq2gif-parse.o: parse.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-parse.o -MD -MP -MF $(DEPDIR)/seq2gif-parse.Tpo -c -o seq2gif-parse.o `test -f 'parse.c' || echo '$(srcdir)/'`parse.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-parse.Tpo $(DEPDIR)/seq2gif-parse.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='parse.c' object='seq2gif-parse.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-parse.o `test -f 'parse.c' || echo '$(srcdir)/'`parse.c
+
+seq2gif-parse.obj: parse.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-parse.obj -MD -MP -MF $(DEPDIR)/seq2gif-parse.Tpo -c -o seq2gif-parse.obj `if test -f 'parse.c'; then $(CYGPATH_W) 'parse.c'; else $(CYGPATH_W) '$(srcdir)/parse.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-parse.Tpo $(DEPDIR)/seq2gif-parse.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='parse.c' object='seq2gif-parse.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-parse.obj `if test -f 'parse.c'; then $(CYGPATH_W) 'parse.c'; else $(CYGPATH_W) '$(srcdir)/parse.c'; fi`
+
+seq2gif-gifsave89.o: gifsave89.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-gifsave89.o -MD -MP -MF $(DEPDIR)/seq2gif-gifsave89.Tpo -c -o seq2gif-gifsave89.o `test -f 'gifsave89.c' || echo '$(srcdir)/'`gifsave89.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-gifsave89.Tpo $(DEPDIR)/seq2gif-gifsave89.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gifsave89.c' object='seq2gif-gifsave89.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-gifsave89.o `test -f 'gifsave89.c' || echo '$(srcdir)/'`gifsave89.c
+
+seq2gif-gifsave89.obj: gifsave89.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-gifsave89.obj -MD -MP -MF $(DEPDIR)/seq2gif-gifsave89.Tpo -c -o seq2gif-gifsave89.obj `if test -f 'gifsave89.c'; then $(CYGPATH_W) 'gifsave89.c'; else $(CYGPATH_W) '$(srcdir)/gifsave89.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-gifsave89.Tpo $(DEPDIR)/seq2gif-gifsave89.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gifsave89.c' object='seq2gif-gifsave89.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-gifsave89.obj `if test -f 'gifsave89.c'; then $(CYGPATH_W) 'gifsave89.c'; else $(CYGPATH_W) '$(srcdir)/gifsave89.c'; fi`
+
+seq2gif-malloc_stub.o: malloc_stub.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-malloc_stub.o -MD -MP -MF $(DEPDIR)/seq2gif-malloc_stub.Tpo -c -o seq2gif-malloc_stub.o `test -f 'malloc_stub.c' || echo '$(srcdir)/'`malloc_stub.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-malloc_stub.Tpo $(DEPDIR)/seq2gif-malloc_stub.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='malloc_stub.c' object='seq2gif-malloc_stub.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-malloc_stub.o `test -f 'malloc_stub.c' || echo '$(srcdir)/'`malloc_stub.c
+
+seq2gif-malloc_stub.obj: malloc_stub.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-malloc_stub.obj -MD -MP -MF $(DEPDIR)/seq2gif-malloc_stub.Tpo -c -o seq2gif-malloc_stub.obj `if test -f 'malloc_stub.c'; then $(CYGPATH_W) 'malloc_stub.c'; else $(CYGPATH_W) '$(srcdir)/malloc_stub.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-malloc_stub.Tpo $(DEPDIR)/seq2gif-malloc_stub.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='malloc_stub.c' object='seq2gif-malloc_stub.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-malloc_stub.obj `if test -f 'malloc_stub.c'; then $(CYGPATH_W) 'malloc_stub.c'; else $(CYGPATH_W) '$(srcdir)/malloc_stub.c'; fi`
+
+seq2gif-wcwidth.o: wcwidth.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-wcwidth.o -MD -MP -MF $(DEPDIR)/seq2gif-wcwidth.Tpo -c -o seq2gif-wcwidth.o `test -f 'wcwidth.c' || echo '$(srcdir)/'`wcwidth.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-wcwidth.Tpo $(DEPDIR)/seq2gif-wcwidth.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='wcwidth.c' object='seq2gif-wcwidth.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-wcwidth.o `test -f 'wcwidth.c' || echo '$(srcdir)/'`wcwidth.c
+
+seq2gif-wcwidth.obj: wcwidth.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-wcwidth.obj -MD -MP -MF $(DEPDIR)/seq2gif-wcwidth.Tpo -c -o seq2gif-wcwidth.obj `if test -f 'wcwidth.c'; then $(CYGPATH_W) 'wcwidth.c'; else $(CYGPATH_W) '$(srcdir)/wcwidth.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-wcwidth.Tpo $(DEPDIR)/seq2gif-wcwidth.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='wcwidth.c' object='seq2gif-wcwidth.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-wcwidth.obj `if test -f 'wcwidth.c'; then $(CYGPATH_W) 'wcwidth.c'; else $(CYGPATH_W) '$(srcdir)/wcwidth.c'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -654,6 +819,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
