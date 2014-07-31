@@ -564,7 +564,7 @@ int main(int argc, char *argv[])
         }
         parse(&term, obuf, nread, &dirty);
         if (term.esc.state != STATE_DCS || dirty) {
-            delay += prev - now;
+            delay += now - prev;
             refresh(&pb, &term);
 
             /* take screenshot */
