@@ -38,7 +38,7 @@ converts that log into the following GIF animation.
 
 Download
 --------
-Source package and Windows binary is [available](https://github.com/saitoha/seq2gif/releases/tag/v0.8.0).
+Source package and Windows binary is [available](https://github.com/saitoha/seq2gif/releases).
 
 
 Build and Install
