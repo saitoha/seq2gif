@@ -1,17 +1,21 @@
 2014-07-31  Hayaki Saito <user@zuse.jp>
 
-  * README.md, main.c: Minor fix
+  * tests/data/ls.tty, tests/data/sl.tty: Add test data
+
+  * config.h.in, configure, configure.ac, yaft.h: Add --with-fontdata configure
+  option
+
+  * package.json, package.json.in: Add missing files
+
+  * Makefile.in, main.c: Add --repeat option
+
+  * Makefile.in, configure, configure.ac: Add clib integration
 
   * README.md, main.c, terminal.c, terminal.h, yaft.h: Add --cjkwidth option
 
 2014-07-30  Hayaki Saito <user@zuse.jp>
 
-  * config.h.in, configure, configure.ac, main.c: Minor fix
-
   * config.h.in, configure, configure.ac, main.c: Fix for mingw environment
-
-  * Makefile.am, Makefile.in, malloc_stub.c, malloc_stub.h, terminal.c,
-  wcwidth.h, yaft.h: Minor fix
 
 2014-07-29  Hayaki Saito <user@zuse.jp>
 
