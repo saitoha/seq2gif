@@ -67,5 +67,5 @@ AC_DEFUN([LS_UPDATE_TIMESTAMP], [
           ])
 LS_UPDATE_TIMESTAMP
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile package.json])
 AC_OUTPUT
