@@ -27,3 +27,4 @@ script:
   - "$WINE seq2gif --version"
 
 after_success:
+  - "make valgrind && exit 0 || cat valgrind.log && exit 1"
