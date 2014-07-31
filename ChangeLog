@@ -1,0 +1,110 @@
+2014-07-31  Hayaki Saito <user@zuse.jp>
+
+  * README.md, main.c: Minor fix
+
+  * README.md, main.c, terminal.c, terminal.h, yaft.h: Add --cjkwidth option
+
+2014-07-30  Hayaki Saito <user@zuse.jp>
+
+  * config.h.in, configure, configure.ac, main.c: Minor fix
+
+  * config.h.in, configure, configure.ac, main.c: Fix for mingw environment
+
+  * Makefile.am, Makefile.in, malloc_stub.c, malloc_stub.h, terminal.c,
+  wcwidth.h, yaft.h: Minor fix
+
+2014-07-29  Hayaki Saito <user@zuse.jp>
+
+  * config.h.in, configure, configure.ac, util.c: Checks calloc availability
+
+  * README.md, dcs.c: Strip a needless strlen
+
+  * README.md, configure, configure.ac: Update README
+
+  * README.md, main.c: Update README and output of --help option
+
+2014-07-28  Hayaki Saito <user@zuse.jp>
+
+  * config.h.in, configure, configure.ac, dcs.c, gifsave89.c, main.c, osc.c,
+  parse.c, util.c: Update configure script
+
+  * conf.h, dcs.c, function.c, main.c, osc.c, parse.c, pseudo.c, terminal.c,
+  util.c, yaft.h: Drop conf.h
+
+  * conf.h, main.c, terminal.c, terminal.h, yaft.h: Add tabstop option
+
+  * conf.h, main.c, pseudo.c, terminal.c, terminal.h, yaft.h: Add
+  --cursor-color option
+
+  * main.c, parse.c, parse.h: Support sixel animation
+
+  * README.md, conf.h, function.c, main.c, pseudo.c, terminal.c, terminal.h,
+  yaft.h: Add --foreground-color/--background-color option
+
+  * README.md, main.c: Add --last-frame-delay option
+
+2014-07-27  Hayaki Saito <user@zuse.jp>
+
+  * config.h.in, configure, configure.ac, dcs.c, function.c, gifsave89.h,
+  main.c, osc.c, parse.c, pseudo.c, terminal.c, util.c, wcwidth.h, yaft.h:
+  Include config.h in each source files
+
+  * COPYING, INSTALL: Add proper COPYING and INSTALL file
+
+2014-07-27  saitoha <user@zuse.jp>
+
+  * Makefile.am, Makefile.in, aclocal.m4, config.h.in, configure, configure.ac,
+  main.c, malloc_stub.c, malloc_stub.h, osc.c, terminal.c, wcwidth.c,
+  wcwidth.h, yaft.h: Add malloc stub and wcwidth function
+
+2014-07-27  Hayaki Saito <user@zuse.jp>
+
+  * configure, configure.ac: Add a hack against that git does not preverve file
+  timestamp
+
+  * README.md, main.c: Update default width and height value
+
+  * config.h.in, configure, configure.ac, main.c: Check getopt_long
+  availability
+
+  * configure, configure.ac, gifsave89.h, main.c: Add --width, --height,
+  --version option
+
+  * main.c, parse.c, pseudo.c, terminal.c, terminal.h, util.c, util.h, yaft.h:
+  Delete unused functions and definitions
+
+  * color.h, conf.h, dcs.c, dcs.h, function.c, function.h, main.c, osc.c,
+  osc.h, parse.c, parse.h, pseudo.c, pseudo.h, terminal.c, terminal.h, util.c,
+  util.h: Add mode lines
+
+  * color.h, conf.h, dcs.c, dcs.h, function.c, function.h, gifsave89.c,
+  gifsave89.h, glyph.h, glyph/milkjf.h, glyph/mplus.h, images/gplv3.png,
+  main.c, osc.c, osc.h, parse.c, parse.h, pseudo.c, pseudo.h, sample/256.gif,
+  sample/man.gif, sample/netlab.gif, sample/peco.gif, sample/sl.gif,
+  terminal.c, terminal.h, util.c, util.h, yaft.h: Add license blocks
+
+2014-07-26  Hayaki Saito <user@zuse.jp>
+
+  * COPYING, INSTALL, LICENSE, Makefile.am, Makefile.in, aclocal.m4, compile,
+  config.h.in, configure, configure.ac, depcomp, install-sh, main.c, makefile,
+  missing: Generate configure script using autotools
+
+2014-07-25  Hayaki Saito <user@zuse.jp>
+
+  * dcs.c, function.c, gifsave89.c, gifsave89.h, glyph.h, main.c, osc.c,
+  parse.c, pseudo.c, terminal.c, util.c, yaft.h: Add missing files
+
+  * color.h, conf.h, gifsave89.h, util.h: Style fix
+
+  * README.md, color.h, conf.h, dcs.h, draw.h, function.h, gifsave89.h,
+  makefile, osc.h, parse.h, pseudo.h, recterm.c, recterm.h, terminal.h, util.h:
+  Strip pseudo terminal and read stdin as output sequences
+
+  * README.md, conf.h: Forked by Hayaki Saito
+
+2014-07-25  uobikiemukot <uobikiemukot@gmail.com>
+
+  * README.md, color.h, conf.h, dcs.h, draw.h, function.h, gifsave89.h,
+  glyph/milkjf.h, glyph/mplus.h, makefile, osc.h, parse.h, pseudo.h, recterm.c,
+  recterm.h, sample/256.gif, sample/man.gif, sample/netlab.gif,
+  sample/peco.gif, sample/sl.gif, terminal.h, util.h: first version
