@@ -1355,7 +1355,7 @@ Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-fontdata         Specified font data (mplus or milkjf, default is
-                          mplus)
+                          milkjf)
 
 Some influential environment variables:
   CC          C compiler command

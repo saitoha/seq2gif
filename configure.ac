@@ -9,7 +9,7 @@ AM_INIT_AUTOMAKE([foreign])
 
 AC_ARG_WITH(fontdata,
             AC_HELP_STRING([--with-fontdata],
-                           [Specified font data (mplus or milkjf, default is mplus)]),
+                           [Specified font data (mplus or milkjf, default is milkjf)]),
                            [fontdata=${withval}],
                            [fontdata=mplus])
 AC_MSG_NOTICE([font data ${fontdata} is selected])
