@@ -1,6 +1,6 @@
 {
   "name": "seq2gif",
-  "version": "0.10.1",
+  "version": "0.10.3",
   "repo": "saitoha/seq2gif",
   "description": "@PACKAGE_DESCRIPTION@",
   "keywords": ["terminal", "gif", "ttyrec"],

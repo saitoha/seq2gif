@@ -1,9 +1,32 @@
+2014-08-01  Hayaki Saito <user@zuse.jp>
+
+  * README.md, images/sixel.gif, images/sl.gif, tests/data/sixel.tty: Add a
+  test record for sixel
+
 2014-07-31  Hayaki Saito <user@zuse.jp>
+
+  * .coveralls.yml, .travis.yml, Makefile.am, Makefile.in, main.c: Add an error
+  checking code
+
+  * Makefile.am, Makefile.in, configure, configure.ac: Add --enable-gcov
+  configure option
+
+  * dcs.c, pseudo.c: Strip inline keywords
+
+  * Makefile.am, Makefile.in: Check memory violation errors with valgrind
+
+  * Makefile.am, Makefile.in: Add "valgrind" makefile target
+
+  * configure, configure.ac, main.c, package.json: Fix memory access violation
+
+  * ChangeLog, configure, configure.ac, package.json: Update minor version
 
   * tests/data/ls.tty, tests/data/sl.tty: Add test data
 
   * config.h.in, configure, configure.ac, yaft.h: Add --with-fontdata configure
   option
+
+  * configure, configure.ac, package.json: Bump version
 
   * package.json, package.json.in: Add missing files
 
@@ -11,11 +34,24 @@
 
   * Makefile.in, configure, configure.ac: Add clib integration
 
+  * README.md, main.c: Minor fix
+
+  * configure, configure.ac: Update minor version
+
   * README.md, main.c, terminal.c, terminal.h, yaft.h: Add --cjkwidth option
 
 2014-07-30  Hayaki Saito <user@zuse.jp>
 
+  * configure, configure.ac, main.c: Update micro version
+
+  * config.h.in, configure, configure.ac, main.c: Minor fix
+
   * config.h.in, configure, configure.ac, main.c: Fix for mingw environment
+
+  * configure, configure.ac: Update version
+
+  * Makefile.am, Makefile.in, malloc_stub.c, malloc_stub.h, terminal.c,
+  wcwidth.h, yaft.h: Minor fix
 
 2014-07-29  Hayaki Saito <user@zuse.jp>
 
@@ -32,6 +68,8 @@
   * config.h.in, configure, configure.ac, dcs.c, gifsave89.c, main.c, osc.c,
   parse.c, util.c: Update configure script
 
+  * configure, configure.ac: Bump minor version
+
   * conf.h, dcs.c, function.c, main.c, osc.c, parse.c, pseudo.c, terminal.c,
   util.c, yaft.h: Drop conf.h
 
@@ -40,10 +78,16 @@
   * conf.h, main.c, pseudo.c, terminal.c, terminal.h, yaft.h: Add
   --cursor-color option
 
+  * configure, configure.ac: Bump micro version
+
   * main.c, parse.c, parse.h: Support sixel animation
+
+  * configure, configure.ac: Bump version
 
   * README.md, conf.h, function.c, main.c, pseudo.c, terminal.c, terminal.h,
   yaft.h: Add --foreground-color/--background-color option
+
+  * configure, configure.ac: Bump version
 
   * README.md, main.c: Add --last-frame-delay option
 
@@ -54,6 +98,8 @@
   Include config.h in each source files
 
   * COPYING, INSTALL: Add proper COPYING and INSTALL file
+
+  * Makefile.in, aclocal.m4, configure, configure.ac: Update minor version
 
 2014-07-27  saitoha <user@zuse.jp>
 
@@ -66,7 +112,11 @@
   * configure, configure.ac: Add a hack against that git does not preverve file
   timestamp
 
+  * configure, configure.ac: Bump micro version
+
   * README.md, main.c: Update default width and height value
+
+  * configure, configure.ac: Bump micro version
 
   * config.h.in, configure, configure.ac, main.c: Check getopt_long
   availability
