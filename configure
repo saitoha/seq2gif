@@ -645,6 +645,8 @@ CPPFLAGS
 LDFLAGS
 CFLAGS
 CC
+COND_GCOV_FALSE
+COND_GCOV_TRUE
 AM_BACKSLASH
 AM_DEFAULT_VERBOSITY
 AM_DEFAULT_V
@@ -715,6 +717,7 @@ ac_user_opts='
 enable_option_checking
 enable_silent_rules
 with_fontdata
+enable_gcov
 enable_dependency_tracking
 '
       ac_precious_vars='build_alias
@@ -1342,6 +1345,7 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-silent-rules   less verbose build output (undo: "make V=1")
   --disable-silent-rules  verbose build output (undo: "make V=0")
+  --enable-gcov           Use gcov
   --enable-dependency-tracking
                           do not reject slow dependency extractors
   --disable-dependency-tracking
@@ -2968,6 +2972,22 @@ else
 $as_echo "#define SELECTED_FONT FONT_MPLUS" >>confdefs.h
 
 fi
+
+# Check whether --enable-gcov was given.
+if test "${enable_gcov+set}" = set; then :
+  enableval=$enable_gcov;
+else
+  enable_gcov=no
+fi
+
+ if test x$enable_gcov != xno; then
+  COND_GCOV_TRUE=
+  COND_GCOV_FALSE='#'
+else
+  COND_GCOV_TRUE='#'
+  COND_GCOV_FALSE=
+fi
+
 
 # Checks for programs.
 ac_ext=c
@@ -5036,6 +5056,10 @@ else
   am__EXEEXT_FALSE=
 fi
 
+if test -z "${COND_GCOV_TRUE}" && test -z "${COND_GCOV_FALSE}"; then
+  as_fn_error $? "conditional \"COND_GCOV\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
 if test -z "${AMDEP_TRUE}" && test -z "${AMDEP_FALSE}"; then
   as_fn_error $? "conditional \"AMDEP\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
