@@ -9,3 +9,10 @@ seq2gif_SOURCES = main.c util.c pseudo.c terminal.c function.c \
 
 run:
 	cat ttyrecord | ./seq2gif | img2sixel
+
+valgrind: all
+	valgrind --leak-check=full --show-reachable=no --error-limit=no ./seq2gif -i tests/data/sl.tty -o /dev/null 2>&1 \
+        | grep ^== \
+        | tee valgrind.log
+	grep "All heap blocks were freed" valgrind.log || grep "definitely lost: 0 bytes in 0 blocks" valgrind.log
+	grep "All heap blocks were freed" valgrind.log || grep "indirectly lost: 0 bytes in 0 blocks" valgrind.log
