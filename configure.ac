@@ -7,6 +7,22 @@ AC_CONFIG_SRCDIR([color.h])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([foreign])
 
+AC_ARG_WITH(fontdata,
+            AC_HELP_STRING([--with-fontdata],
+                           [Specified font data (mplus or milkjf, default is mplus)]),
+                           [fontdata=${withval}],
+                           [fontdata=mplus])
+AC_MSG_NOTICE([font data ${fontdata} is selected])
+
+AC_DEFINE(FONT_MPLUS, 1, [m+ bitmap font])
+AC_DEFINE(FONT_MILKJF, 2, [milkjf font])
+
+if test x$fontdata == xmilkjf; then
+    AC_DEFINE(SELECTED_FONT, FONT_MILKJF, [selected font data])
+else
+    AC_DEFINE(SELECTED_FONT, FONT_MPLUS, [selected font data])
+fi
+
 # Checks for programs.
 AC_PROG_CC
 

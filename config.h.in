@@ -1,5 +1,11 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* milkjf font */
+#undef FONT_MILKJF
+
+/* m+ bitmap font */
+#undef FONT_MPLUS
+
 /* Define to 1 if you have the `calloc' function. */
 #undef HAVE_CALLOC
 
@@ -115,6 +121,9 @@
 
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
+
+/* selected font data */
+#undef SELECTED_FONT
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
