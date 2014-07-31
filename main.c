@@ -413,8 +413,10 @@ static int32_t readlen(FILE *f, uint8_t *obuf)
     if (nread != sizeof(len)) {
         return -1;
     }
-    len = obuf[0] | obuf[1] << 8
-        | obuf[2] << 16 | obuf[3] << 24;
+    len = obuf[0]
+        | obuf[1] << 8
+        | obuf[2] << 16
+        | obuf[3] << 24;
 
     return len;
 }
@@ -425,13 +427,14 @@ int main(int argc, char *argv[])
     ssize_t nread;
     struct terminal term;
     struct pseudobuffer pb;
-    int32_t prev = 0;
-    int32_t now = 0;
-    int32_t len = 0;
-    int32_t maxlen = 0;
+    uint32_t prev = 0;
+    uint32_t now = 0;
+    ssize_t len = 0;
+    size_t maxlen = 0;
     int delay = 0;
     int dirty = 0;
     FILE *f = NULL;
+    int nret = EXIT_SUCCESS;
 
     void *gsdata;
     unsigned char *gifimage = NULL;
@@ -486,16 +489,14 @@ int main(int argc, char *argv[])
     f = open_binary_file("-");
 
     obuf = malloc(4);
-    maxlen = 4;
+    maxlen = 2048;
     prev = now = readtime(f, obuf);
 
     /* main loop */
     for(;;) {
-        if (now <= 0) {
-            break;
-        }
         len = readlen(f, obuf);
         if (len <= 0) {
+            nret = EXIT_FAILURE;
             break;
         }
         if (len > maxlen) {
@@ -504,6 +505,7 @@ int main(int argc, char *argv[])
         }
         nread = fread(obuf, 1, len, f);
         if (nread != len) {
+            nret = EXIT_FAILURE;
             break;
         }
         parse(&term, obuf, nread, &dirty);
@@ -538,7 +540,7 @@ int main(int argc, char *argv[])
     pb_die(&pb);
     free(obuf);
 
-    return EXIT_SUCCESS;
+    return nret;
 }
 
 /* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
