@@ -924,7 +924,7 @@ test: all
 	./seq2gif -i tests/data/sl.tty -o /dev/null
 
 coveralls: test
-	coveralls -x .h -e tests -e glyph -e m4
+	coveralls -E '.*\.h' -e tests -e glyph -e m4
 
 valgrind: all
 	valgrind --leak-check=full --show-reachable=no --error-limit=no ./seq2gif -i tests/data/sl.tty -o /dev/null 2>&1 \
