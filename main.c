@@ -563,21 +563,21 @@ int main(int argc, char *argv[])
             break;
         }
         parse(&term, obuf, nread, &dirty);
-        if (term.esc.state != STATE_DCS || dirty) {
-            delay += prev - now;
-            refresh(&pb, &term);
-
-            /* take screenshot */
-            apply_colormap(&pb, img);
-            controlgif(gsdata, -1, (delay + 5000) / 10000 + 1, 0, 0);
-            prev = now;
-            putgif(gsdata, img);
-            delay = 0;
-        }
         now = readtime(in_file, obuf);
         if (now == -1) {
             break;
         }
+        if (term.esc.state != STATE_DCS || dirty) {
+            refresh(&pb, &term);
+            delay = now - prev;
+
+            /* take screenshot */
+            apply_colormap(&pb, img);
+            controlgif(gsdata, -1, delay / 10000, 0, 0);
+            prev = now;
+            putgif(gsdata, img);
+        }
+        dirty = 0;
     }
     if (settings.last_frame_delay > 0) {
         controlgif(gsdata, -1, settings.last_frame_delay / 10, 0, 0);
