@@ -44,7 +44,9 @@
 #if HAVE_GETOPT_H
 # include <getopt.h>
 #endif
-
+#if HAVE_ERRNO_H
+# include <errno.h>
+#endif
 #if HAVE_FCNTL_H
 # include <fcntl.h>
 #endif
@@ -70,6 +72,8 @@ struct settings_t {
     int tabwidth;
     int cjkwidth;
     int repeat;
+    char *input;
+    char *output;
 };
 
 enum cmap_bitfield {
@@ -178,19 +182,11 @@ static void apply_colormap(struct pseudobuffer *pb, unsigned char *img)
     }
 }
 
-static size_t write_gif(unsigned char *gifimage, int size)
+static size_t write_gif(unsigned char *gifimage, int size, FILE *f)
 {
     size_t wsize = 0;
 
-#if defined(O_BINARY)
-# if HAVE__SETMODE
-    _setmode(fileno(stdout), O_BINARY);
-# elif HAVE_SETMODE
-    setmode(fileno(stdout), O_BINARY);
-# endif  /* HAVE_SETMODE */
-#endif  /* defined(O_BINARY) */
-
-    wsize = fwrite(gifimage, sizeof(unsigned char), size, stdout);
+    wsize = fwrite(gifimage, sizeof(unsigned char), size, f);
     return wsize;
 }
 
@@ -239,7 +235,10 @@ static void show_help()
             "                                      (UAX#11) as wide.\n"
             "-r COUNT --repeat=COUNT               specify animation repeat count. loop\n"
             "                                      infinitely if 0 is given. (default: 0)\n"
-            "-H, --help                            show help.\n"
+            "-i FILE --input=FILE                  specify input file name. use STDIN\n"
+            "                                      if '-' is given. (default: '-')\n"
+            "-o FILE --output=FILE                 specify output file name. use STDOUT\n"
+            "                                      if '-' is given. (default: '-')\n"
             "-V, --version                         show version and license information.\n"
            );
 }
@@ -248,7 +247,7 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int long_opt;
     int n;
-    char const *optstring = "w:h:HVl:f:b:c:t:jr:";
+    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:";
 #if HAVE_GETOPT_LONG
     int option_index;
 #endif  /* HAVE_GETOPT_LONG */
@@ -264,6 +263,8 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         {"tabstop",           required_argument,  &long_opt, 't'},
         {"cjkwidth",          no_argument,        &long_opt, 'j'},
         {"repeat",            required_argument,  &long_opt, 'r'},
+        {"input",             required_argument,  &long_opt, 'i'},
+        {"output",            required_argument,  &long_opt, 'o'},
         {"help",              no_argument,        &long_opt, 'H'},
         {"version",           no_argument,        &long_opt, 'V'},
         {0, 0, 0, 0}
@@ -351,6 +352,12 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
                 goto argerr;
             }
             break;
+        case 'i':
+            psettings->input = strdup(optarg);
+            break;
+        case 'o':
+            psettings->output = strdup(optarg);
+            break;
         case 'H':
             psettings->show_help = 1;
             break;
@@ -368,8 +375,7 @@ argerr:
     return 1;
 }
 
-static FILE *
-open_binary_file(char const *filename)
+static FILE * open_input_file(char const *filename)
 {
     FILE *f;
 
@@ -385,6 +391,32 @@ open_binary_file(char const *filename)
         return stdin;
     }
     f = fopen(filename, "rb");
+    if (!f) {
+#if _ERRNO_H
+        fprintf(stderr, "fopen('%s') failed.\n" "reason: %s.\n",
+                filename, strerror(errno));
+#endif  /* HAVE_ERRNO_H */
+        return NULL;
+    }
+    return f;
+}
+
+static FILE * open_output_file(char const *filename)
+{
+    FILE *f;
+
+    if (filename == NULL || strcmp(filename, "-") == 0) {
+        /* for windows */
+#if defined(O_BINARY)
+# if HAVE__SETMODE
+        _setmode(fileno(stdout), O_BINARY);
+# elif HAVE_SETMODE
+        setmode(fileno(stdout), O_BINARY);
+# endif  /* HAVE_SETMODE */
+#endif  /* defined(O_BINARY) */
+        return stdout;
+    }
+    f = fopen(filename, "wb");
     if (!f) {
 #if _ERRNO_H
         fprintf(stderr, "fopen('%s') failed.\n" "reason: %s.\n",
@@ -446,7 +478,8 @@ int main(int argc, char *argv[])
     size_t maxlen = 0;
     int delay = 0;
     int dirty = 0;
-    FILE *f = NULL;
+    FILE *in_file = NULL;
+    FILE *out_file = NULL;
     int nret = EXIT_SUCCESS;
 
     void *gsdata;
@@ -455,17 +488,19 @@ int main(int argc, char *argv[])
     unsigned char *img;
 
     struct settings_t settings = {
-        80,  /* width */
-        24,  /* height */
-        0,   /* show_version */
-        0,   /* show_help */
-        300, /* last_frame_delay */
-        7,   /* foreground_color */
-        0,   /* background_color */
-        2,   /* cursor_color */
-        8,   /* tabwidth */
-        0,   /* cjkwidth */
-        0,   /* repeat */
+        80,     /* width */
+        24,     /* height */
+        0,      /* show_version */
+        0,      /* show_help */
+        300,    /* last_frame_delay */
+        7,      /* foreground_color */
+        0,      /* background_color */
+        2,      /* cursor_color */
+        8,      /* tabwidth */
+        0,      /* cjkwidth */
+        0,      /* repeat */
+        NULL,   /* input */
+        NULL,   /* output */
     };
 
     if (parse_args(argc, argv, &settings) != 0) {
@@ -494,21 +529,26 @@ int main(int argc, char *argv[])
     /* init gif */
     img = (unsigned char *) ecalloc(pb.width * pb.height, 1);
     set_colormap(colormap);
-    if (!(gsdata = newgif((void **) &gifimage, pb.width, pb.height, colormap, 0)))
+    if (!(gsdata = newgif((void **) &gifimage, pb.width, pb.height, colormap, 0))) {
+        free(img);
+        term_die(&term);
+        pb_die(&pb);
         return EXIT_FAILURE;
+    }
 
     animategif(gsdata, /* repetitions */ settings.repeat, 0,
         /* transparent background */  -1, /* disposal */ 2);
 
-    f = open_binary_file("-");
+    in_file = open_input_file(settings.input);
+    out_file = open_output_file(settings.output);
 
-    obuf = malloc(4);
     maxlen = 2048;
-    prev = now = readtime(f, obuf);
+    obuf = malloc(maxlen);
+    prev = now = readtime(in_file, obuf);
 
     /* main loop */
     for(;;) {
-        len = readlen(f, obuf);
+        len = readlen(in_file, obuf);
         if (len <= 0) {
             nret = EXIT_FAILURE;
             break;
@@ -517,7 +557,7 @@ int main(int argc, char *argv[])
             obuf = realloc(obuf, len);
             maxlen = len;
         }
-        nread = fread(obuf, 1, len, f);
+        nread = fread(obuf, 1, len, in_file);
         if (nread != len) {
             nret = EXIT_FAILURE;
             break;
@@ -534,7 +574,7 @@ int main(int argc, char *argv[])
             putgif(gsdata, img);
             delay = 0;
         }
-        now = readtime(f, obuf);
+        now = readtime(in_file, obuf);
     }
     if (settings.last_frame_delay > 0) {
         controlgif(gsdata, -1, settings.last_frame_delay / 10, 0, 0);
@@ -544,12 +584,24 @@ int main(int argc, char *argv[])
     /* output gif */
     gifsize = endgif(gsdata);
     if (gifsize > 0) {
-        write_gif(gifimage, gifsize);
+        write_gif(gifimage, gifsize, out_file);
         free(gifimage);
     }
-    free(img);
 
     /* normal exit */
+    free(img);
+    if (settings.input) {
+        if (fileno(in_file) != STDIN_FILENO) {
+            fclose(in_file);
+        }
+        free(settings.input);
+    }
+    if (settings.output) {
+        if (fileno(out_file) != STDOUT_FILENO) {
+            fclose(out_file);
+        }
+        free(settings.output);
+    }
     term_die(&term);
     pb_die(&pb);
     free(obuf);

@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
 #if HAVE_WCHAR_H
 # include <wchar.h>
 #endif
 
-#if 0
+#if SELECTED_FONT == FONT_MILKJF
 # include "glyph/milkjf.h"
 #else
 # include "glyph/mplus.h"
