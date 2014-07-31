@@ -50,7 +50,7 @@ enum {
     LSMAX  = 100,
 };
 
-static inline int sixel_bitmap(struct terminal *term, struct sixel_canvas_t *sc, uint8_t bitmap)
+static int sixel_bitmap(struct terminal *term, struct sixel_canvas_t *sc, uint8_t bitmap)
 {
     int i, offset;
 
@@ -80,7 +80,7 @@ static inline int sixel_bitmap(struct terminal *term, struct sixel_canvas_t *sc,
     return 1;
 }
 
-static inline int sixel_repeat(struct terminal *term, struct sixel_canvas_t *sc, char *buf)
+static int sixel_repeat(struct terminal *term, struct sixel_canvas_t *sc, char *buf)
 {
     int i, count;
     size_t length;
@@ -110,7 +110,7 @@ static inline int sixel_repeat(struct terminal *term, struct sixel_canvas_t *sc,
     return length + 1;
 }
 
-static inline int sixel_attr(struct sixel_canvas_t *sc, char *buf)
+static int sixel_attr(struct sixel_canvas_t *sc, char *buf)
 {
     char *cp, tmp[BUFSIZE];
     size_t length;
@@ -139,7 +139,7 @@ static inline int sixel_attr(struct sixel_canvas_t *sc, char *buf)
     return length;
 }
 
-static inline uint32_t hue2rgb(int n1, int n2, int hue)
+static uint32_t hue2rgb(int n1, int n2, int hue)
 {
     if (hue < 0)
         hue += HUEMAX;
@@ -157,7 +157,7 @@ static inline uint32_t hue2rgb(int n1, int n2, int hue)
         return n1;
 }
 
-static inline uint32_t hls2rgb(int hue, int lum, int sat)
+static uint32_t hls2rgb(int hue, int lum, int sat)
 {
     uint32_t r, g, b;
     int magic1, magic2;
@@ -179,7 +179,7 @@ static inline uint32_t hls2rgb(int hue, int lum, int sat)
     return (r << 16) + (g << 8) + b;
 }
 
-static inline int sixel_color(struct sixel_canvas_t *sc, char *buf)
+static int sixel_color(struct sixel_canvas_t *sc, char *buf)
 {
     char *cp, tmp[BUFSIZE];
     int index, type;
@@ -243,7 +243,7 @@ static inline int sixel_color(struct sixel_canvas_t *sc, char *buf)
     return length;
 }
 
-static inline int sixel_cr(struct sixel_canvas_t *sc)
+static int sixel_cr(struct sixel_canvas_t *sc)
 {
     if (DEBUG)
         fprintf(stderr, "sixel_cr()\n");
@@ -253,7 +253,7 @@ static inline int sixel_cr(struct sixel_canvas_t *sc)
     return 1;
 }
 
-static inline int sixel_nl(struct sixel_canvas_t *sc)
+static int sixel_nl(struct sixel_canvas_t *sc)
 {
     if (DEBUG)
         fprintf(stderr, "sixel_nl()\n");
@@ -446,7 +446,7 @@ void sixel_parse_header(struct terminal *term, char *start_buf)
     sixel_copy2cell(term, &term->sixel);
 }
 
-static inline void decdld_bitmap(struct glyph_t *glyph, uint8_t bitmap, uint8_t row, uint8_t column)
+static void decdld_bitmap(struct glyph_t *glyph, uint8_t bitmap, uint8_t row, uint8_t column)
 {
     /*
               MSB        LSB (glyph_t bitmap order, padding at LSB side)
@@ -490,7 +490,7 @@ static inline void decdld_bitmap(struct glyph_t *glyph, uint8_t bitmap, uint8_t 
     }
 }
 
-static inline void init_glyph(struct glyph_t *glyph)
+static void init_glyph(struct glyph_t *glyph)
 {
     int i;
 
