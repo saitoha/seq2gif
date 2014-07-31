@@ -7,6 +7,7 @@ env:
   - XCC=i686-w64-mingw32-gcc HOST="--host=i686-w64-mingw32" WINE=wine
   - XCC=i586-mingw32msvc-gcc HOST="--host=i586-mingw32msvc" WINE=wine
   - XCC=x86_64-w64-mingw32-gcc HOST="--host=x86_64-w64-mingw32" WINE=wine64
+  - XCC=gcc HOST= WINE= GCOV="--enable-gcov"
 
 before_install:
   - "sudo apt-get -qq update --force-yes > /dev/null"
@@ -17,14 +18,17 @@ before_install:
   - "if [ x$XCC = xi686-w64-mingw32-gcc ]; then sudo apt-get install -qq gcc-mingw-w64-i686 binutils-mingw-w64-i686; fi"
   - "if [ x$XCC = xi586-mingw32msvc-gcc ]; then sudo apt-get install -qq mingw32; fi"
   - "if [ x$XCC = xx86_64-w64-mingw32-gcc ]; then sudo apt-get install -qq gcc-mingw-w64-x86-64 binutils-mingw-w64-x86-64; fi"
+  - "if [ x$GCOV != x ]; then sudo apt-get install libyaml-dev; fi"
+  - "if [ x$GCOV != x ]; then sudo pip install cpp-coveralls pyyaml; fi"
 
 before_script:
-  - "CC=$XCC ./configure --prefix=/usr ${HOST}"
+  - "CC=$XCC ./configure --prefix=/usr ${HOST} ${GCOV}"
 
 script:
   - "make"
   - "sudo make install"
   - "$WINE seq2gif --version"
+  - "if [ x$GCOV != x ]; then make coveralls || exit 1; fi"
 
 after_success:
-  - "make valgrind && exit 0 || cat valgrind.log && exit 1"
+  - "if [ x$WINE = x ]; then make valgrind && exit 0 || cat valgrind.log && exit 1; fi"

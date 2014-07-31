@@ -1,6 +1,7 @@
 seq2gif
 =======
 [![Build Status](https://travis-ci.org/saitoha/seq2gif.svg?branch=master)](https://travis-ci.org/saitoha/seq2gif)
+[![Coverage Status](https://img.shields.io/coveralls/saitoha/seq2gif.svg)](https://coveralls.io/r/saitoha/seq2gif)
 
 
 Description

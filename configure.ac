@@ -23,6 +23,13 @@ else
     AC_DEFINE(SELECTED_FONT, FONT_MPLUS, [selected font data])
 fi
 
+AC_ARG_ENABLE([gcov],
+              [AS_HELP_STRING([--enable-gcov],
+                              [Use gcov])],
+              [],
+              [enable_gcov=no])
+AM_CONDITIONAL([COND_GCOV], [test x$enable_gcov != xno])
+
 # Checks for programs.
 AC_PROG_CC
 
