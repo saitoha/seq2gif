@@ -542,8 +542,8 @@ int main(int argc, char *argv[])
     in_file = open_input_file(settings.input);
     out_file = open_output_file(settings.output);
 
-    obuf = malloc(4);
     maxlen = 2048;
+    obuf = malloc(maxlen);
     prev = now = readtime(in_file, obuf);
 
     /* main loop */
