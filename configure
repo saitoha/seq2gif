@@ -2963,13 +2963,13 @@ $as_echo "#define FONT_MPLUS 1" >>confdefs.h
 $as_echo "#define FONT_MILKJF 2" >>confdefs.h
 
 
-if test x$fontdata == xmilkjf; then
+if test x$fontdata == xmplus; then
 
-$as_echo "#define SELECTED_FONT FONT_MILKJF" >>confdefs.h
+$as_echo "#define SELECTED_FONT FONT_MPLUS" >>confdefs.h
 
 else
 
-$as_echo "#define SELECTED_FONT FONT_MPLUS" >>confdefs.h
+$as_echo "#define SELECTED_FONT FONT_MILKJF" >>confdefs.h
 
 fi
 
