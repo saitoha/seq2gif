@@ -102,15 +102,16 @@ GIF encoder (gifsave89.c) is imported from [gifsave89](http://www.forkosh.com/gi
 distributed under GPLv3+ by [John Forkosh Associates, Inc.](http://www.forkosh.com)(john@forkosh.com)
 
 ### milkjf
-This package includes a C header file derived from milkjf font(gryph/milkjf.h).
+This package includes a milkjf font and its derivative(gryph/milkjf.h).
 Original milkjf font was designed by japanfarm (Nihon-Nouen) and used on Sharp X68000 series.
 Chisato Yamauchi converted milkjf font to bdf for X Window System.
 haru([@uobikiemukot](https://github.com/uobikiemukot/)) converted it to a C-styled header file.
 
 ### M+ BITMAP FONTS
-This package includes a C header file derived from M+ font(gryph/mplus.h).
+This package includes [M+ Bitmap Font](http://mplus-fonts.sourceforge.jp/mplus-bitmap-fonts/index.html)
+and its derivative(gryph/mplus.h).
 
-Original License:
+License:
 
 ```
 M+ BITMAP FONTS            Copyright 2002-2005  COZ <coz@users.sourceforge.jp>
@@ -122,6 +123,29 @@ Unlimited permission is granted to use, copy, and distribute it, with
 or without modification, either commercially and noncommercially.
 THESE FONTS ARE PROVIDED "AS IS" WITHOUT WARRANTY.
 ```
+
+### GNU Unifont
+This package includes [GNU Unifont Glyphs](http://unifoundry.com/unifont.html)
+and its derivative(gryph/unifont.h).
+
+License: GPLv2+
+http://unifoundry.com/LICENSE.txt
+
+
+```
+M+ BITMAP FONTS            Copyright 2002-2005  COZ <coz@users.sourceforge.jp>
+
+LICENSE
+
+These fonts are free softwares.
+Unlimited permission is granted to use, copy, and distribute it, with
+or without modification, either commercially and noncommercially.
+THESE FONTS ARE PROVIDED "AS IS" WITHOUT WARRANTY.
+```
+
+### M+ BITMAP FONTS
+This package includes a C header file derived from M+ font(gryph/mplus.h).
+
 
 ### Markus Kuhn's wcwidth
 This package includes Markus Kuhn's wcwidth(mk_wcwidth)

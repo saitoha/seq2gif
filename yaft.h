@@ -25,9 +25,12 @@
 
 #if SELECTED_FONT == FONT_MILKJF
 # include "glyph/milkjf.h"
-#else
+#elif SELECTED_FONT == FONT_MPLUS
 # include "glyph/mplus.h"
+#else
+# include "glyph/unifont.h"
 #endif
+#include "glyph/conf.h"
 #include "malloc_stub.h"
 #include "color.h"
 
@@ -36,9 +39,6 @@
 /* misc */
 enum {
     DEBUG            = 0,      /* write dump of input to stdout, debug message to stderr */
-    SUBSTITUTE_HALF  = 0x0020, /* used for missing glyph (single width): U+0020 (SPACE) */
-    SUBSTITUTE_WIDE  = 0x3000, /* used for missing glyph (double width): U+3000 (IDEOGRAPHIC SPACE) */
-    REPLACEMENT_CHAR = 0x003F, /* used for malformed UTF-8 sequence    : U+003F (QUESTION MARK)  */
 };
 
 enum char_code {
@@ -56,7 +56,7 @@ enum misc {
     BITS_PER_BYTE     = 8,
     BYTES_PER_PIXEL   = 3,       /* pixel size of sixel bitmap data */
     BITS_PER_SIXEL    = 6,       /* number of bits of a sixel */
-    ESCSEQ_SIZE       = 2,       /* limit size of terminal escape sequence */
+    ESCSEQ_SIZE       = 256,     /* limit size of terminal escape sequence */
     MAX_ARGS          = 16,      /* max parameters of csi/osc sequence */
     COLORS            = 256,     /* number of color */
     UCS2_CHARS        = 0x10000, /* number of UCS2 glyph */
