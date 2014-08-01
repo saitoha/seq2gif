@@ -9,18 +9,23 @@ AM_INIT_AUTOMAKE([foreign])
 
 AC_ARG_WITH(fontdata,
             AC_HELP_STRING([--with-fontdata],
-                           [Specified font data (mplus or milkjf, default is milkjf)]),
+                           [Specified font data (unifont, milkjf or mplus(default: unifont)]),
                            [fontdata=${withval}],
                            [fontdata=mplus])
 AC_MSG_NOTICE([font data ${fontdata} is selected])
 
-AC_DEFINE(FONT_MPLUS, 1, [m+ bitmap font])
+AC_DEFINE(FONT_MPLUS, 1, [M+ Bitmap font])
 AC_DEFINE(FONT_MILKJF, 2, [milkjf font])
+AC_DEFINE(FONT_UNIFONT, 3, [GNU Unifont])
 
-if test x$fontdata == xmplus; then
-    AC_DEFINE(SELECTED_FONT, FONT_MPLUS, [selected font data])
+if test x$fontdata == xunifont; then
+    AC_DEFINE(SELECTED_FONT, FONT_MPLUS, [GNU Unifont is selected.])
 else
-    AC_DEFINE(SELECTED_FONT, FONT_MILKJF, [selected font data])
+    if test x$fontdata == xmplus; then
+        AC_DEFINE(SELECTED_FONT, FONT_MPLUS, [M+ font is selected.])
+    else
+        AC_DEFINE(SELECTED_FONT, FONT_MILKJF, [milkjf font is selected.])
+    fi
 fi
 
 AC_ARG_ENABLE([gcov],

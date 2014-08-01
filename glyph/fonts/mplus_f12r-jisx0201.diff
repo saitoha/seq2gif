@@ -1,0 +1,3013 @@
+*** mplus_f12r.bdf	Fri Jan  9 10:46:44 2004
+--- mplus_f12r-jisx0201.bdf	Fri Jan  9 10:34:08 2004
+***************
+*** 3,18 ****
+  COMMENT Unlimited permission is granted to use, copy, and distribute it,
+  COMMENT with or without modification, either commercially and noncommercially.
+  COMMENT THIS FONT IS PROVIDED "AS IS" WITHOUT WARRANTY.
+! FONT -mplus-fxd-medium-R-semicondensed--12-120-75-75-C-60-iso8859-1
+  SIZE 13 75 75
+  FONTBOUNDINGBOX 6 13 0 -2
+  STARTPROPERTIES 23
+  FONTNAME_REGISTRY ""
+  FOUNDRY "mplus"
+! FAMILY_NAME "fxd"
+  WEIGHT_NAME "medium"
+  SLANT "R"
+! SETWIDTH_NAME "semicondensed"
+  ADD_STYLE_NAME ""
+  PIXEL_SIZE 12
+  POINT_SIZE 120
+--- 3,18 ----
+  COMMENT Unlimited permission is granted to use, copy, and distribute it,
+  COMMENT with or without modification, either commercially and noncommercially.
+  COMMENT THIS FONT IS PROVIDED "AS IS" WITHOUT WARRANTY.
+! FONT -mplus-gothic-medium-R-normal--12-120-75-75-C-60-jisx0201.1976-0
+  SIZE 13 75 75
+  FONTBOUNDINGBOX 6 13 0 -2
+  STARTPROPERTIES 23
+  FONTNAME_REGISTRY ""
+  FOUNDRY "mplus"
+! FAMILY_NAME "gothic"
+  WEIGHT_NAME "medium"
+  SLANT "R"
+! SETWIDTH_NAME "normal"
+  ADD_STYLE_NAME ""
+  PIXEL_SIZE 12
+  POINT_SIZE 120
+***************
+*** 31,37 ****
+  FONT_ASCENT 11
+  _XMBDFED_INFO "Edited with xmbdfed 4.5."
+  ENDPROPERTIES
+! CHARS 224
+  STARTCHAR 0x0000
+  ENCODING 0
+  SWIDTH 443 0
+--- 31,37 ----
+  FONT_ASCENT 11
+  _XMBDFED_INFO "Edited with xmbdfed 4.5."
+  ENDPROPERTIES
+! CHARS 192
+  STARTCHAR 0x0000
+  ENCODING 0
+  SWIDTH 443 0
+***************
+*** 1880,1895 ****
+  BITMAP
+  00
+  00
+! 80
+! 80
+! 40
+! 40
+  20
+  20
+! 10
+! 10
+! 08
+! 08
+  00
+  ENDCHAR
+  STARTCHAR 0x005D
+--- 1880,1895 ----
+  BITMAP
+  00
+  00
+! 88
+! 88
+! 50
+! 50
+! F8
+  20
++ F8
+  20
+! 20
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x005D
+***************
+*** 2560,2567 ****
+  BITMAP
+  00
+  00
+! 68
+! B0
+  00
+  00
+  00
+--- 2560,2567 ----
+  BITMAP
+  00
+  00
+! F8
+! 00
+  00
+  00
+  00
+***************
+*** 2620,2636 ****
+  BITMAP
+  00
+  00
+- 20
+  00
+  00
+- 20
+- 20
+- 20
+- 20
+- 20
+- 20
+  00
+  00
+  ENDCHAR
+  STARTCHAR 0x00A2
+  ENCODING 162
+--- 2620,2636 ----
+  BITMAP
+  00
+  00
+  00
+  00
+  00
+  00
++ 00
++ 00
++ 60
++ 90
++ 90
++ 60
++ 00
+  ENDCHAR
+  STARTCHAR 0x00A2
+  ENCODING 162
+***************
+*** 2639,2654 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 00
+  20
+  20
+- 70
+- A8
+- A0
+- A0
+- A0
+- 78
+  20
+  00
+  00
+  ENDCHAR
+--- 2639,2654 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 38
+! 20
+! 20
+  20
+  20
+  20
++ 20
++ 20
++ 00
++ 00
+  00
+  00
+  ENDCHAR
+***************
+*** 2660,2676 ****
+  BITMAP
+  00
+  00
+- 30
+- 48
+- 40
+- 40
+- F0
+- 40
+- 40
+- 60
+- 98
+  00
+  00
+  ENDCHAR
+  STARTCHAR 0x00A4
+  ENCODING 164
+--- 2660,2676 ----
+  BITMAP
+  00
+  00
+  00
+  00
++ 20
++ 20
++ 20
++ 20
++ 20
++ 20
++ 20
++ E0
++ 00
+  ENDCHAR
+  STARTCHAR 0x00A4
+  ENCODING 164
+***************
+*** 2682,2696 ****
+  00
+  00
+  00
+- 88
+- 70
+- 50
+- 50
+- 70
+- 88
+  00
+  00
+  00
+  ENDCHAR
+  STARTCHAR 0x00A5
+  ENCODING 165
+--- 2682,2696 ----
+  00
+  00
+  00
+  00
+  00
+  00
++ 00
++ 00
++ 00
++ 80
++ 40
++ 00
+  ENDCHAR
+  STARTCHAR 0x00A5
+  ENCODING 165
+***************
+*** 2700,2714 ****
+  BITMAP
+  00
+  00
+! 88
+! 88
+! 50
+! 50
+! F8
+! 20
+! F8
+! 20
+! 20
+  00
+  00
+  ENDCHAR
+--- 2700,2714 ----
+  BITMAP
+  00
+  00
+! 00
+! 00
+! 00
+! 00
+! 30
+! 30
+! 00
+! 00
+! 00
+  00
+  00
+  ENDCHAR
+***************
+*** 2719,2735 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 20
+- 20
+- 20
+- 20
+- 20
+  00
+  20
+! 20
+! 20
+! 20
+! 20
+  00
+  ENDCHAR
+  STARTCHAR 0x00A7
+--- 2719,2735 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
++ F8
++ 08
++ 08
++ F8
++ 08
++ 08
++ 08
++ 10
+  20
+! 40
+  00
+  ENDCHAR
+  STARTCHAR 0x00A7
+***************
+*** 2739,2755 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 60
+! 90
+! 80
+! 40
+! A0
+! 90
+! 50
+  20
+! 10
+! 90
+! 60
+  00
+  ENDCHAR
+  STARTCHAR 0x00A8
+--- 2739,2755 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 00
+! 00
+! 00
+! 00
+! F8
+! 08
+! 28
+! 30
+  20
+! 40
+! 40
+  00
+  ENDCHAR
+  STARTCHAR 0x00A8
+***************
+*** 2760,2775 ****
+  BITMAP
+  00
+  00
+- D8
+- 00
+- 00
+- 00
+- 00
+- 00
+- 00
+- 00
+  00
+  00
+  00
+  ENDCHAR
+  STARTCHAR 0x00A9
+--- 2760,2775 ----
+  BITMAP
+  00
+  00
+  00
+  00
++ 08
++ 08
++ 10
++ 30
++ 50
++ 90
++ 10
++ 10
+  00
+  ENDCHAR
+  STARTCHAR 0x00A9
+***************
+*** 2780,2795 ****
+  BITMAP
+  00
+  00
+  F8
+  88
+- 70
+- 40
+- 40
+- 40
+- 70
+  88
+! F8
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00AA
+--- 2780,2795 ----
+  BITMAP
+  00
+  00
++ 00
++ 00
++ 20
++ 20
+  F8
+  88
+  88
+! 10
+! 20
+! 40
+  00
+  ENDCHAR
+  STARTCHAR 0x00AA
+***************
+*** 2800,2814 ****
+  BITMAP
+  00
+  00
+- 70
+- 08
+- 78
+- 88
+- 78
+  00
+- F8
+  00
+  00
+  00
+  00
+  ENDCHAR
+--- 2800,2814 ----
+  BITMAP
+  00
+  00
+  00
+  00
+  00
++ F8
++ 20
++ 20
++ 20
++ 20
++ F8
+  00
+  00
+  ENDCHAR
+***************
+*** 2820,2835 ****
+  BITMAP
+  00
+  00
+! 08
+  10
+- 28
+- 50
+- A0
+- 50
+- 28
+  10
+! 08
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00AC
+--- 2820,2835 ----
+  BITMAP
+  00
+  00
+! 00
+! 00
+  10
+  10
+! F8
+! 10
+! 30
+! 50
+! 90
+! 30
+  00
+  ENDCHAR
+  STARTCHAR 0x00AC
+***************
+*** 2842,2855 ****
+  00
+  00
+  00
+! 00
+! 00
+! F8
+! 08
+! 08
+! 00
+! 00
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00AD
+--- 2842,2855 ----
+  00
+  00
+  00
+! 40
+! 40
+! 78
+! C8
+! 28
+! 30
+! 20
+! 20
+  00
+  ENDCHAR
+  STARTCHAR 0x00AD
+***************
+*** 2863,2874 ****
+  00
+  00
+  00
+! 00
+! F0
+! 00
+! 00
+! 00
+! 00
+  00
+  00
+  ENDCHAR
+--- 2863,2874 ----
+  00
+  00
+  00
+! 70
+! 10
+! 10
+! 10
+! 10
+! F8
+  00
+  00
+  ENDCHAR
+***************
+*** 2880,2893 ****
+  BITMAP
+  00
+  00
+  F8
+! 88
+! 70
+! 50
+! 60
+! 50
+! 50
+! 88
+  F8
+  00
+  00
+--- 2880,2893 ----
+  BITMAP
+  00
+  00
++ 00
++ 00
++ 00
+  F8
+! 08
+! F8
+! 08
+! 08
+  F8
+  00
+  00
+***************
+*** 2900,2915 ****
+  BITMAP
+  00
+  00
+- F0
+- 00
+- 00
+- 00
+- 00
+- 00
+- 00
+  00
+  00
+  00
+  00
+  ENDCHAR
+  STARTCHAR 0x00B0
+--- 2900,2915 ----
+  BITMAP
+  00
+  00
+  00
+  00
+  00
++ A8
++ A8
++ A8
++ 08
++ 10
++ 20
++ 40
+  00
+  ENDCHAR
+  STARTCHAR 0x00B0
+***************
+*** 2919,2932 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 60
+- 90
+- 90
+- 60
+  00
+  00
+  00
+  00
+  00
+  00
+  00
+--- 2919,2932 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
+  00
+  00
+  00
++ 80
++ 78
++ 00
++ 00
+  00
+  00
+  00
+***************
+*** 2940,2955 ****
+  BITMAP
+  00
+  00
+- 00
+- 20
+- 20
+  F8
+  20
+  20
+! 00
+! 00
+! F8
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00B2
+--- 2940,2955 ----
+  BITMAP
+  00
+  00
+  F8
++ 08
++ 08
++ 28
++ 28
++ 30
+  20
+  20
+! 40
+! 40
+  00
+  ENDCHAR
+  STARTCHAR 0x00B2
+***************
+*** 2959,2975 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 60
+  90
+  10
+! 20
+! 40
+! F0
+! 00
+! 00
+! 00
+! 00
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00B3
+--- 2959,2975 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 08
+! 08
+! 08
+! 10
+! 10
+! 30
+! 50
+  90
+  10
+! 10
+! 10
+  00
+  ENDCHAR
+  STARTCHAR 0x00B3
+***************
+*** 2979,2995 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! F0
+  10
+- 60
+  10
+! 90
+! 60
+! 00
+! 00
+! 00
+! 00
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00B4
+--- 2979,2995 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 20
+! 20
+! F8
+! 88
+! 88
+! 88
+! 08
+  10
+  10
+! 20
+! 20
+  00
+  ENDCHAR
+  STARTCHAR 0x00B4
+***************
+*** 2999,3014 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 10
+- 20
+- 00
+- 00
+- 00
+- 00
+- 00
+- 00
+- 00
+  00
+  00
+  00
+  ENDCHAR
+--- 2999,3014 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
++ F8
++ 20
++ 20
++ 20
++ 20
++ 20
++ 20
++ 20
++ F8
+  00
+  00
+  ENDCHAR
+***************
+*** 3019,3036 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
+- 00
+- 00
+- 00
+- 88
+- 88
+- 88
+- 88
+- 98
+- E8
+- 80
+- 80
+  ENDCHAR
+  STARTCHAR 0x00B6
+  ENCODING 182
+--- 3019,3036 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
++ 10
++ 10
++ FC
++ 10
++ 30
++ 30
++ 50
++ 50
++ 90
++ 90
++ 30
+  00
+  ENDCHAR
+  STARTCHAR 0x00B6
+  ENCODING 182
+***************
+*** 3039,3055 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 00
+! 78
+! E8
+! E8
+! E8
+! E8
+! 68
+  28
+  28
+  28
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00B7
+--- 3039,3055 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 20
+! 20
+! F8
+  28
+  28
+  28
+! 48
+! 48
+! 88
+! 88
+! 30
+  00
+  ENDCHAR
+  STARTCHAR 0x00B7
+***************
+*** 3059,3075 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 00
+- 00
+- 00
+- 00
+  20
+- 70
+  20
+! 00
+! 00
+! 00
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00B8
+--- 3059,3075 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  20
+  20
+! F8
+! 20
+! 20
+! 20
+! F8
+! 10
+! 10
+! 10
+! 10
+  00
+  ENDCHAR
+  STARTCHAR 0x00B8
+***************
+*** 3079,3096 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 00
+! 00
+! 00
+! 00
+! 00
+! 00
+! 00
+! 00
+! 00
+  10
+  20
+! 40
+  ENDCHAR
+  STARTCHAR 0x00B9
+  ENCODING 185
+--- 3079,3096 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 40
+! 78
+! 48
+! 48
+! 88
+! 88
+! 08
+! 10
+  10
+  20
+! 20
+! 00
+  ENDCHAR
+  STARTCHAR 0x00B9
+  ENCODING 185
+***************
+*** 3099,3116 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 20
+! 60
+! A0
+! 20
+  20
+  20
+  00
+- 00
+- 00
+- 00
+- 00
+- 00
+  ENDCHAR
+  STARTCHAR 0x00BA
+  ENCODING 186
+--- 3099,3116 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 40
+! 40
+! 7C
+! 50
+! 90
+! 90
+! 10
+! 10
+! 10
+  20
+  20
+  00
+  ENDCHAR
+  STARTCHAR 0x00BA
+  ENCODING 186
+***************
+*** 3119,3134 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 60
+- 90
+- 90
+- 90
+- 60
+- 00
+- F0
+- 00
+- 00
+  00
+  00
+  00
+  ENDCHAR
+--- 3119,3134 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
++ F8
++ 08
++ 08
++ 08
++ 08
++ 08
++ 08
++ 08
++ F8
+  00
+  00
+  ENDCHAR
+***************
+*** 3139,3155 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 00
+! 80
+! 40
+! A0
+! 50
+! 28
+! 50
+! A0
+! 40
+! 80
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00BC
+--- 3139,3155 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 48
+! 48
+! FC
+! 48
+! 48
+! 48
+! 08
+! 10
+! 10
+! 20
+! 20
+  00
+  ENDCHAR
+  STARTCHAR 0x00BC
+***************
+*** 3159,3175 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 00
+- 40
+- C0
+  40
+  40
+! 50
+! 30
+! 50
+! 78
+  10
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00BD
+--- 3159,3175 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  40
++ 20
++ 00
++ 80
+  40
+! 08
+! 08
+  10
+! 10
+! 20
+! C0
+  00
+  ENDCHAR
+  STARTCHAR 0x00BD
+***************
+*** 3180,3195 ****
+  BITMAP
+  00
+  00
+! 40
+! C0
+! 40
+! 40
+! 50
+! 28
+! 08
+  10
+! 38
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00BE
+--- 3180,3195 ----
+  BITMAP
+  00
+  00
+! F0
+  10
+! 10
+! 10
+! 20
+! 20
+! 50
+! 50
+! 88
+! 88
+  00
+  ENDCHAR
+  STARTCHAR 0x00BE
+***************
+*** 3199,3215 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 00
+- E0
+- 20
+  40
+! 20
+! D0
+! 30
+  50
+! 78
+! 10
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00BF
+--- 3199,3215 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  40
+! 40
+! 58
+! 68
+! C8
+! 48
+  50
+! 50
+! 40
+! 40
+! 38
+  00
+  ENDCHAR
+  STARTCHAR 0x00BF
+***************
+*** 3220,3235 ****
+  BITMAP
+  00
+  00
+- 20
+- 00
+- 20
+- 20
+- 40
+- 80
+  88
+  88
+! 70
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00C0
+--- 3220,3235 ----
+  BITMAP
+  00
+  00
+  88
+  88
+! 88
+! 48
+! 48
+! 08
+! 10
+! 10
+! 20
+! 20
+  00
+  ENDCHAR
+  STARTCHAR 0x00C0
+***************
+*** 3239,3255 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 20
+  10
+- 00
+  20
+  20
+- 50
+- 50
+- F8
+- 88
+- 88
+- 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00C1
+--- 3239,3255 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 40
+! 78
+! 48
+! 48
+! A8
+! 98
+! 08
+! 10
+  10
+  20
+  20
+  00
+  ENDCHAR
+  STARTCHAR 0x00C1
+***************
+*** 3259,3275 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 10
+! 20
+! 00
+  20
+  20
+- 50
+- 50
+  F8
+! 88
+! 88
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00C2
+--- 3259,3275 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 18
+! E0
+  20
+  20
+  F8
+! 20
+! 20
+! 20
+! 20
+! 40
+! 40
+  00
+  ENDCHAR
+  STARTCHAR 0x00C2
+***************
+*** 3279,3295 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 30
+- 48
+  00
+  20
+  20
+- 50
+- 50
+- F8
+- 88
+- 88
+- 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00C3
+--- 3279,3295 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
++ A8
++ A8
++ A8
++ A8
++ 08
++ 08
++ 10
++ 10
+  20
+  20
+  00
+  ENDCHAR
+  STARTCHAR 0x00C3
+***************
+*** 3299,3315 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 68
+! B0
+  00
+  20
+  20
+- 50
+- 50
+- F8
+- 88
+- 88
+- 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00C4
+--- 3299,3315 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 78
+! 00
+! 00
+  00
++ FC
++ 10
++ 10
++ 10
++ 10
+  20
+  20
+  00
+  ENDCHAR
+  STARTCHAR 0x00C4
+***************
+*** 3319,3335 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  50
+! 50
+! 00
+! 20
+! 20
+! 50
+! 50
+! F8
+! 88
+! 88
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00C5
+--- 3319,3335 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
++ 40
++ 40
++ 40
++ 40
++ 60
+  50
+! 48
+! 40
+! 40
+! 40
+! 40
+  00
+  ENDCHAR
+  STARTCHAR 0x00C5
+***************
+*** 3339,3355 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 30
+! 48
+! 48
+! 30
+  20
+- 50
+- 50
+- F8
+- 88
+- 88
+- 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00C6
+--- 3339,3355 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 10
+! 10
+! 10
+! FC
+! 10
+! 10
+! 10
+! 10
+! 10
+! 20
+  20
+  00
+  ENDCHAR
+  STARTCHAR 0x00C6
+***************
+*** 3361,3374 ****
+  00
+  00
+  F8
+! A0
+! A0
+! A0
+  F8
+- A0
+- A0
+- A0
+- B8
+  00
+  00
+  ENDCHAR
+--- 3361,3374 ----
+  00
+  00
+  F8
+! 00
+! 00
+! 00
+! 00
+! 00
+! 00
+! 00
+  F8
+  00
+  00
+  ENDCHAR
+***************
+*** 3380,3396 ****
+  BITMAP
+  00
+  00
+! 70
+! 88
+! 80
+! 80
+! 80
+! 80
+! 80
+! 88
+! 70
+! 20
+  40
+  ENDCHAR
+  STARTCHAR 0x00C8
+  ENCODING 200
+--- 3380,3396 ----
+  BITMAP
+  00
+  00
+! F8
+! 08
+! 08
+! 08
+! 48
+! 30
+! 10
+! 28
+! 40
+  40
++ 00
+  ENDCHAR
+  STARTCHAR 0x00C8
+  ENCODING 200
+***************
+*** 3400,3415 ****
+  BITMAP
+  00
+  20
+! 10
+! 00
+! F8
+! 80
+! 80
+! F0
+! 80
+! 80
+  F8
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00C9
+--- 3400,3415 ----
+  BITMAP
+  00
+  20
+! 20
+  F8
+! 08
+! 10
+! 30
+! 68
+! A4
+! 20
+! 20
+! 20
+  00
+  ENDCHAR
+  STARTCHAR 0x00C9
+***************
+*** 3419,3435 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  10
+  20
+! 00
+! F8
+! 80
+! 80
+! F0
+! 80
+! 80
+! F8
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00CA
+--- 3419,3435 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
++ 00
++ 08
++ 08
++ 08
++ 10
++ 10
+  10
+  20
+! 20
+! 40
+! 40
+  00
+  ENDCHAR
+  STARTCHAR 0x00CA
+***************
+*** 3439,3455 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 30
+  48
+! 00
+! F8
+! 80
+! 80
+! F0
+! 80
+! 80
+! F8
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00CB
+--- 3439,3455 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 40
+! 50
+! 50
+! 50
+! 50
+  48
+! 48
+! 88
+! 88
+! 88
+! 88
+  00
+  ENDCHAR
+  STARTCHAR 0x00CB
+***************
+*** 3459,3475 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 50
+- 50
+- 00
+- F8
+  80
+  80
+! F0
+  80
+  80
+! F8
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00CC
+--- 3459,3475 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  80
+  80
+! 88
+! 90
+! A0
+! C0
+  80
+  80
+! 80
+! 80
+! 78
+  00
+  ENDCHAR
+  STARTCHAR 0x00CC
+***************
+*** 3479,3495 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 20
+- 10
+  00
+! 70
+! 20
+! 20
+! 20
+  20
+  20
+- 70
+- 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00CD
+--- 3479,3495 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
+! F8
+! 08
+! 08
+! 08
+! 08
+! 08
+! 10
+! 10
+  20
+  20
+  00
+  ENDCHAR
+  STARTCHAR 0x00CD
+***************
+*** 3499,3515 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 10
+- 20
+- 00
+- 70
+- 20
+- 20
+- 20
+- 20
+- 20
+- 70
+  00
+  00
+  ENDCHAR
+  STARTCHAR 0x00CE
+--- 3499,3515 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
++ 60
++ 60
++ 50
++ 50
++ 90
++ 90
++ 88
++ 08
++ 08
++ 08
+  00
+  ENDCHAR
+  STARTCHAR 0x00CE
+***************
+*** 3519,3535 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 30
+- 48
+- 00
+- 70
+  20
+  20
+  20
+  20
+  20
+- 70
+- 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00CF
+--- 3519,3535 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  20
+  20
++ F8
+  20
+  20
++ A8
++ A8
++ A8
++ A8
++ 20
+  20
+  00
+  ENDCHAR
+  STARTCHAR 0x00CF
+***************
+*** 3539,3555 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  50
+  50
+- 00
+- 70
+- 20
+- 20
+- 20
+  20
+  20
+! 70
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00D0
+--- 3539,3555 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
++ 00
++ F8
++ 08
++ 08
++ 08
+  50
+  50
+  20
+  20
+! 10
+! 10
+  00
+  ENDCHAR
+  STARTCHAR 0x00D0
+***************
+*** 3559,3575 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
+- F0
+- 48
+- 48
+- 48
+- E8
+- 48
+- 48
+- 48
+- F0
+  00
+  00
+  ENDCHAR
+  STARTCHAR 0x00D1
+--- 3559,3575 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
++ 60
++ 18
++ 00
++ 00
++ 60
++ 18
++ 00
+  00
+  00
++ 60
++ 18
+  00
+  ENDCHAR
+  STARTCHAR 0x00D1
+***************
+*** 3579,3595 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 68
+! B0
+! 00
+! 88
+! C8
+! A8
+! 98
+! 88
+  88
+  88
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00D2
+--- 3579,3595 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 20
+! 20
+! 20
+! 20
+! 40
+! 40
+! 40
+! 48
+  88
+  88
+! F8
+  00
+  ENDCHAR
+  STARTCHAR 0x00D2
+***************
+*** 3599,3615 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 20
+  10
+! 00
+! 70
+! 88
+! 88
+! 88
+! 88
+! 88
+! 70
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00D3
+--- 3599,3615 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  10
+! 10
+! 10
+! 90
+! 50
+! 20
+! 20
+! 50
+! 48
+! 80
+! 80
+  00
+  ENDCHAR
+  STARTCHAR 0x00D3
+***************
+*** 3619,3634 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 10
+- 20
+  00
+! 70
+! 88
+! 88
+! 88
+! 88
+! 88
+! 70
+  00
+  00
+  ENDCHAR
+--- 3619,3634 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
+! F8
+! 40
+! 40
+! F8
+! 40
+! 40
+! 40
+! 40
+! 38
+  00
+  00
+  ENDCHAR
+***************
+*** 3639,3655 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 30
+  48
+! 00
+! 70
+! 88
+! 88
+! 88
+! 88
+! 88
+! 70
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00D5
+--- 3639,3655 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 40
+! 40
+! 58
+! E8
+  48
+! 48
+! 28
+! 30
+! 20
+! 20
+! 20
+  00
+  ENDCHAR
+  STARTCHAR 0x00D5
+***************
+*** 3659,3674 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 68
+- B0
+  00
+! 70
+! 88
+! 88
+! 88
+! 88
+! 88
+! 70
+  00
+  00
+  ENDCHAR
+--- 3659,3674 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
+! F0
+! 10
+! 10
+! 10
+! 10
+! 10
+! 10
+! 10
+! F8
+  00
+  00
+  ENDCHAR
+***************
+*** 3679,3694 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 50
+- 50
+  00
+! 70
+! 88
+! 88
+! 88
+! 88
+! 88
+! 70
+  00
+  00
+  ENDCHAR
+--- 3679,3694 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
+! F8
+! 08
+! 08
+! 08
+! F8
+! 08
+! 08
+! 08
+! F8
+  00
+  00
+  ENDCHAR
+***************
+*** 3699,3715 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
+  00
+  00
+! 88
+! 50
+  20
+- 50
+- 88
+- 00
+- 00
+- 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00D8
+--- 3699,3715 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
++ 70
+  00
+  00
+  00
+! F8
+! 08
+! 08
+! 10
+! 10
+! 20
+  20
+  00
+  ENDCHAR
+  STARTCHAR 0x00D8
+***************
+*** 3719,3735 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  08
+! 70
+! 98
+! A8
+! A8
+! A8
+! A8
+! A8
+! C8
+! 70
+! 80
+  00
+  ENDCHAR
+  STARTCHAR 0x00D9
+--- 3719,3735 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
++ 88
++ 88
++ 88
++ 88
++ 88
++ 88
+  08
+! 10
+! 10
+! 20
+! 20
+  00
+  ENDCHAR
+  STARTCHAR 0x00D9
+***************
+*** 3740,3755 ****
+  BITMAP
+  00
+  20
+! 10
+! 00
+! 88
+! 88
+! 88
+! 88
+! 88
+! 88
+! 70
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00DA
+--- 3740,3755 ----
+  BITMAP
+  00
+  20
+! A0
+! A0
+! A0
+! A0
+! A0
+! A0
+! A0
+! A4
+! A8
+! B0
+  00
+  ENDCHAR
+  STARTCHAR 0x00DA
+***************
+*** 3759,3775 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 10
+! 20
+! 00
+! 88
+! 88
+! 88
+! 88
+  88
+  88
+! 70
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00DB
+--- 3759,3775 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+! 80
+! 80
+! 80
+! 80
+! 80
+  88
+  88
+! 90
+! 90
+! A0
+! C0
+  00
+  ENDCHAR
+  STARTCHAR 0x00DB
+***************
+*** 3779,3794 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 30
+- 48
+  00
+  88
+  88
+  88
+  88
+  88
+  88
+! 70
+  00
+  00
+  ENDCHAR
+--- 3779,3794 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
++ F8
+  88
+  88
+  88
+  88
+  88
+  88
+! 88
+! F8
+  00
+  00
+  ENDCHAR
+***************
+*** 3799,3815 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 50
+- 50
+  00
+  88
+  88
+  88
+! 88
+! 88
+! 88
+! 70
+! 00
+  00
+  ENDCHAR
+  STARTCHAR 0x00DD
+--- 3799,3815 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
++ F8
+  88
+  88
+  88
+! 08
+! 08
+! 10
+! 10
+! 20
+! 20
+  00
+  ENDCHAR
+  STARTCHAR 0x00DD
+***************
+*** 3819,4515 ****
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 10
+- 20
+  00
+! 88
+! 88
+! 50
+! 50
+! 20
+! 20
+! 20
+  00
+  00
+- ENDCHAR
+- STARTCHAR 0x00DE
+- ENCODING 222
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 80
+- 80
+- F0
+- 88
+- 88
+- 88
+- F0
+- 80
+- 80
+- 80
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00DF
+- ENCODING 223
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 00
+- 00
+- 70
+- 88
+- 88
+- F0
+- 88
+- 88
+- 88
+- F0
+- 80
+- 80
+- ENDCHAR
+- STARTCHAR 0x00E0
+- ENCODING 224
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 20
+- 10
+- 00
+- 00
+- 70
+  08
+! 78
+! 88
+! 88
+! 78
+! 00
+! 00
+! ENDCHAR
+! STARTCHAR 0x00E1
+! ENCODING 225
+! SWIDTH 443 0
+! DWIDTH 6 0
+! BBX 6 13 0 -2
+! BITMAP
+! 00
+  10
+  20
+! 00
+! 00
+! 70
+! 08
+! 78
+! 88
+! 88
+! 78
+! 00
+! 00
+! ENDCHAR
+! STARTCHAR 0x00E2
+! ENCODING 226
+! SWIDTH 443 0
+! DWIDTH 6 0
+! BBX 6 13 0 -2
+! BITMAP
+! 00
+! 30
+! 48
+! 00
+! 00
+! 70
+! 08
+! 78
+! 88
+! 88
+! 78
+! 00
+! 00
+! ENDCHAR
+! STARTCHAR 0x00E3
+! ENCODING 227
+! SWIDTH 443 0
+! DWIDTH 6 0
+! BBX 6 13 0 -2
+! BITMAP
+! 00
+! 68
+! B0
+! 00
+! 00
+! 70
+! 08
+! 78
+! 88
+! 88
+! 78
+! 00
+! 00
+! ENDCHAR
+! STARTCHAR 0x00E4
+! ENCODING 228
+! SWIDTH 443 0
+! DWIDTH 6 0
+! BBX 6 13 0 -2
+! BITMAP
+! 00
+! 50
+! 50
+! 00
+! 00
+! 70
+! 08
+! 78
+! 88
+! 88
+! 78
+! 00
+! 00
+! ENDCHAR
+! STARTCHAR 0x00E5
+! ENCODING 229
+! SWIDTH 443 0
+! DWIDTH 6 0
+! BBX 6 13 0 -2
+! BITMAP
+! 00
+! 30
+! 48
+! 30
+! 00
+! 70
+! 08
+! 78
+! 88
+! 88
+! 78
+! 00
+! 00
+! ENDCHAR
+! STARTCHAR 0x00E6
+! ENCODING 230
+! SWIDTH 443 0
+! DWIDTH 6 0
+! BBX 6 13 0 -2
+! BITMAP
+! 00
+! 00
+! 00
+! 00
+! 00
+! F8
+! 28
+! F8
+! A0
+! A0
+! F8
+! 00
+  00
+  ENDCHAR
+! STARTCHAR 0x00E7
+! ENCODING 231
+  SWIDTH 443 0
+  DWIDTH 6 0
+  BBX 6 13 0 -2
+  BITMAP
+- 00
+- 00
+- 00
+- 00
+- 00
+- 70
+- 88
+- 80
+  80
+- 88
+- 70
+- 20
+  40
+- ENDCHAR
+- STARTCHAR 0x00E8
+- ENCODING 232
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 20
+- 10
+- 00
+- 00
+- 70
+- 88
+- F8
+  80
+! 88
+! 70
+! 00
+! 00
+! ENDCHAR
+! STARTCHAR 0x00E9
+! ENCODING 233
+! SWIDTH 443 0
+! DWIDTH 6 0
+! BBX 6 13 0 -2
+! BITMAP
+! 00
+! 10
+! 20
+  00
+  00
+- 70
+- 88
+- F8
+- 80
+- 88
+- 70
+  00
+  00
+- ENDCHAR
+- STARTCHAR 0x00EA
+- ENCODING 234
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+  00
+- 30
+- 48
+  00
+  00
+- 70
+- 88
+- F8
+- 80
+- 88
+- 70
+  00
+  00
+  ENDCHAR
+! STARTCHAR 0x00EB
+! ENCODING 235
+  SWIDTH 443 0
+  DWIDTH 6 0
+  BBX 6 13 0 -2
+  BITMAP
+  00
+- 50
+- 50
+- 00
+- 00
+- 70
+- 88
+- F8
+- 80
+- 88
+- 70
+  00
+  00
+- ENDCHAR
+- STARTCHAR 0x00EC
+- ENCODING 236
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+  00
+- 20
+- 10
+  00
+  00
+- 60
+- 20
+- 20
+- 20
+- 20
+- 70
+  00
+  00
+- ENDCHAR
+- STARTCHAR 0x00ED
+- ENCODING 237
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+  00
+- 10
+- 20
+- 00
+- 00
+- 60
+- 20
+- 20
+- 20
+- 20
+- 70
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00EE
+- ENCODING 238
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 30
+- 48
+- 00
+- 00
+- 60
+- 20
+- 20
+- 20
+- 20
+- 70
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00EF
+- ENCODING 239
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 50
+- 50
+- 00
+- 00
+- 60
+- 20
+- 20
+- 20
+- 20
+- 70
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00F0
+- ENCODING 240
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 40
+- 38
+- E0
+- 10
+- 70
+- 88
+- 88
+- 88
+- 88
+- 70
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00F1
+- ENCODING 241
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 68
+- B0
+- 00
+- 00
+- B0
+- C8
+- 88
+- 88
+- 88
+- 88
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00F2
+- ENCODING 242
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 20
+- 10
+- 00
+- 00
+- 70
+- 88
+- 88
+- 88
+- 88
+- 70
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00F3
+- ENCODING 243
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 10
+- 20
+- 00
+- 00
+- 70
+- 88
+- 88
+- 88
+- 88
+- 70
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00F4
+- ENCODING 244
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 30
+- 48
+- 00
+- 00
+- 70
+- 88
+- 88
+- 88
+- 88
+- 70
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00F5
+- ENCODING 245
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 68
+- B0
+- 00
+- 00
+- 70
+- 88
+- 88
+- 88
+- 88
+- 70
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00F6
+- ENCODING 246
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 50
+- 50
+- 00
+- 00
+- 70
+- 88
+- 88
+- 88
+- 88
+- 70
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00F7
+- ENCODING 247
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 00
+- 00
+- 20
+- 20
+- 00
+- F8
+- 00
+- 20
+- 20
+- 00
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00F8
+- ENCODING 248
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 00
+- 00
+- 00
+- 08
+- 70
+- 98
+- A8
+- A8
+- C8
+- 70
+- 80
+- 00
+- ENDCHAR
+- STARTCHAR 0x00F9
+- ENCODING 249
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 20
+- 10
+- 00
+- 00
+- 88
+- 88
+- 88
+- 88
+- 98
+- 68
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00FA
+- ENCODING 250
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 10
+- 20
+- 00
+- 00
+- 88
+- 88
+- 88
+- 88
+- 98
+- 68
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00FB
+- ENCODING 251
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 30
+- 48
+- 00
+- 00
+- 88
+- 88
+- 88
+- 88
+- 98
+- 68
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00FC
+- ENCODING 252
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 50
+- 50
+- 00
+- 00
+- 88
+- 88
+- 88
+- 88
+- 98
+- 68
+- 00
+- 00
+- ENDCHAR
+- STARTCHAR 0x00FD
+- ENCODING 253
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 10
+- 20
+- 00
+- 00
+- 88
+- 88
+- 88
+- 88
+- 78
+- 08
+- 88
+- 70
+- ENDCHAR
+- STARTCHAR 0x00FE
+- ENCODING 254
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 00
+- 00
+- 80
+- 80
+- F0
+- 88
+- 88
+- 88
+- F0
+- 80
+- 80
+- 80
+- ENDCHAR
+- STARTCHAR 0x00FF
+- ENCODING 255
+- SWIDTH 443 0
+- DWIDTH 6 0
+- BBX 6 13 0 -2
+- BITMAP
+- 00
+- 50
+- 50
+- 00
+- 00
+- 88
+- 88
+- 88
+- 88
+- 78
+- 08
+- 88
+- 70
+  ENDCHAR
+  ENDFONT
+--- 3819,3875 ----
+  BBX 6 13 0 -2
+  BITMAP
+  00
+  00
+! 80
+! 40
+  00
+  00
+  08
+! 08
+! 10
+  10
+  20
+! C0
+  00
+  ENDCHAR
+! STARTCHAR 0x00DE
+! ENCODING 222
+  SWIDTH 443 0
+  DWIDTH 6 0
+  BBX 6 13 0 -2
+  BITMAP
+  80
+  40
+  80
+! 40
+  00
+  00
+  00
+  00
+  00
+  00
+  00
+  00
+  00
+  ENDCHAR
+! STARTCHAR 0x00DF
+! ENCODING 223
+  SWIDTH 443 0
+  DWIDTH 6 0
+  BBX 6 13 0 -2
+  BITMAP
++ 60
++ 90
++ 90
++ 60
+  00
+  00
+  00
+  00
+  00
+  00
+  00
+  00
+  00
+  ENDCHAR
+  ENDFONT
