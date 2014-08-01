@@ -96,6 +96,11 @@ Acknowledgements
 This program is derived from [recterm](https://github.com/uobikiemukot/recterm)
 written by haru <uobikiemukot at gmail dot com> ([@uobikiemukot](https://github.com/uobikiemukot/))
 
+### yaft
+
+Some part of glyph data generator(glyph/*) is imported from [yaft](http://uobikiemukot.github.io/yaft/)
+written by haru <uobikiemukot at gmail dot com> ([@uobikiemukot](https://github.com/uobikiemukot/))
+
 ### gifsave89
 
 GIF encoder (gifsave89.c) is imported from [gifsave89](http://www.forkosh.com/gifsave90.html)
@@ -193,10 +198,6 @@ A tty recorder.
 ### [ttyrec4windows](https://github.com/mattn/ttyrec4windows)
 
 A Windows port for [ttyrec](http://0xcc.net/ttyrec/index.html.en) written in [Go](http://golang.org/).
-
-### [yaft](http://uobikiemukot.github.io/yaft/)
-
-Yet another framebuffer terminal, which has tiny portable terminal emulation engine.
 
 
 License
