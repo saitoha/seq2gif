@@ -4463,16 +4463,14 @@ else
 fi
 
 
-for ac_header in sys/errno.h \
-                  errno.h \
-                  sys/ctype.h \
+for ac_header in errno.h \
+                  sys/types.h \
                   ctype.h \
                   fcntl.h \
                   limits.h \
                   stdlib.h \
                   string.h \
                   wchar.h \
-                  sys/unistd.h \
                   unistd.h \
                   getopt.h
 do :

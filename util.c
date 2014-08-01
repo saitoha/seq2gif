@@ -19,16 +19,11 @@
 #include "config.h"
 
 #include <stdio.h>
-#if HAVE_SYS_ERRNO_H
-# include <sys/errno.h>
-#elif HAVE_ERRNO_H
+#if HAVE_ERRNO_H
 # include <errno.h>
 #endif
 #if HAVE_LIMITS_H
 # include <limits.h>
-#endif
-#if HAVE_SYS_UNISTD_H
-# include <sys/unistd.h>
 #endif
 #if HAVE_UNISTD_H
 # include <unistd.h>
