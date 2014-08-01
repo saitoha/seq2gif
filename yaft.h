@@ -183,7 +183,7 @@ struct terminal {
     int default_bg;                              /* default background color */
     int cursor_color;                            /* corsor color */
     int tabwidth;                                /* hardware tabstop */
-    wcwidth_func_t wcwidth;                      /* wcwidth strategy */
+    wcwidth_func_t fn_wcwidth;                   /* wcwidth strategy */
 };
 
 struct parm_t { /* for parse_arg() */
