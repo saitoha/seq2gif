@@ -17,10 +17,6 @@
 
 #include "config.h"
 
-#if HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif  /* HAVE_SYS_TYPES_H */
-
 #if HAVE_ERRNO_H
 #include <errno.h>
 #endif  /* HAVE_ERRNO_H */

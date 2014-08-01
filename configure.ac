@@ -44,16 +44,14 @@ AC_CHECK_HEADER([stdbool.h], [],
                 [AC_MSG_ERROR(stdbool.h not found.)])
 AC_CHECK_HEADER([math.h], [],
                 [AC_MSG_ERROR(math.h not found.)])
-AC_CHECK_HEADERS([sys/errno.h \
-                  errno.h \
-                  sys/ctype.h \
+AC_CHECK_HEADERS([errno.h \
+                  sys/types.h \
                   ctype.h \
                   fcntl.h \
                   limits.h \
                   stdlib.h \
                   string.h \
                   wchar.h \
-                  sys/unistd.h \
                   unistd.h \
                   getopt.h])
 
