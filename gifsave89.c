@@ -24,15 +24,11 @@ standard headers...
 #include "config.h"
 #include <stdio.h>
 #include <stdint.h>
-#if HAVE_STDLIB_H
-# include <stdlib.h>
-#endif
+#include <stdlib.h>
 #if HAVE_STRING_H
 # include <string.h>
 #endif
-#if HAVE_SYS_CTYPE_H
-# include <sys/ctype.h>
-#elif HAVE_CTYPE_H
+#if HAVE_CTYPE_H
 # include <ctype.h>
 #endif
 #if defined(GSTESTDRIVE)
