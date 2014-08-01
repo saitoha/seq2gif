@@ -35,9 +35,6 @@
 #if HAVE_STRING_H
 # include <string.h>
 #endif
-#if HAVE_SYS_UNISTD_H
-# include <sys/unistd.h>
-#endif
 #if HAVE_UNISTD_H
 # include <unistd.h>
 #endif
@@ -216,6 +213,7 @@ static void show_help()
 {
     fprintf(stderr,
             "Usage: seq2gif [Options] < ttyrecord > record.gif\n"
+            "       seq2gif [Options] -i ttyrecord -o record.gif\n"
             "\n"
             "Options:\n"
             "-w WIDTH, --width=WIDTH               specify terminal width in cell size.\n"
@@ -231,8 +229,8 @@ static void show_help()
             "-c COLORNO --cursor-color=COLORNO     specify cursor color palette\n"
             "                                      number.\n"
             "-t TABSTOP --tabstop=TABSTOP          specify hardware tabstop(default: 8)\n"
-            "-j --cjkwidth                         treat East Asian Ambiguous width characters\n"
-            "                                      (UAX#11) as wide.\n"
+            "-j --cjkwidth                         treat East Asian Ambiguous width\n"
+            "                                      characters (UAX#11) as wide.\n"
             "-r COUNT --repeat=COUNT               specify animation repeat count. loop\n"
             "                                      infinitely if 0 is given. (default: 0)\n"
             "-i FILE --input=FILE                  specify input file name. use STDIN\n"
@@ -240,6 +238,7 @@ static void show_help()
             "-o FILE --output=FILE                 specify output file name. use STDOUT\n"
             "                                      if '-' is given. (default: '-')\n"
             "-V, --version                         show version and license information.\n"
+            "-H, --help                            show this help.\n"
            );
 }
 
