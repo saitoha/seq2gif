@@ -3,8 +3,11 @@
 /* milkjf font */
 #undef FONT_MILKJF
 
-/* m+ bitmap font */
+/* M+ Bitmap font */
 #undef FONT_MPLUS
+
+/* GNU Unifont */
+#undef FONT_UNIFONT
 
 /* Define to 1 if you have the `calloc' function. */
 #undef HAVE_CALLOC
@@ -74,20 +77,11 @@
 /* Define to 1 if you have the `strtol' function. */
 #undef HAVE_STRTOL
 
-/* Define to 1 if you have the <sys/ctype.h> header file. */
-#undef HAVE_SYS_CTYPE_H
-
-/* Define to 1 if you have the <sys/errno.h> header file. */
-#undef HAVE_SYS_ERRNO_H
-
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #undef HAVE_SYS_STAT_H
 
 /* Define to 1 if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
-
-/* Define to 1 if you have the <sys/unistd.h> header file. */
-#undef HAVE_SYS_UNISTD_H
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
@@ -122,7 +116,7 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* selected font data */
+/* milkjf font is selected. */
 #undef SELECTED_FONT
 
 /* Define to 1 if you have the ANSI C header files. */
