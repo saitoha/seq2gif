@@ -83,19 +83,6 @@ void *erealloc(void *ptr, size_t size)
     return new;
 }
 
-void ewrite(int fd, const void *buf, int size)
-{
-    int ret;
-#if HAVE_SYS_ERRNO_H || HAVE_ERRNO_H
-    errno = 0;
-#endif
-
-    if ((ret = write(fd, buf, size)) < 0)
-        error("write");
-    else if (ret < size)
-        ewrite(fd, (char *) buf + ret, size - ret);
-}
-
 static long estrtol(const char *nptr, char **endptr, int base)
 {
     long int ret;

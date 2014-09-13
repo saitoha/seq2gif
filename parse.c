@@ -50,7 +50,6 @@ static void (*esc_func[ESC_CHARS])(struct terminal *term) = {
     ['H'] = set_tabstop,
     ['M'] = reverse_nl,
     ['P'] = enter_dcs,
-    ['Z'] = identify,
     ['['] = enter_csi,
     [']'] = enter_osc,
     ['c'] = ris,
@@ -73,7 +72,6 @@ static void (*csi_func[ESC_CHARS])(struct terminal *term, struct parm_t *) = {
     ['P'] = delete_char,
     ['X'] = erase_char,
     ['a'] = curs_forward,
-    //['c'] = identify,
     ['d'] = curs_line,
     ['e'] = curs_down,
     ['f'] = curs_pos,
@@ -81,7 +79,6 @@ static void (*csi_func[ESC_CHARS])(struct terminal *term, struct parm_t *) = {
     ['h'] = set_mode,
     ['l'] = reset_mode,
     ['m'] = set_attr,
-    ['n'] = status_report,
     ['r'] = set_margin,
     //['s'] = save_state,
     //['u'] = restore_state,
@@ -172,20 +169,6 @@ static void osc_sequence(struct terminal *term, uint8_t ch)
     reset_parm(&parm);
     parse_arg(term->esc.buf + 1, &parm, ';', is_osc_parm); /* skip ']' */
 
-    if (parm.argc > 0) {
-        osc_mode = dec2num(parm.argv[0]);
-        if (DEBUG)
-            fprintf(stderr, "osc_mode:%d\n", osc_mode);
-
-        /*
-        if (osc_mode == 4)
-            set_palette(term, &parm);
-        else if (osc_mode == 104)
-            reset_palette(term, &parm);
-        */
-        if (osc_mode == 8900)
-            glyph_width_report(term, &parm);
-    }
     reset_esc(term);
 }
 

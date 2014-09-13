@@ -107,11 +107,6 @@ void reverse_nl(struct terminal *term)
     move_cursor(term, -1, 0);
 }
 
-void identify(struct terminal *term)
-{
-    ewrite(term->fd, "\033[?6c", 5); /* "I am a VT102" */
-}
-
 void enter_csi(struct terminal *term)
 {
     term->esc.state = STATE_CSI;
@@ -398,24 +393,6 @@ void set_attr(struct terminal *term, struct parm_t *parm)
             term->color_pair.fg = (num - 90) + BRIGHT_INC;
         else if (100 <= num && num <= 107) /* set bright background */
             term->color_pair.bg = (num - 100) + BRIGHT_INC;
-    }
-}
-
-void status_report(struct terminal *term, struct parm_t *parm)
-{
-    int i, num;
-    char buf[BUFSIZE];
-
-    for (i = 0; i < parm->argc; i++) {
-        num = dec2num(parm->argv[i]);
-        if (num == 5)        /* terminal response: ready */
-            ewrite(term->fd, "\033[0n", 4);
-        else if (num == 6) { /* cursor position report */
-            snprintf(buf, BUFSIZE, "\033[%d;%dR", term->cursor.y + 1, term->cursor.x + 1);
-            ewrite(term->fd, buf, strlen(buf));
-        }
-        else if (num == 15)  /* terminal response: printer not connected */
-            ewrite(term->fd, "\033[?13n", 6);
     }
 }
 
