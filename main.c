@@ -22,7 +22,6 @@
 #include "pseudo.h"
 #include "terminal.h"
 #include "function.h"
-#include "osc.h"
 #include "dcs.h"
 #include "parse.h"
 #include "gifsave89.h"
