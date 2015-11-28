@@ -70,6 +70,9 @@ struct settings_t {
     int repeat;
     char *input;
     char *output;
+
+    int render_interval;
+    double play_speed;
 };
 
 enum cmap_bitfield {
@@ -238,13 +241,24 @@ static void show_help()
             "                                      if '-' is given. (default: '-')\n"
             "-V, --version                         show version and license information.\n"
             "-H, --help                            show this help.\n"
+            "--render-interval=DELAY               skip frames with smaller delays than\n"
+            "                                      DELAY specified in milliseconds.\n"
+            "                                      (default: 20)\n"
+            "-s NUM, --play-speed=NUM              specify the factor of the play speed.\n"
+            "                                      A larger value means faster play.\n"
+            "                                      (default: 1.0)\n"
            );
 }
+
+enum seq2gif_optflags {
+    seq2gif_optflag_render_interval = 0x1001,
+    seq2gif_optflag_play_speed      = 's',
+};
 
 static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int n;
-    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:";
+    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:s:";
 #ifdef HAVE_GETOPT_LONG
     int long_opt;
     int option_index;
@@ -262,6 +276,8 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         {"output",            required_argument,  &long_opt, 'o'},
         {"help",              no_argument,        &long_opt, 'H'},
         {"version",           no_argument,        &long_opt, 'V'},
+        {"render-interval",   required_argument,  &long_opt, seq2gif_optflag_render_interval},
+        {"play-speed",        required_argument,  &long_opt, seq2gif_optflag_play_speed},
         {0, 0, 0, 0}
     };
 #endif  /* HAVE_GETOPT_LONG */
@@ -360,6 +376,12 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
             break;
         case 'V':
             psettings->show_version = 1;
+            break;
+        case seq2gif_optflag_render_interval:
+            psettings->render_interval = atoi(optarg);
+            break;
+        case seq2gif_optflag_play_speed:
+            psettings->play_speed = atof(optarg);
             break;
         default:
             goto argerr;
@@ -484,6 +506,10 @@ int main(int argc, char *argv[])
     int gifsize, colormap[COLORS * BYTES_PER_PIXEL + 1];
     unsigned char *img;
 
+    uint32_t gif_unit_time;
+    uint32_t gif_render_interval;
+    int is_render_deferred;
+
     struct settings_t settings = {
         80,     /* width */
         24,     /* height */
@@ -498,6 +524,9 @@ int main(int argc, char *argv[])
         0,      /* repeat */
         NULL,   /* input */
         NULL,   /* output */
+
+        20,     /* render_interval */
+        1.0,    /* play_speed */
     };
 
     if (parse_args(argc, argv, &settings) != 0) {
@@ -544,6 +573,9 @@ int main(int argc, char *argv[])
     prev = now = readtime(in_file, obuf);
 
     /* main loop */
+    gif_unit_time = (int)(10000 * settings.play_speed);
+    gif_render_interval = settings.render_interval / 10;
+    is_render_deferred = 0;
     for(;;) {
         len = readlen(in_file, obuf);
         if (len <= 0) {
@@ -559,23 +591,41 @@ int main(int argc, char *argv[])
             nret = EXIT_FAILURE;
             break;
         }
+
         parse(&term, obuf, nread, &dirty);
         now = readtime(in_file, obuf);
         if (now == -1) {
             break;
         }
+
         if (term.esc.state != STATE_DCS || dirty) {
             refresh(&pb, &term);
-            delay = now - prev;
+            delay = (now - prev) / gif_unit_time;
+
+            if (is_render_deferred && delay > gif_render_interval) {
+                controlgif(gsdata, -1, gif_render_interval, 0, 0);
+                prev += gif_render_interval * gif_unit_time;
+                putgif(gsdata, img);
+                delay -= gif_render_interval;
+            }
 
             /* take screenshot */
             apply_colormap(&pb, img);
-            controlgif(gsdata, -1, delay / 10000, 0, 0);
-            prev = now;
-            putgif(gsdata, img);
+            is_render_deferred = delay < gif_render_interval;
+            if (!is_render_deferred) {
+                controlgif(gsdata, -1, delay, 0, 0);
+                prev = now;
+                putgif(gsdata, img);
+            }
         }
         dirty = 0;
     }
+
+    if (is_render_deferred) {
+        controlgif(gsdata, -1, gif_render_interval, 0, 0);
+        putgif(gsdata, img);
+    }
+
     if (settings.last_frame_delay > 0) {
         controlgif(gsdata, -1, settings.last_frame_delay / 10, 0, 0);
         putgif(gsdata, img);
