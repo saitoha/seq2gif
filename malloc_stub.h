@@ -18,15 +18,15 @@
 #ifndef MALLOC_STUB_H
 #define MALLOC_STUB_H
 
-#if HAVE_SYS_TYPES_H
+#ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
 #endif  /* HAVE_SYS_TYPES_H */
 
-#if !HAVE_MALLOC
+#ifndef HAVE_MALLOC
 void * rpl_malloc(size_t n);
 #endif /* !HAVE_MALLOC */
 
-#if !HAVE_REALLOC
+#ifndef HAVE_REALLOC
 void * rpl_realloc(void *p, size_t n);
 #endif /* !HAVE_REALLOC */
 

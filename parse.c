@@ -24,10 +24,10 @@
 #include "dcs.h"
 
 #include <stdio.h>
-#if HAVE_CTYPE_H
+#ifdef HAVE_CTYPE_H
 # include <ctype.h>
 #endif
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 # include <string.h>
 #endif
 

@@ -23,7 +23,7 @@
 #include "function.h"
 
 #include <stdio.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 # include <string.h>
 #endif
 
