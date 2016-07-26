@@ -248,9 +248,6 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 #ifdef HAVE_GETOPT_LONG
     int long_opt;
     int option_index;
-#endif  /* HAVE_GETOPT_LONG */
-
-#ifdef HAVE_GETOPT_LONG
     struct option long_options[] = {
         {"width",             required_argument,  &long_opt, 'w'},
         {"height",            required_argument,  &long_opt, 'h'},
