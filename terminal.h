@@ -37,6 +37,11 @@ void term_init(struct terminal *term, int width, int height,
                int cursor_color, int tabwidth, int cjkwidth);
 void term_die(struct terminal *term);
 
-/* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+/* emacs Local Variables:      */
+/* emacs mode: c               */
+/* emacs tab-width: 4          */
+/* emacs indent-tabs-mode: nil */
+/* emacs c-basic-offset: 4     */
+/* emacs End:                  */
 /* vim: set expandtab ts=4 : */
 /* EOF */
