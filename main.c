@@ -79,6 +79,7 @@ struct settings_t {
     int foreground_color;
     int background_color;
     int cursor_color;
+    bool use_bright_instead_of_bold;
     int tabwidth;
     int cjkwidth;
     int repeat;
@@ -478,6 +479,9 @@ static void show_help()
             "                                       number.\n"
             "-c COLORNO, --cursor-color=COLORNO     specify cursor color palette\n"
             "                                       number.\n"
+            "-B, --use-bright-for-bold              use bright colors to render the\n"
+            "                                       characters with bold attribute instead\n"
+            "                                       of using bold fonts. (default: disabled)\n"
             "-t TABSTOP, --tabstop=TABSTOP          specify hardware tabstop(default: 8)\n"
             "-j, --cjkwidth                         treat East Asian Ambiguous width\n"
             "                                       characters (UAX#11) as wide.\n"
@@ -519,29 +523,30 @@ static void show_help()
 static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int n;
-    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:I:s:p:m:d:";
+    char const *optstring = "w:h:HVl:f:b:c:Bt:jr:i:o:I:s:p:m:d:";
 #ifdef HAVE_GETOPT_LONG
     int long_opt;
     int option_index;
     struct option long_options[] = {
-        {"width",             required_argument,  &long_opt, 'w'},
-        {"height",            required_argument,  &long_opt, 'h'},
-        {"last-frame-delay",  required_argument,  &long_opt, 'l'},
-        {"foreground-color",  required_argument,  &long_opt, 'f'},
-        {"background-color",  required_argument,  &long_opt, 'b'},
-        {"cursor-color",      required_argument,  &long_opt, 'c'},
-        {"tabstop",           required_argument,  &long_opt, 't'},
-        {"cjkwidth",          no_argument,        &long_opt, 'j'},
-        {"repeat",            required_argument,  &long_opt, 'r'},
-        {"input",             required_argument,  &long_opt, 'i'},
-        {"output",            required_argument,  &long_opt, 'o'},
-        {"help",              no_argument,        &long_opt, 'H'},
-        {"version",           no_argument,        &long_opt, 'V'},
-        {"render-interval",   required_argument,  &long_opt, 'I'},
-        {"play-speed",        required_argument,  &long_opt, 's'},
-        {"palette16",         required_argument,  &long_opt, 'p'},
-        {"colormap",          required_argument,  &long_opt, 'm'},
-        {"diffuse",           required_argument,  &long_opt, 'd'},
+        {"width",               required_argument,  &long_opt, 'w'},
+        {"height",              required_argument,  &long_opt, 'h'},
+        {"last-frame-delay",    required_argument,  &long_opt, 'l'},
+        {"foreground-color",    required_argument,  &long_opt, 'f'},
+        {"background-color",    required_argument,  &long_opt, 'b'},
+        {"cursor-color",        required_argument,  &long_opt, 'c'},
+        {"use-bright-for-bold", no_argument,        &long_opt, 'B'},
+        {"tabstop",             required_argument,  &long_opt, 't'},
+        {"cjkwidth",            no_argument,        &long_opt, 'j'},
+        {"repeat",              required_argument,  &long_opt, 'r'},
+        {"input",               required_argument,  &long_opt, 'i'},
+        {"output",              required_argument,  &long_opt, 'o'},
+        {"help",                no_argument,        &long_opt, 'H'},
+        {"version",             no_argument,        &long_opt, 'V'},
+        {"render-interval",     required_argument,  &long_opt, 'I'},
+        {"play-speed",          required_argument,  &long_opt, 's'},
+        {"palette16",           required_argument,  &long_opt, 'p'},
+        {"colormap",            required_argument,  &long_opt, 'm'},
+        {"diffuse",             required_argument,  &long_opt, 'd'},
         {0, 0, 0, 0}
     };
 #endif  /* HAVE_GETOPT_LONG */
@@ -607,6 +612,9 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
             if (psettings->cursor_color > 255) {
                 goto argerr;
             }
+            break;
+        case 'B':
+            psettings->use_bright_instead_of_bold = true;
             break;
         case 't':
             psettings->tabwidth = atoi(optarg);
@@ -679,7 +687,7 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
                  psettings->dithering = dithering_floyd_steinberg;
             else if (strcmp(optarg, "fs") == 0)
                 psettings->dithering = dithering_floyd_steinberg_linearRGB;
-           else
+            else
                 goto argerr;
             break;
         default:
@@ -817,6 +825,7 @@ int main(int argc, char *argv[])
         7,      /* foreground_color */
         0,      /* background_color */
         2,      /* cursor_color */
+        false,  /* use_bright_instead_of_bold */
         8,      /* tabwidth */
         0,      /* cjkwidth */
         0,      /* repeat */
@@ -855,6 +864,7 @@ int main(int argc, char *argv[])
               settings.cursor_color,
               settings.tabwidth,
               settings.cjkwidth);
+    term.use_bright_instead_of_bold = settings.use_bright_instead_of_bold;
 
     /* init gif */
     img = (unsigned char *) ecalloc(pb.width * pb.height, 1);

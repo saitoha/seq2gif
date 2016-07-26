@@ -25,6 +25,8 @@ test: all
 	for dither in none fs; do for map in rgb332 xterm256; do \
 	  ./seq2gif -d $$dither -m $$map -i tests/data/ls.tty -o /dev/null; \
 	done; done
+	./seq2gif -i tests/data/SGR1.tty -o /dev/null
+	./seq2gif -i tests/data/SGR1.tty -o /dev/null -B
 
 coveralls: test
 	coveralls -E '.*\.h' -e tests -e glyph -e m4
