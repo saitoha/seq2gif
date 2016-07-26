@@ -19,7 +19,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
-#if HAVE_WCHAR_H
+#ifdef HAVE_WCHAR_H
 # include <wchar.h>
 #endif
 

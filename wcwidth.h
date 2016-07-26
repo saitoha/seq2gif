@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if HAVE_WCHAR_H
+#ifdef HAVE_WCHAR_H
 # include <wchar.h>
 #endif
 

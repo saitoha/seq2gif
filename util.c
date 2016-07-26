@@ -19,19 +19,19 @@
 #include "config.h"
 
 #include <stdio.h>
-#if HAVE_ERRNO_H
+#ifdef HAVE_ERRNO_H
 # include <errno.h>
 #endif
-#if HAVE_LIMITS_H
+#ifdef HAVE_LIMITS_H
 # include <limits.h>
 #endif
-#if HAVE_UNISTD_H
+#ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
-#if HAVE_STDLIB_H
+#ifdef HAVE_STDLIB_H
 # include <stdlib.h>
 #endif
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 # include <string.h>
 #endif
 
@@ -54,11 +54,11 @@ void fatal(char *str)
 void *ecalloc(size_t nmemb, size_t size)
 {
     void *ptr;
-#if HAVE_SYS_ERRNO_H || HAVE_ERRNO_H
+#if defined(HAVE_SYS_ERRNO_H) || (HAVE_ERRNO_H)
     errno = 0;
 #endif
 
-#if HAVE_CALLOC
+#ifdef HAVE_CALLOC
     if ((ptr = calloc(nmemb, size)) == NULL)
         error("calloc");
 #else
@@ -73,7 +73,7 @@ void *ecalloc(size_t nmemb, size_t size)
 void *erealloc(void *ptr, size_t size)
 {
     void *new;
-#if HAVE_SYS_ERRNO_H || HAVE_ERRNO_H
+#if defined(HAVE_SYS_ERRNO_H) || (HAVE_ERRNO_H)
     errno = 0;
 #endif
 
@@ -86,12 +86,12 @@ void *erealloc(void *ptr, size_t size)
 static long estrtol(const char *nptr, char **endptr, int base)
 {
     long int ret;
-#if HAVE_SYS_ERRNO_H || HAVE_ERRNO_H
+#if defined(HAVE_SYS_ERRNO_H) || (HAVE_ERRNO_H)
     errno = 0;
 #endif
 
     ret = strtol(nptr, endptr, base);
-#if HAVE_LIMITS_H
+#ifdef HAVE_LIMITS_H
     if (ret == LONG_MIN || ret == LONG_MAX) {
         perror("strtol");
         return 0;

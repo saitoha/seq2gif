@@ -28,22 +28,22 @@
 
 #include <stdio.h>
 
-#if HAVE_STDLIB_H
+#ifdef HAVE_STDLIB_H
 # include <stdlib.h>
 #endif
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 # include <string.h>
 #endif
-#if HAVE_UNISTD_H
+#ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
-#if HAVE_GETOPT_H
+#ifdef HAVE_GETOPT_H
 # include <getopt.h>
 #endif
-#if HAVE_ERRNO_H
+#ifdef HAVE_ERRNO_H
 # include <errno.h>
 #endif
-#if HAVE_FCNTL_H
+#ifdef HAVE_FCNTL_H
 # include <fcntl.h>
 #endif
 
@@ -246,11 +246,11 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
     int long_opt;
     int n;
     char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:";
-#if HAVE_GETOPT_LONG
+#ifdef HAVE_GETOPT_LONG
     int option_index;
 #endif  /* HAVE_GETOPT_LONG */
 
-#if HAVE_GETOPT_LONG
+#ifdef HAVE_GETOPT_LONG
     struct option long_options[] = {
         {"width",             required_argument,  &long_opt, 'w'},
         {"height",            required_argument,  &long_opt, 'h'},
@@ -271,7 +271,7 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 
     for (;;) {
 
-#if HAVE_GETOPT_LONG
+#ifdef HAVE_GETOPT_LONG
         n = getopt_long(argc, argv, optstring,
                         long_options, &option_index);
 #else
@@ -390,7 +390,7 @@ static FILE * open_input_file(char const *filename)
     }
     f = fopen(filename, "rb");
     if (!f) {
-#if _ERRNO_H
+#ifdef _ERRNO_H
         fprintf(stderr, "fopen('%s') failed.\n" "reason: %s.\n",
                 filename, strerror(errno));
 #endif  /* HAVE_ERRNO_H */
@@ -416,7 +416,7 @@ static FILE * open_output_file(char const *filename)
     }
     f = fopen(filename, "wb");
     if (!f) {
-#if _ERRNO_H
+#ifdef _ERRNO_H
         fprintf(stderr, "fopen('%s') failed.\n" "reason: %s.\n",
                 filename, strerror(errno));
 #endif  /* HAVE_ERRNO_H */
