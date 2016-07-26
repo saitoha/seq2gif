@@ -54,6 +54,12 @@ If you want to build windows native build, [MinGW](http://www.mingw.org/) is req
   # make install
 ```
 
+Packages
+--------
+
+- [FreeBSD ports](http://portsmon.freebsd.org/portoverview.py?category=graphics&portname=seq2gif)
+
+
 Usage
 -----
 
