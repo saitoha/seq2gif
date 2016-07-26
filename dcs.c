@@ -28,13 +28,13 @@
 #include "dcs.h"
 
 #include <stdio.h>
-#if HAVE_CTYPE_H
+#ifdef HAVE_CTYPE_H
 # include <ctype.h>
 #endif
-#if HAVE_STDLIB_H
+#ifdef HAVE_STDLIB_H
 # include <stdlib.h>
 #endif
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 # include <string.h>
 #endif
 
@@ -634,6 +634,11 @@ void decdld_parse_header(struct terminal *term, char *start_buf)
     decdld_parse_data(cp + 1, start_char, term->drcs[charset]); /* skil final char */
 }
 
-/* emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+/* emacs Local Variables:      */
+/* emacs mode: c               */
+/* emacs tab-width: 4          */
+/* emacs indent-tabs-mode: nil */
+/* emacs c-basic-offset: 4     */
+/* emacs End:                  */
 /* vim: set expandtab ts=4 : */
 /* EOF */

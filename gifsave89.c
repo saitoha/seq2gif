@@ -25,10 +25,10 @@ standard headers...
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 # include <string.h>
 #endif
-#if HAVE_CTYPE_H
+#ifdef HAVE_CTYPE_H
 # include <ctype.h>
 #endif
 #if defined(GSTESTDRIVE)

@@ -18,20 +18,25 @@
 #ifndef MALLOC_STUB_H
 #define MALLOC_STUB_H
 
-#if HAVE_SYS_TYPES_H
+#ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
 #endif  /* HAVE_SYS_TYPES_H */
 
-#if !HAVE_MALLOC
+#ifndef HAVE_MALLOC
 void * rpl_malloc(size_t n);
 #endif /* !HAVE_MALLOC */
 
-#if !HAVE_REALLOC
+#ifndef HAVE_REALLOC
 void * rpl_realloc(void *p, size_t n);
 #endif /* !HAVE_REALLOC */
 
 #endif /* MALLOC_STUB_H */
 
-/* Hello emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+/* emacs Local Variables:      */
+/* emacs mode: c               */
+/* emacs tab-width: 4          */
+/* emacs indent-tabs-mode: nil */
+/* emacs c-basic-offset: 4     */
+/* emacs End:                  */
 /* vim: set expandtab ts=4 : */
 /* EOF */

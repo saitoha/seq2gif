@@ -17,17 +17,17 @@
 
 #include "config.h"
 
-#if HAVE_ERRNO_H
+#ifdef HAVE_ERRNO_H
 #include <errno.h>
 #endif  /* HAVE_ERRNO_H */
 
 #include <stdlib.h>
 
-#if HAVE_MEMORY_H
+#ifdef HAVE_MEMORY_H
 # include <memory.h>
 #endif  /* HAVE_MEMORY_H */
 
-#if !HAVE_MALLOC
+#ifndef HAVE_MALLOC
 # undef malloc
 void *
 rpl_malloc(size_t n)
@@ -39,7 +39,7 @@ rpl_malloc(size_t n)
 }
 #endif /* !HAVE_MALLOC */
 
-#if !HAVE_REALLOC
+#ifndef HAVE_REALLOC
 # undef realloc
 void *
 rpl_realloc(void *p, size_t n)
@@ -54,6 +54,11 @@ rpl_realloc(void *p, size_t n)
 }
 #endif /* !HAVE_REALLOC */
 
-/* Hello emacs, -*- Mode: C; tab-width: 4; indent-tabs-mode: nil -*- */
+/* emacs Local Variables:      */
+/* emacs mode: c               */
+/* emacs tab-width: 4          */
+/* emacs indent-tabs-mode: nil */
+/* emacs c-basic-offset: 4     */
+/* emacs End:                  */
 /* vim: set expandtab ts=4 : */
 /* EOF */
