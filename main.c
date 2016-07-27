@@ -250,15 +250,10 @@ static void show_help()
            );
 }
 
-enum seq2gif_optflags {
-    seq2gif_optflag_render_interval = 0x1001,
-    seq2gif_optflag_play_speed      = 's',
-};
-
 static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int n;
-    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:s:";
+    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:I:s:";
 #ifdef HAVE_GETOPT_LONG
     int long_opt;
     int option_index;
@@ -276,8 +271,8 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         {"output",            required_argument,  &long_opt, 'o'},
         {"help",              no_argument,        &long_opt, 'H'},
         {"version",           no_argument,        &long_opt, 'V'},
-        {"render-interval",   required_argument,  &long_opt, seq2gif_optflag_render_interval},
-        {"play-speed",        required_argument,  &long_opt, seq2gif_optflag_play_speed},
+        {"render-interval",   required_argument,  &long_opt, 'I'},
+        {"play-speed",        required_argument,  &long_opt, 's'},
         {0, 0, 0, 0}
     };
 #endif  /* HAVE_GETOPT_LONG */
@@ -377,10 +372,10 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         case 'V':
             psettings->show_version = 1;
             break;
-        case seq2gif_optflag_render_interval:
+        case 'I':
             psettings->render_interval = atoi(optarg);
             break;
-        case seq2gif_optflag_play_speed:
+        case 's':
             psettings->play_speed = atof(optarg);
             break;
         default:
