@@ -568,7 +568,7 @@ int main(int argc, char *argv[])
     prev = now = readtime(in_file, obuf);
 
     /* main loop */
-    gif_unit_time = (int)(10000 * settings.play_speed);
+    gif_unit_time = (uint32_t)(10000 * settings.play_speed);
     gif_render_interval = settings.render_interval / 10;
     is_render_deferred = 0;
     for(;;) {
