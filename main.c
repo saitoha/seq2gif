@@ -373,9 +373,15 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
             break;
         case 'I':
             psettings->render_interval = atoi(optarg);
+            if (psettings->render_interval < 0) {
+                goto argerr;
+            }
             break;
         case 's':
             psettings->play_speed = atof(optarg);
+            if (psettings->play_speed <= 0.0) {
+                goto argerr;
+            }
             break;
         default:
             goto argerr;
