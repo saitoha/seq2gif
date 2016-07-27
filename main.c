@@ -243,14 +243,11 @@ static void show_help()
 
 static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
-    int long_opt;
     int n;
     char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:";
 #ifdef HAVE_GETOPT_LONG
+    int long_opt;
     int option_index;
-#endif  /* HAVE_GETOPT_LONG */
-
-#ifdef HAVE_GETOPT_LONG
     struct option long_options[] = {
         {"width",             required_argument,  &long_opt, 'w'},
         {"height",            required_argument,  &long_opt, 'h'},
@@ -280,9 +277,11 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         if (n == -1) {
             break;
         }
+#ifdef HAVE_GETOPT_LONG
         if (n == 0) {
             n = long_opt;
         }
+#endif  /* HAVE_GETOPT_LONG */
         switch(n) {
         case 'w':
             psettings->width = atoi(optarg);
