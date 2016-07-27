@@ -70,7 +70,6 @@ struct settings_t {
     int repeat;
     char *input;
     char *output;
-
     int render_interval;
     double play_speed;
 };
@@ -500,7 +499,6 @@ int main(int argc, char *argv[])
     unsigned char *gifimage = NULL;
     int gifsize, colormap[COLORS * BYTES_PER_PIXEL + 1];
     unsigned char *img;
-
     uint32_t gif_unit_time;
     uint32_t gif_render_interval;
     int is_render_deferred;
@@ -519,7 +517,6 @@ int main(int argc, char *argv[])
         0,      /* repeat */
         NULL,   /* input */
         NULL,   /* output */
-
         20,     /* render_interval */
         1.0,    /* play_speed */
     };
