@@ -147,27 +147,54 @@ static void set_colormap_rgb332(int colormap[COLORS * BYTES_PER_PIXEL + 1])
     colormap[COLORS * BYTES_PER_PIXEL] = -1;
 }
 
+static uint32_t pixel2index_xterm256_grayscale(uint8_t intensity)
+{
+    if (intensity < 4) {
+        return 16; /* black */
+    } else if (intensity > 246) {
+        return 231; /* white */
+    } else if (intensity >= 92 && (intensity - 52) % 40 < 5) {
+        return 16 + (intensity - 52) / 40 * 43; /* 6x6x6 color cube */
+    } else {
+        uint32_t index = (intensity - 3) / 10;
+        if (index >= 24) index = 23;
+        return 232 + index; /* 24 gray scale */
+    }
+}
+
 static uint32_t pixel2index_xterm256(uint32_t pixel)
 {
     /* pixel is always 24bpp */
     uint32_t r, g, b;
+    uint32_t r6, g6, b6;
+    int i;
+
+    /* colormap: terminal 256color */
+    /* basic colors */
+    for (i = 0; i < 16; i++)
+        if (color_list[i] == (pixel & bit_mask[24]))
+            return i;
 
     /* split r, g, b bits */
     r = (pixel >> 16) & bit_mask[8];
     g = (pixel >> 8)  & bit_mask[8];
     b = (pixel >> 0)  & bit_mask[8];
 
-    /* colormap: terminal 256color */
-    if (r == g && r == b) { // 24 gray scale
-        r = 24 * r / COLORS;
-        return 232 + r;
-    }                       // 6x6x6 color cube
+    /* gray scale */
+    if (r == g && r == b)
+        return pixel2index_xterm256_grayscale(r);
 
-    r = 6 * r / COLORS;
-    g = 6 * g / COLORS;
-    b = 6 * b / COLORS;
+    /* 6x6x6 color cube */
+    r6 = r < 48 ? 0 : 1 + (int) (r - 75) / 40;
+    g6 = g < 48 ? 0 : 1 + (int) (g - 75) / 40;
+    b6 = b < 48 ? 0 : 1 + (int) (b - 75) / 40;
 
-    return 16 + (r * 36) + (g * 6) + b;
+    if (r6 == g6 && r6 == b6) {
+        uint32_t brightness = (299 * r + 587 * g + 114 * b + 500) / 1000;
+        return pixel2index_xterm256_grayscale(brightness);
+    }
+
+    return 16 + (r6 * 36) + (g6 * 6) + b6;
 }
 
 static uint32_t pixel2index_rgb332(uint32_t pixel)
