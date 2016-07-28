@@ -107,6 +107,10 @@ Options:
                                        list (default: xterm256):
                                          rgb332   -> R:3bit, G:3bit, B:2bit
                                          xterm256 -> xterm 256color
+-d DITHER, --diffuse=DITHER            specify a type of dithering from the
+                                       following list (default: fs):
+                                         none -> do not dither
+                                         fs   -> use Floyd-Steinberg dithering
 ```
 
 

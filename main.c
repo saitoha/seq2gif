@@ -62,6 +62,11 @@ struct colormapping_t {
     void (*set_colormap)(int colormap[COLORS * BYTES_PER_PIXEL + 1]);
 };
 
+enum dithering_type {
+    dithering_none,
+    dithering_floyd_steinberg,
+};
+
 struct settings_t {
     int width;
     int height;
@@ -80,6 +85,7 @@ struct settings_t {
     double play_speed;
     const uint32_t* palette16;
     struct colormapping_t *cmap;
+    int dithering;
 };
 
 enum cmap_bitfield {
@@ -225,7 +231,7 @@ static struct colormapping_t cmap_xterm256 = {
     set_colormap_xterm256,
 };
 
-static void apply_colormap(struct colormapping_t *cmap, struct pseudobuffer *pb, unsigned char *img)
+static void apply_colormap_pixelwise(struct colormapping_t *cmap, struct pseudobuffer *pb, unsigned char *img)
 {
     int w, h;
     uint32_t pixel = 0;
@@ -238,6 +244,65 @@ static void apply_colormap(struct colormapping_t *cmap, struct pseudobuffer *pb,
         }
     }
 }
+
+static void propagate_pixel_error(uint8_t *pixel, const int *err, int num, int den) {
+    for (int i = 0; i < BYTES_PER_PIXEL; i++) {
+        int value = (int) pixel[i] - err[i] * num / den;
+        if (value < 0)
+            value = 0;
+        else if (value > bit_mask[BITS_PER_BYTE])
+            value = bit_mask[BITS_PER_BYTE];
+        pixel[i] = (uint8_t) value;
+    }
+}
+
+static void apply_colormap_dithered(struct colormapping_t *cmap, const int *colormap, struct pseudobuffer *pb, unsigned char *img)
+{
+    /* assert(pb->bytes_per_pixel == BYTES_PER_PIXEL); */
+    int h, w, hskip = pb->line_length, wskip = pb->bytes_per_pixel;
+    uint8_t* buffer;
+
+    buffer = malloc(pb->height * hskip + 1);
+    memcpy(buffer, pb->buf, pb->height * hskip);
+
+    for (h = 0; h < pb->height; h++) {
+        for (w = 0; w < pb->width; w++) {
+            int err[3];
+            uint8_t *pixel = buffer + h * hskip + w * wskip;
+
+            uint32_t const color24 = pixel[0] | (uint32_t) pixel[1] << 8 | (uint32_t) pixel[2] << 16;
+            int const index = cmap->pixel2index(color24) & bit_mask[BITS_PER_BYTE];
+            int const indexed_b = colormap[index * BYTES_PER_PIXEL + 2];
+            int const indexed_g = colormap[index * BYTES_PER_PIXEL + 1];
+            int const indexed_r = colormap[index * BYTES_PER_PIXEL + 0];
+
+            img[h * pb->width + w] = index;
+            err[0] = indexed_b - (int) pixel[0];
+            err[1] = indexed_g - (int) pixel[1];
+            err[2] = indexed_r - (int) pixel[2];
+
+            if (w + 1 < pb->width)
+                propagate_pixel_error(pixel + wskip, err, 7, 16);
+            if (h + 1 < pb->height) {
+                if (w > 0)
+                    propagate_pixel_error(pixel + hskip - wskip, err, 3, 16);
+                propagate_pixel_error(pixel + hskip, err, 5, 16);
+                if (w + 1 < pb->width)
+                    propagate_pixel_error(pixel + hskip + wskip, err, 1, 16);
+            }
+        }
+    }
+
+    free(buffer);
+}
+
+static void apply_colormap(struct settings_t * const settings, const int *colormap, struct pseudobuffer *pb, unsigned char *img) {
+    if (settings->dithering == dithering_floyd_steinberg)
+        apply_colormap_dithered(settings->cmap, colormap, pb, img);
+    else
+        apply_colormap_pixelwise(settings->cmap, pb, img);
+}
+
 
 static size_t write_gif(unsigned char *gifimage, int size, FILE *f)
 {
@@ -315,13 +380,17 @@ static void show_help()
             "                                       list (default: xterm256):\n"
             "                                         rgb332   -> R:3bit, G:3bit, B:2bit\n"
             "                                         xterm256 -> xterm 256color\n"
+            "-d DITHER, --diffuse=DITHER            specify a type of dithering from the\n"
+            "                                       following list (default: fs):\n"
+            "                                         none -> do not dither\n"
+            "                                         fs   -> use Floyd-Steinberg dithering\n"
            );
 }
 
 static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int n;
-    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:I:s:p:m:";
+    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:I:s:p:m:d:";
 #ifdef HAVE_GETOPT_LONG
     int long_opt;
     int option_index;
@@ -343,6 +412,7 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         {"play-speed",        required_argument,  &long_opt, 's'},
         {"palette16",         required_argument,  &long_opt, 'p'},
         {"colormap",          required_argument,  &long_opt, 'm'},
+        {"diffuse",           required_argument,  &long_opt, 'd'},
         {0, 0, 0, 0}
     };
 #endif  /* HAVE_GETOPT_LONG */
@@ -470,6 +540,14 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
                 psettings->cmap = &cmap_rgb332;
             else if (strcmp(optarg, "xterm256") == 0)
                 psettings->cmap = &cmap_xterm256;
+            else
+                goto argerr;
+            break;
+        case 'd':
+            if (strcmp(optarg, "none") == 0)
+                psettings->dithering = dithering_none;
+            else if (strcmp(optarg, "fs") == 0)
+                psettings->dithering = dithering_floyd_steinberg;
             else
                 goto argerr;
             break;
@@ -617,6 +695,7 @@ int main(int argc, char *argv[])
         1.0,    /* play_speed */
         NULL,   /* palette16 */
         &cmap_xterm256, /* cmap */
+        dithering_floyd_steinberg, /* dithering */
     };
 
     if (parse_args(argc, argv, &settings) != 0) {
@@ -709,7 +788,7 @@ int main(int argc, char *argv[])
             if (!is_render_deferred) {
                 /* take screenshot */
                 refresh(&pb, &term);
-                apply_colormap(settings.cmap, &pb, img);
+                apply_colormap(&settings, colormap, &pb, img);
             }
 
             is_render_deferred = delay < gif_render_interval;
@@ -730,7 +809,7 @@ int main(int argc, char *argv[])
     if (settings.last_frame_delay > 0) {
         if (nret != EXIT_FAILURE) {
             refresh(&pb, &term);
-            apply_colormap(settings.cmap, &pb, img);
+            apply_colormap(&settings, colormap, &pb, img);
         }
         delay = settings.last_frame_delay / 10;
         if (delay < gif_render_interval)
