@@ -68,29 +68,35 @@ Usage: seq2gif [Options] < ttyrecord > record.gif
        seq2gif [Options] -i ttyrecord -o record.gif
 
 Options:
--w WIDTH, --width=WIDTH               specify terminal width in cell size.
-                                      (default: 80)
--h HEIGHT, --height=HEIGHT            specify terminal height in cell size.
-                                      (default: 24)
--l DELAY, --last-frame-delay=DELAY    specify delay in msec which is added
-                                      to the last frame. (default: 300)
--f COLORNO --foreground-color=COLORNO specify foreground color palette.
-                                      number.
--b COLORNO --background-color=COLORNO specify background color palette
-                                      number.
--c COLORNO --cursor-color=COLORNO     specify cursor color palette
-                                      number.
--t TABSTOP --tabstop=TABSTOP          specify hardware tabstop(default: 8)
--j --cjkwidth                         treat East Asian Ambiguous width
-                                      characters (UAX#11) as wide.
--r COUNT --repeat=COUNT               specify animation repeat count. loop
-                                      infinitely if 0 is given. (default: 0)
--i FILE --input=FILE                  specify input file name. use STDIN
-                                      if '-' is given. (default: '-')
--o FILE --output=FILE                 specify output file name. use STDOUT
-                                      if '-' is given. (default: '-')
--V, --version                         show version and license information.
--H, --help                            show this help.
+-w WIDTH, --width=WIDTH                specify terminal width in cell size.
+                                       (default: 80)
+-h HEIGHT, --height=HEIGHT             specify terminal height in cell size.
+                                       (default: 24)
+-l DELAY, --last-frame-delay=DELAY     specify delay in msec which is added
+                                       to the last frame. (default: 300)
+-f COLORNO, --foreground-color=COLORNO specify foreground color palette.
+                                       number.
+-b COLORNO, --background-color=COLORNO specify background color palette
+                                       number.
+-c COLORNO, --cursor-color=COLORNO     specify cursor color palette
+                                       number.
+-t TABSTOP, --tabstop=TABSTOP          specify hardware tabstop(default: 8)
+-j, --cjkwidth                         treat East Asian Ambiguous width
+                                       characters (UAX#11) as wide.
+-r COUNT, --repeat=COUNT               specify animation repeat count. loop
+                                       infinitely if 0 is given. (default: 0)
+-i FILE, --input=FILE                  specify input file name. use STDIN
+                                       if '-' is given. (default: '-')
+-o FILE, --output=FILE                 specify output file name. use STDOUT
+                                       if '-' is given. (default: '-')
+-V, --version                          show version and license information.
+-H, --help                             show this help.
+-I DELAY, --render-interval=DELAY      skip frames with smaller delays than
+                                       DELAY specified in milliseconds.
+                                       (default: 20)
+-s NUM, --play-speed=NUM               specify the factor of the play speed.
+                                       A larger value means faster play.
+                                       (default: 1.0)
 ```
 
 
