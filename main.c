@@ -240,7 +240,7 @@ static void show_help()
             "                                       if '-' is given. (default: '-')\n"
             "-V, --version                          show version and license information.\n"
             "-H, --help                             show this help.\n"
-            "--render-interval=DELAY                skip frames with smaller delays than\n"
+            "-I DELAY, --render-interval=DELAY      skip frames with smaller delays than\n"
             "                                       DELAY specified in milliseconds.\n"
             "                                       (default: 20)\n"
             "-s NUM, --play-speed=NUM               specify the factor of the play speed.\n"
