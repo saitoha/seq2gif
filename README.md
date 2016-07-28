@@ -103,6 +103,10 @@ Options:
                                        'powershell', 'app', 'putty', 'mirc',
                                        'xterm', 'ubuntu', and 'solarized',
                                        'solarized256'. (default: 'vga').
+-m COLORMAP, --colormap=COLORMAP       specify a colormap from the following
+                                       list (default: xterm256):
+                                         rgb332   -> R:3bit, G:3bit, B:2bit
+                                         xterm256 -> xterm 256color
 ```
 
 
