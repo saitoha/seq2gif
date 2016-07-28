@@ -208,10 +208,9 @@ static uint32_t pixel2index_rgb332(uint32_t pixel)
     b = (pixel >> 0)  & bit_mask[8];
 
     /* colormap: red/green: 3bit blue: 2bit */
-    // get MSB ..._MASK bits
-    r = (r >> (8 - RED_MASK))   & bit_mask[RED_MASK];
-    g = (g >> (8 - GREEN_MASK)) & bit_mask[GREEN_MASK];
-    b = (b >> (8 - BLUE_MASK))  & bit_mask[BLUE_MASK];
+    r = (r * bit_mask[RED_MASK  ] + bit_mask[7]) / bit_mask[8];
+    g = (g * bit_mask[GREEN_MASK] + bit_mask[7]) / bit_mask[8];
+    b = (b * bit_mask[BLUE_MASK ] + bit_mask[7]) / bit_mask[8];
 
     return (r << RED_SHIFT) | (g << GREEN_SHIFT) | (b << BLUE_SHIFT);
 }
