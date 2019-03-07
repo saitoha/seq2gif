@@ -250,9 +250,9 @@ static void show_help()
             "                                       (default: 1.0)\n"
             "-p, --palette16=NAME                   specify a color palette name for the\n"
             "                                       first 16 colors. NAME is one of the\n"
-            "                                       following names: 'vga', 'cmd', 'app',\n"
-            "                                       'putty', 'mirc', 'xterm', 'rosa', and\n"
-            "                                       'seq2gif'. (default: 'vga').\n"
+            "                                       following names: 'vga', 'cmd', 'win',\n"
+            "                                       'app', 'putty', 'mirc', 'xterm', 'rosa',\n"
+            "                                       and 'seq2gif'. (default: 'vga').\n"
            );
 }
 

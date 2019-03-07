@@ -79,6 +79,9 @@ uint32_t color_list[256] = {
   - palette16_css          CSS/HTML (incomplete)
   - palette16_x11          X (incomplete)
 
+  Taken from https://blogs.msdn.microsoft.com/commandline/2017/08/02/updating-the-windows-console-colors/
+  - palette16_win_console  Windows Console (new colors)
+
   rosaterm default
   - palette16_rosaterm
 */
@@ -100,6 +103,11 @@ static const uint32_t palette16_standard_vga[16] = {
 static const uint32_t palette16_winxp_cmd[16] = {
     0x000000, 0x800000, 0x008000, 0x808000, 0x000080, 0x800080, 0x008080, 0xC0C0C0,
     0x808080, 0xFF0000, 0x00FF00, 0xFFFF00, 0x0000FF, 0xFF00FF, 0x00FFFF, 0xFFFFFF,
+};
+
+static const uint32_t palette16_win_console[16] = {
+    0x0c0c0c, 0xc50f1f, 0x13a10e, 0xc19c00, 0x0037da, 0x881798, 0x3a96dd, 0xcccccc,
+    0x767676, 0xe74856, 0x16c60c, 0xf9f1a5, 0x3b78ff, 0xb4009e, 0x61d6d6, 0xf2f2f2,
 };
 
 static const uint32_t palette16_terminal_app[16] = {
@@ -143,6 +151,8 @@ const uint32_t* color_parse_palette16(const char* name) {
     return palette16_standard_vga;
   else if (strcmp(name, "cmd") == 0)
     return palette16_winxp_cmd;
+  else if (strcmp(name, "win") == 0)
+    return palette16_win_console;
   else if (strcmp(name, "app") == 0)
     return palette16_terminal_app;
   else if (strcmp(name, "putty") == 0)
