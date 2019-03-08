@@ -78,6 +78,7 @@ uint32_t color_list[256] = {
   - palette16_xterm        xterm
   - palette16_css          CSS/HTML (incomplete)
   - palette16_x11          X (incomplete)
+  - palette16_ubuntu       Ubuntu
 
   Taken from https://blogs.msdn.microsoft.com/commandline/2017/08/02/updating-the-windows-console-colors/
   - palette16_win_console  Windows Console (new colors)
@@ -141,6 +142,11 @@ static const uint32_t palette16_css[16] = {
     unknown,  unknown,  0x90EE90, 0xFFFFE0, 0xADD8E6, unknown,  0xE0FFFF, unknown,
 }; */
 
+static const uint32_t palette16_ubuntu[16] = {
+    0x010101, 0xDE382B, 0x39B54A, 0xFFC706, 0x006FB8, 0x762671, 0x2CB5E9, 0xCCCCCC,
+    0x808080, 0xFF0000, 0x00FF00, 0xFFFF00, 0x0000FF, 0xFF00FF, 0x00FFFF, 0xFFFFFF,
+};
+
 const uint32_t* color_parse_palette16(const char* name) {
   if (strcmp(name, "vga") == 0)
     return palette16_standard_vga;
@@ -158,6 +164,8 @@ const uint32_t* color_parse_palette16(const char* name) {
     return palette16_xterm;
   else if (strcmp(name, "seq2gif") == 0)
     return palette16_seq2gif;
+  else if (strcmp(name, "ubuntu") == 0)
+    return palette16_ubuntu;
   else
     return NULL;
 }
