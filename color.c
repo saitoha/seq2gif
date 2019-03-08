@@ -141,11 +141,6 @@ static const uint32_t palette16_css[16] = {
     unknown,  unknown,  0x90EE90, 0xFFFFE0, 0xADD8E6, unknown,  0xE0FFFF, unknown,
 }; */
 
-static const uint32_t palette16_rosaterm[16] = {
-    0x000000, 0x800000, 0x008000, 0x808000, 0x000080, 0x800080, 0x008080, 0xC0C0C0,
-    0x808080, 0xFF0000, 0x32CD32, 0xFF7D00, 0x0000FF, 0xFF00FF, 0x40E0D0, 0xFFFFFF,
-};
-
 const uint32_t* color_parse_palette16(const char* name) {
   if (strcmp(name, "vga") == 0)
     return palette16_standard_vga;
@@ -161,8 +156,6 @@ const uint32_t* color_parse_palette16(const char* name) {
     return palette16_mirc;
   else if (strcmp(name, "xterm") == 0)
     return palette16_xterm;
-  else if (strcmp(name, "rosa") == 0)
-    return palette16_rosaterm;
   else if (strcmp(name, "seq2gif") == 0)
     return palette16_seq2gif;
   else
