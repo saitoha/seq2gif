@@ -632,7 +632,14 @@ int main(int argc, char *argv[])
     }
 
     if (settings.last_frame_delay > 0) {
-        controlgif(gsdata, -1, settings.last_frame_delay / 10, 0, 0);
+        if (nret != EXIT_FAILURE) {
+            refresh(&pb, &term);
+            apply_colormap(&pb, img);
+        }
+        delay = settings.last_frame_delay / 10;
+        if (delay < gif_render_interval)
+            delay = gif_render_interval;
+        controlgif(gsdata, -1, delay, 0, 0);
         putgif(gsdata, img);
     }
 
