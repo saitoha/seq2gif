@@ -72,6 +72,7 @@ uint32_t color_list[256] = {
   Taken from http://en.wikipedia.org/wiki/ANSI_escape_code
   - palette16_standard_vga Standard VGA colors
   - palette16_winxp_cmd    Windows XP CMD
+  - palette16_power_shell  PowerShell
   - palette16_terminal_app Terminal.app
   - palette16_putty        PuTTY
   - palette16_mirc         mIRC
@@ -103,6 +104,11 @@ static const uint32_t palette16_standard_vga[16] = {
 
 static const uint32_t palette16_winxp_cmd[16] = {
     0x000000, 0x800000, 0x008000, 0x808000, 0x000080, 0x800080, 0x008080, 0xC0C0C0,
+    0x808080, 0xFF0000, 0x00FF00, 0xFFFF00, 0x0000FF, 0xFF00FF, 0x00FFFF, 0xFFFFFF,
+};
+
+static const uint32_t palette16_power_shell[16] = {
+    0x000000, 0x800000, 0x008000, 0xEEEDF0, 0x000080, 0x012456, 0x008080, 0xC0C0C0,
     0x808080, 0xFF0000, 0x00FF00, 0xFFFF00, 0x0000FF, 0xFF00FF, 0x00FFFF, 0xFFFFFF,
 };
 
@@ -154,6 +160,8 @@ const uint32_t* color_parse_palette16(const char* name) {
     return palette16_winxp_cmd;
   else if (strcmp(name, "win") == 0)
     return palette16_win_console;
+  else if (strcmp(name, "powershell") == 0)
+    return palette16_power_shell;
   else if (strcmp(name, "app") == 0)
     return palette16_terminal_app;
   else if (strcmp(name, "putty") == 0)
