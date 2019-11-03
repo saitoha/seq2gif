@@ -614,12 +614,11 @@ int main(int argc, char *argv[])
             break;
         }
 
+        parse(&term, obuf, nread, &dirty);
         now = readtime(in_file, obuf);
         if (now == -1) {
             break;
         }
-
-        parse(&term, obuf, nread, &dirty);
 
         if (frame < settings.start_frame) {
             continue;
