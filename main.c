@@ -598,7 +598,7 @@ int main(int argc, char *argv[])
     gif_unit_time = (uint32_t)(10000 * settings.play_speed);
     gif_render_interval = settings.render_interval / 10;
     is_render_deferred = 0;
-    for (frame = 0;; frame++) {
+    for (frame = 0; settings.end_frame == -1 || frame <= settings.end_frame; frame++) {
         len = readlen(in_file, obuf);
         if (len <= 0) {
             nret = EXIT_FAILURE;
@@ -617,10 +617,6 @@ int main(int argc, char *argv[])
         now = readtime(in_file, obuf);
         if (now == -1) {
             break;
-        }
-
-        if (settings.end_frame > -1 && frame > settings.end_frame) {
-            continue;
         }
 
         parse(&term, obuf, nread, &dirty);
