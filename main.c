@@ -248,7 +248,7 @@ static void show_help()
             "-s NUM, --play-speed=NUM               specify the factor of the play speed.\n"
             "                                       A larger value means faster play.\n"
             "                                       (default: 1.0)\n"
-            "-p, --palette16=NAME                   specify a color palette name for the\n"
+            "-p NAME, --palette16=NAME              specify a color palette name for the\n"
             "                                       first 16 colors. NAME is one of the\n"
             "                                       following names: 'vga', 'cmd', 'win',\n"
             "                                       'powershell', 'app', 'putty', 'mirc',\n"
