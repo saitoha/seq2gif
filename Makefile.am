@@ -16,9 +16,11 @@ seq2gif_CFLAGS = $(MAYBE_COVERAGE)
 
 test: all
 	for ttyfile in tests/data/*.tty; do ./seq2gif -i "$$ttyfile" -o /dev/null; done
-	./seq2gif -i tests/data/sl.tty -o /dev/null
 	! ./seq2gif -i /non-existent-file.tty -o /dev/null
 	! ./seq2gif -i tests/data/sl.tty -o /non-existent-file.out
+	for palette in xxxx vga cmd win powershell app putty mirc xterm ubuntu and solarized solarized256; do \
+	  ./seq2gif -p "$$palette" -i tests/data/color16.tty -o /dev/null 2>/dev/null; \
+	done
 
 coveralls: test
 	coveralls -E '.*\.h' -e tests -e glyph -e m4
