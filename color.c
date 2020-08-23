@@ -66,8 +66,8 @@ uint32_t color_list[256] = {
 /*
   ANSI colors
 
-  Original seq2gif values
-  - palette16_seq2gif
+  Original seq2gif colors
+  - palette16_solarized256
 
   Taken from http://en.wikipedia.org/wiki/ANSI_escape_code
   - palette16_standard_vga Standard VGA colors
@@ -88,7 +88,7 @@ uint32_t color_list[256] = {
   - palette16_rosaterm
 */
 
-static const uint32_t palette16_seq2gif[16] = {
+static const uint32_t palette16_solarized256[16] = {
     0x262626, 0xd70000, 0x5f8700, 0xaf8700, 0x0087ff, 0xaf005f, 0x0087ff, 0xe4e4e4,
     0x1c1c1c, 0xd75f00, 0x585858, 0x626262, 0x808080, 0x5f5faf, 0x8a8a8a, 0xffffd7,
 };
@@ -170,8 +170,8 @@ const uint32_t* color_parse_palette16(const char* name) {
     return palette16_mirc;
   else if (strcmp(name, "xterm") == 0)
     return palette16_xterm;
-  else if (strcmp(name, "seq2gif") == 0)
-    return palette16_seq2gif;
+  else if (strcmp(name, "solarized256") == 0)
+    return palette16_solarized256;
   else if (strcmp(name, "ubuntu") == 0)
     return palette16_ubuntu;
   else
