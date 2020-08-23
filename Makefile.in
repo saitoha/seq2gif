@@ -905,7 +905,7 @@ uninstall-am: uninstall-binPROGRAMS
 
 
 test: all
-	./seq2gif -i tests/data/sl.tty -o /dev/null
+	for ttyfile in tests/data/*.tty; do ./seq2gif -i "$$ttyfile" -o /dev/null; done
 
 coveralls: test
 	coveralls -E '.*\.h' -e tests -e glyph -e m4
