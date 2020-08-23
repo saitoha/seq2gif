@@ -69,6 +69,9 @@ uint32_t color_list[256] = {
   Original seq2gif colors
   - palette16_solarized256
 
+  Taken from https://ethanschoonover.com/solarized/#the-values
+  - palette16_solarized
+
   Taken from http://en.wikipedia.org/wiki/ANSI_escape_code
   - palette16_standard_vga Standard VGA colors
   - palette16_winxp_cmd    Windows XP CMD
@@ -91,6 +94,11 @@ uint32_t color_list[256] = {
 static const uint32_t palette16_solarized256[16] = {
     0x262626, 0xd70000, 0x5f8700, 0xaf8700, 0x0087ff, 0xaf005f, 0x00afaf, 0xe4e4e4,
     0x1c1c1c, 0xd75f00, 0x585858, 0x626262, 0x808080, 0x5f5faf, 0x8a8a8a, 0xffffd7,
+};
+
+static const uint32_t palette16_solarized[16] = {
+    0x073642, 0xdc322f, 0x859900, 0xb58900, 0x268bd2, 0xd33682, 0x2aa198, 0xeee8d5,
+    0x002b36, 0xcb4b16, 0x586e75, 0x657b83, 0x839496, 0x6c71c4, 0x93a1a1, 0xfdf6e3,
 };
 
 static const uint32_t palette16_standard_vga[16] = {
@@ -170,10 +178,12 @@ const uint32_t* color_parse_palette16(const char* name) {
     return palette16_mirc;
   else if (strcmp(name, "xterm") == 0)
     return palette16_xterm;
-  else if (strcmp(name, "solarized256") == 0)
-    return palette16_solarized256;
   else if (strcmp(name, "ubuntu") == 0)
     return palette16_ubuntu;
+  else if (strcmp(name, "solarized") == 0)
+    return palette16_solarized;
+  else if (strcmp(name, "solarized256") == 0)
+    return palette16_solarized256;
   else
     return NULL;
 }

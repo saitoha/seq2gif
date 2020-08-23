@@ -252,8 +252,8 @@ static void show_help()
             "                                       first 16 colors. NAME is one of the\n"
             "                                       following names: 'vga', 'cmd', 'win',\n"
             "                                       'powershell', 'app', 'putty', 'mirc',\n"
-            "                                       'xterm', 'ubuntu', and 'solarized256'.\n"
-            "                                       (default: 'vga').\n"
+            "                                       'xterm', 'ubuntu', and 'solarized',\n"
+            "                                       'solarized256'. (default: 'vga').\n"
            );
 }
 
