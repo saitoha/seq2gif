@@ -16,9 +16,11 @@ seq2gif_CFLAGS = $(MAYBE_COVERAGE)
 
 test: all
 	for ttyfile in tests/data/*.tty; do ./seq2gif -i "$$ttyfile" -o /dev/null; done
-	./seq2gif -i tests/data/sl.tty -o /dev/null
 	! ./seq2gif -i /non-existent-file.tty -o /dev/null
 	! ./seq2gif -i tests/data/sl.tty -o /non-existent-file.out
+	for dither in none fs; do for map in rgb332 xterm256; do \
+	  ./seq2gif -d $$dither -m $$map -i tests/data/ls.tty -o /dev/null; \
+	done; done
 
 coveralls: test
 	coveralls -E '.*\.h' -e tests -e glyph -e m4
