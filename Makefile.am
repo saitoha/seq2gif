@@ -15,7 +15,7 @@ seq2gif_SOURCES = main.c util.c pseudo.c terminal.c function.c \
 seq2gif_CFLAGS = $(MAYBE_COVERAGE)
 
 test: all
-	./seq2gif -i tests/data/sl.tty -o /dev/null
+	for ttyfile in tests/data/*.tty; do ./seq2gif -i "$$ttyfile" -o /dev/null; done
 
 coveralls: test
 	coveralls -E '.*\.h' -e tests -e glyph -e m4
