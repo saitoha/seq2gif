@@ -97,6 +97,9 @@ Options:
 -s NUM, --play-speed=NUM               specify the factor of the play speed.
                                        A larger value means faster play.
                                        (default: 1.0)
+-B, --use-bright-for-bold              use bright colors to render the
+                                       characters with bold attribute instead
+                                       of using bold fonts. (default: 0)
 ```
 
 

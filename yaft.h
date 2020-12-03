@@ -184,6 +184,7 @@ struct terminal {
     int cursor_color;                            /* corsor color */
     int tabwidth;                                /* hardware tabstop */
     wcwidth_func_t fn_wcwidth;                   /* wcwidth strategy */
+    bool use_bright_instead_of_bold;             /* interpretation of bold attributes */
 };
 
 struct parm_t { /* for parse_arg() */

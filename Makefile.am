@@ -16,9 +16,10 @@ seq2gif_CFLAGS = $(MAYBE_COVERAGE)
 
 test: all
 	for ttyfile in tests/data/*.tty; do ./seq2gif -i "$$ttyfile" -o /dev/null; done
-	./seq2gif -i tests/data/sl.tty -o /dev/null
 	! ./seq2gif -i /non-existent-file.tty -o /dev/null
 	! ./seq2gif -i tests/data/sl.tty -o /non-existent-file.out
+	./seq2gif -i tests/data/SGR1.tty -o /dev/null
+	./seq2gif -i tests/data/SGR1.tty -o /dev/null -B
 
 coveralls: test
 	coveralls -E '.*\.h' -e tests -e glyph -e m4

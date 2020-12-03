@@ -77,10 +77,14 @@ int set_cell(struct terminal *term, int y, int x, const struct glyph_t *glyphp)
 
     cell.glyphp = glyphp;
 
-    cell.color_pair.fg = (term->attribute & attr_mask[ATTR_BOLD] && term->color_pair.fg <= 7) ?
-        term->color_pair.fg + BRIGHT_INC: term->color_pair.fg;
-    cell.color_pair.bg = (term->attribute & attr_mask[ATTR_BLINK] && term->color_pair.bg <= 7) ?
-        term->color_pair.bg + BRIGHT_INC: term->color_pair.bg;
+    cell.color_pair.fg = term->color_pair.fg;
+    cell.color_pair.bg = term->color_pair.bg;
+    if(term->use_bright_instead_of_bold){
+        if(term->attribute & attr_mask[ATTR_BOLD] && term->color_pair.fg <= 7)
+            cell.color_pair.fg += BRIGHT_INC;
+    }
+    if(term->attribute & attr_mask[ATTR_BLINK] && term->color_pair.bg <= 7)
+        cell.color_pair.bg += BRIGHT_INC;
 
     if (term->attribute & attr_mask[ATTR_REVERSE]) {
         color_tmp          = cell.color_pair.fg;
@@ -386,6 +390,8 @@ void term_init(struct terminal *term, int width, int height,
     } else {
         term->fn_wcwidth = mk_wcwidth;
     }
+
+    term->use_bright_instead_of_bold = false;
 
     if (DEBUG)
         fprintf(stderr, "width:%d height:%d cols:%d lines:%d\n",

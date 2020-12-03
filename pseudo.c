@@ -91,14 +91,17 @@ static void draw_line(struct pseudobuffer *pb, struct terminal *term, int line)
                 color_pair.bg = color_pair.fg;
 
             for (w = 0; w < CELL_WIDTH; w++) {
+                int isfg = 0;
                 pos = (term->width - 1 - margin_right - w) * pb->bytes_per_pixel
                     + (line * CELL_HEIGHT + h) * pb->line_length;
 
-                /* set color palette */
-                if (cellp->glyphp->bitmap[h] & (0x01 << (bdf_padding + w)))
-                    pixel = color_list[color_pair.fg];
+                if (cellp->attribute & attr_mask[ATTR_BOLD] && !term->use_bright_instead_of_bold)
+                    isfg = cellp->glyphp->bitmap[h] & (0x03 << (bdf_padding + w));
                 else
-                    pixel = color_list[color_pair.bg];
+                    isfg = cellp->glyphp->bitmap[h] & (0x01 << (bdf_padding + w));
+
+                /* set color palette */
+                pixel = color_list[isfg ? color_pair.fg : color_pair.bg];
 
                 /* update copy buffer only */
                 memcpy(pb->buf + pos, &pixel, pb->bytes_per_pixel);

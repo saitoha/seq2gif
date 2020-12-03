@@ -72,6 +72,7 @@ struct settings_t {
     char *output;
     int render_interval;
     double play_speed;
+    bool use_bright_instead_of_bold;
 };
 
 enum cmap_bitfield {
@@ -246,13 +247,16 @@ static void show_help()
             "-s NUM, --play-speed=NUM               specify the factor of the play speed.\n"
             "                                       A larger value means faster play.\n"
             "                                       (default: 1.0)\n"
+            "-B, --use-bright-for-bold              use bright colors to render the\n"
+            "                                       characters with bold attribute instead\n"
+            "                                       of using bold fonts. (default: 0)\n"
            );
 }
 
 static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int n;
-    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:I:s:";
+    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:I:s:B";
 #ifdef HAVE_GETOPT_LONG
     int long_opt;
     int option_index;
@@ -272,6 +276,7 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         {"version",           no_argument,        &long_opt, 'V'},
         {"render-interval",   required_argument,  &long_opt, 'I'},
         {"play-speed",        required_argument,  &long_opt, 's'},
+        {"use-bright-for-bold", no_argument,      &long_opt, 'B'},
         {0, 0, 0, 0}
     };
 #endif  /* HAVE_GETOPT_LONG */
@@ -382,6 +387,9 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
             if (psettings->play_speed <= 0.0) {
                 goto argerr;
             }
+            break;
+        case 'B':
+            psettings->use_bright_instead_of_bold = true;
             break;
         default:
             goto argerr;
@@ -525,6 +533,7 @@ int main(int argc, char *argv[])
         NULL,   /* output */
         20,     /* render_interval */
         1.0,    /* play_speed */
+        false,  /* use_bright_instead_of_bold */
     };
 
     if (parse_args(argc, argv, &settings) != 0) {
@@ -549,6 +558,7 @@ int main(int argc, char *argv[])
               settings.cursor_color,
               settings.tabwidth,
               settings.cjkwidth);
+    term.use_bright_instead_of_bold = settings.use_bright_instead_of_bold;
 
     /* init gif */
     img = (unsigned char *) ecalloc(pb.width * pb.height, 1);
