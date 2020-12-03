@@ -8,7 +8,7 @@ CLEANFILES = *.gcno *.gcda *.gcov
 bin_PROGRAMS = seq2gif
 seq2gif_SOURCES = main.c util.c pseudo.c terminal.c function.c \
 				  dcs.c parse.c gifsave89.c \
-				  malloc_stub.c wcwidth.c \
+				  malloc_stub.c wcwidth.c color.c \
 				  util.h pseudo.h terminal.h function.h \
 				  dcs.h parse.h gifsave89.h \
 				  wcwidth.h malloc_stub.h
@@ -16,9 +16,11 @@ seq2gif_CFLAGS = $(MAYBE_COVERAGE)
 
 test: all
 	for ttyfile in tests/data/*.tty; do ./seq2gif -i "$$ttyfile" -o /dev/null; done
-	./seq2gif -i tests/data/sl.tty -o /dev/null
 	! ./seq2gif -i /non-existent-file.tty -o /dev/null
 	! ./seq2gif -i tests/data/sl.tty -o /non-existent-file.out
+	for palette in xxxx vga cmd win powershell app putty mirc xterm ubuntu and solarized solarized256; do \
+	  ./seq2gif -p "$$palette" -i tests/data/color16.tty -o /dev/null 2>/dev/null; \
+	done
 
 coveralls: test
 	coveralls -E '.*\.h' -e tests -e glyph -e m4
