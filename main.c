@@ -600,18 +600,22 @@ int main(int argc, char *argv[])
         }
 
         if (term.esc.state != STATE_DCS || dirty) {
-            refresh(&pb, &term);
             delay = (now - prev) / gif_unit_time;
 
-            if (is_render_deferred && delay > gif_render_interval) {
+            if (is_render_deferred && delay >= gif_render_interval) {
                 controlgif(gsdata, -1, gif_render_interval, 0, 0);
                 prev += gif_render_interval * gif_unit_time;
                 putgif(gsdata, img);
                 delay -= gif_render_interval;
+                is_render_deferred = 0;
             }
 
-            /* take screenshot */
-            apply_colormap(&pb, img);
+            if (!is_render_deferred) {
+                /* take screenshot */
+                refresh(&pb, &term);
+                apply_colormap(&pb, img);
+            }
+
             is_render_deferred = delay < gif_render_interval;
             if (!is_render_deferred) {
                 controlgif(gsdata, -1, delay, 0, 0);
@@ -628,7 +632,14 @@ int main(int argc, char *argv[])
     }
 
     if (settings.last_frame_delay > 0) {
-        controlgif(gsdata, -1, settings.last_frame_delay / 10, 0, 0);
+        if (nret != EXIT_FAILURE) {
+            refresh(&pb, &term);
+            apply_colormap(&pb, img);
+        }
+        delay = settings.last_frame_delay / 10;
+        if (delay < gif_render_interval)
+            delay = gif_render_interval;
+        controlgif(gsdata, -1, delay, 0, 0);
         putgif(gsdata, img);
     }
 
