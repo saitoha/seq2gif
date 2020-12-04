@@ -72,6 +72,8 @@ struct settings_t {
     char *output;
     int render_interval;
     double play_speed;
+    int start_frame;
+    int end_frame;
 };
 
 enum cmap_bitfield {
@@ -246,13 +248,18 @@ static void show_help()
             "-s NUM, --play-speed=NUM               specify the factor of the play speed.\n"
             "                                       A larger value means faster play.\n"
             "                                       (default: 1.0)\n"
+            "-S NUM, --start-frame=NUM              start from frame NUM of the ttyrec.\n"
+            "                                       (default: 0)\n"
+            "-E NUM, --end-frame=NUM                end after frame NUM of the ttyrec.\n"
+            "                                       (-1 means play until the end.)\n"
+            "                                       (default: -1)\n"
            );
 }
 
 static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int n;
-    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:I:s:";
+    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:I:s:S:E:";
 #ifdef HAVE_GETOPT_LONG
     int long_opt;
     int option_index;
@@ -272,6 +279,8 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         {"version",           no_argument,        &long_opt, 'V'},
         {"render-interval",   required_argument,  &long_opt, 'I'},
         {"play-speed",        required_argument,  &long_opt, 's'},
+        {"start-frame",       required_argument,  &long_opt, 'S'},
+        {"end-frame",         required_argument,  &long_opt, 'E'},
         {0, 0, 0, 0}
     };
 #endif  /* HAVE_GETOPT_LONG */
@@ -380,6 +389,18 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         case 's':
             psettings->play_speed = atof(optarg);
             if (psettings->play_speed <= 0.0) {
+                goto argerr;
+            }
+            break;
+        case 'S':
+            psettings->start_frame = atoi(optarg);
+            if (psettings->start_frame < 0) {
+                goto argerr;
+            }
+            break;
+        case 'E':
+            psettings->end_frame = atoi(optarg);
+            if (psettings->end_frame < 0) {
                 goto argerr;
             }
             break;
@@ -508,6 +529,7 @@ int main(int argc, char *argv[])
     uint32_t gif_unit_time;
     uint32_t gif_render_interval;
     int is_render_deferred;
+    int frame;
 
     struct settings_t settings = {
         80,     /* width */
@@ -525,6 +547,8 @@ int main(int argc, char *argv[])
         NULL,   /* output */
         20,     /* render_interval */
         1.0,    /* play_speed */
+        0,      /* start_frame */
+        -1,     /* end_frame */
     };
 
     if (parse_args(argc, argv, &settings) != 0) {
@@ -577,7 +601,7 @@ int main(int argc, char *argv[])
     gif_unit_time = (uint32_t)(10000 * settings.play_speed);
     gif_render_interval = settings.render_interval / 10;
     is_render_deferred = 0;
-    for(;;) {
+    for (frame = 0; settings.end_frame == -1 || frame <= settings.end_frame; frame++) {
         len = readlen(in_file, obuf);
         if (len <= 0) {
             nret = EXIT_FAILURE;
@@ -597,6 +621,10 @@ int main(int argc, char *argv[])
         now = readtime(in_file, obuf);
         if (now == -1) {
             break;
+        }
+
+        if (frame < settings.start_frame) {
+            continue;
         }
 
         if (term.esc.state != STATE_DCS || dirty) {
