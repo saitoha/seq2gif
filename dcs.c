@@ -331,7 +331,7 @@ void sixel_parse_data(struct terminal *term, struct sixel_canvas_t *sc, char *st
 
 void reset_sixel(struct sixel_canvas_t *sc, struct color_pair_t color_pair, int width, int height)
 {
-    extern const uint32_t color_list[]; /* global */
+    extern uint32_t color_list[]; /* global */
     int i;
 
     memset(sc->bitmap, 0, BYTES_PER_PIXEL * width * height);

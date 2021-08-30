@@ -25,6 +25,7 @@
 #include "dcs.h"
 #include "parse.h"
 #include "gifsave89.h"
+#include "color.h"
 
 #include <stdio.h>
 
@@ -72,6 +73,7 @@ struct settings_t {
     char *output;
     int render_interval;
     double play_speed;
+    const uint32_t* palette16;
 };
 
 enum cmap_bitfield {
@@ -246,13 +248,19 @@ static void show_help()
             "-s NUM, --play-speed=NUM               specify the factor of the play speed.\n"
             "                                       A larger value means faster play.\n"
             "                                       (default: 1.0)\n"
+            "-p NAME, --palette16=NAME              specify a color palette name for the\n"
+            "                                       first 16 colors. NAME is one of the\n"
+            "                                       following names: 'vga', 'cmd', 'win',\n"
+            "                                       'powershell', 'app', 'putty', 'mirc',\n"
+            "                                       'xterm', 'ubuntu', and 'solarized',\n"
+            "                                       'solarized256'. (default: 'vga').\n"
            );
 }
 
 static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int n;
-    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:I:s:";
+    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:I:s:p:";
 #ifdef HAVE_GETOPT_LONG
     int long_opt;
     int option_index;
@@ -272,6 +280,7 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         {"version",           no_argument,        &long_opt, 'V'},
         {"render-interval",   required_argument,  &long_opt, 'I'},
         {"play-speed",        required_argument,  &long_opt, 's'},
+        {"palette16",         required_argument,  &long_opt, 'p'},
         {0, 0, 0, 0}
     };
 #endif  /* HAVE_GETOPT_LONG */
@@ -381,6 +390,18 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
             psettings->play_speed = atof(optarg);
             if (psettings->play_speed <= 0.0) {
                 goto argerr;
+            }
+            break;
+        case 'p':
+            {
+                const uint32_t* palette16 = color_parse_palette16(optarg);
+                if (palette16) {
+                    psettings->palette16 = palette16;
+                }
+                else {
+                    fprintf(stderr, PACKAGE_NAME ": unknown value for --palette16 (-p) option.\n");
+                    goto argerr;
+                }
             }
             break;
         default:
@@ -525,6 +546,7 @@ int main(int argc, char *argv[])
         NULL,   /* output */
         20,     /* render_interval */
         1.0,    /* play_speed */
+        NULL,   /* palette16 */
     };
 
     if (parse_args(argc, argv, &settings) != 0) {
@@ -539,6 +561,10 @@ int main(int argc, char *argv[])
     if (settings.show_version) {
         show_version();
         exit(0);
+    }
+
+    if (settings.palette16) {
+        memcpy(color_list, settings.palette16, sizeof(uint32_t) * 16);
     }
 
     /* init */

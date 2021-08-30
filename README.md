@@ -97,6 +97,12 @@ Options:
 -s NUM, --play-speed=NUM               specify the factor of the play speed.
                                        A larger value means faster play.
                                        (default: 1.0)
+-p NAME, --palette16=NAME              specify a color palette name for the
+                                       first 16 colors. NAME is one of the
+                                       following names: 'vga', 'cmd', 'win',
+                                       'powershell', 'app', 'putty', 'mirc',
+                                       'xterm', 'ubuntu', and 'solarized',
+                                       'solarized256'. (default: 'vga').
 ```
 
 

@@ -106,7 +106,8 @@ am_seq2gif_OBJECTS = seq2gif-main.$(OBJEXT) seq2gif-util.$(OBJEXT) \
 	seq2gif-pseudo.$(OBJEXT) seq2gif-terminal.$(OBJEXT) \
 	seq2gif-function.$(OBJEXT) seq2gif-dcs.$(OBJEXT) \
 	seq2gif-parse.$(OBJEXT) seq2gif-gifsave89.$(OBJEXT) \
-	seq2gif-malloc_stub.$(OBJEXT) seq2gif-wcwidth.$(OBJEXT)
+	seq2gif-malloc_stub.$(OBJEXT) seq2gif-wcwidth.$(OBJEXT) \
+	seq2gif-color.$(OBJEXT)
 seq2gif_OBJECTS = $(am_seq2gif_OBJECTS)
 seq2gif_LDADD = $(LDADD)
 seq2gif_LINK = $(CCLD) $(seq2gif_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
@@ -126,8 +127,8 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/seq2gif-dcs.Po \
-	./$(DEPDIR)/seq2gif-function.Po \
+am__depfiles_remade = ./$(DEPDIR)/seq2gif-color.Po \
+	./$(DEPDIR)/seq2gif-dcs.Po ./$(DEPDIR)/seq2gif-function.Po \
 	./$(DEPDIR)/seq2gif-gifsave89.Po ./$(DEPDIR)/seq2gif-main.Po \
 	./$(DEPDIR)/seq2gif-malloc_stub.Po \
 	./$(DEPDIR)/seq2gif-parse.Po ./$(DEPDIR)/seq2gif-pseudo.Po \
@@ -290,7 +291,7 @@ top_srcdir = @top_srcdir@
 CLEANFILES = *.gcno *.gcda *.gcov
 seq2gif_SOURCES = main.c util.c pseudo.c terminal.c function.c \
 				  dcs.c parse.c gifsave89.c \
-				  malloc_stub.c wcwidth.c \
+				  malloc_stub.c wcwidth.c color.c \
 				  util.h pseudo.h terminal.h function.h \
 				  dcs.h parse.h gifsave89.h \
 				  wcwidth.h malloc_stub.h
@@ -404,6 +405,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-color.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-dcs.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-function.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/seq2gif-gifsave89.Po@am__quote@ # am--include-marker
@@ -574,6 +576,20 @@ seq2gif-wcwidth.obj: wcwidth.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='wcwidth.c' object='seq2gif-wcwidth.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-wcwidth.obj `if test -f 'wcwidth.c'; then $(CYGPATH_W) 'wcwidth.c'; else $(CYGPATH_W) '$(srcdir)/wcwidth.c'; fi`
+
+seq2gif-color.o: color.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-color.o -MD -MP -MF $(DEPDIR)/seq2gif-color.Tpo -c -o seq2gif-color.o `test -f 'color.c' || echo '$(srcdir)/'`color.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-color.Tpo $(DEPDIR)/seq2gif-color.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='color.c' object='seq2gif-color.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-color.o `test -f 'color.c' || echo '$(srcdir)/'`color.c
+
+seq2gif-color.obj: color.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -MT seq2gif-color.obj -MD -MP -MF $(DEPDIR)/seq2gif-color.Tpo -c -o seq2gif-color.obj `if test -f 'color.c'; then $(CYGPATH_W) 'color.c'; else $(CYGPATH_W) '$(srcdir)/color.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/seq2gif-color.Tpo $(DEPDIR)/seq2gif-color.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='color.c' object='seq2gif-color.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(seq2gif_CFLAGS) $(CFLAGS) -c -o seq2gif-color.obj `if test -f 'color.c'; then $(CYGPATH_W) 'color.c'; else $(CYGPATH_W) '$(srcdir)/color.c'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -844,7 +860,8 @@ clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-		-rm -f ./$(DEPDIR)/seq2gif-dcs.Po
+		-rm -f ./$(DEPDIR)/seq2gif-color.Po
+	-rm -f ./$(DEPDIR)/seq2gif-dcs.Po
 	-rm -f ./$(DEPDIR)/seq2gif-function.Po
 	-rm -f ./$(DEPDIR)/seq2gif-gifsave89.Po
 	-rm -f ./$(DEPDIR)/seq2gif-main.Po
@@ -901,7 +918,8 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
-		-rm -f ./$(DEPDIR)/seq2gif-dcs.Po
+		-rm -f ./$(DEPDIR)/seq2gif-color.Po
+	-rm -f ./$(DEPDIR)/seq2gif-dcs.Po
 	-rm -f ./$(DEPDIR)/seq2gif-function.Po
 	-rm -f ./$(DEPDIR)/seq2gif-gifsave89.Po
 	-rm -f ./$(DEPDIR)/seq2gif-main.Po
@@ -952,9 +970,11 @@ uninstall-am: uninstall-binPROGRAMS
 
 test: all
 	for ttyfile in tests/data/*.tty; do ./seq2gif -i "$$ttyfile" -o /dev/null; done
-	./seq2gif -i tests/data/sl.tty -o /dev/null
 	! ./seq2gif -i /non-existent-file.tty -o /dev/null
 	! ./seq2gif -i tests/data/sl.tty -o /non-existent-file.out
+	for palette in xxxx vga cmd win powershell app putty mirc xterm ubuntu and solarized solarized256; do \
+	  ./seq2gif -p "$$palette" -i tests/data/color16.tty -o /dev/null 2>/dev/null; \
+	done
 
 coveralls: test
 	coveralls -E '.*\.h' -e tests -e glyph -e m4
