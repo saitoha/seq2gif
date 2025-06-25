@@ -21,6 +21,9 @@ test: all
 	for palette in xxxx vga cmd win powershell app putty mirc xterm ubuntu and solarized solarized256; do \
 	  ./seq2gif -p "$$palette" -i tests/data/color16.tty -o /dev/null 2>/dev/null; \
 	done
+	for dither in none fs; do for map in rgb332 xterm256; do \
+	  ./seq2gif -d $$dither -m $$map -i tests/data/ls.tty -o /dev/null; \
+	done; done
 
 coveralls: test
 	coveralls -E '.*\.h' -e tests -e glyph -e m4
