@@ -13,6 +13,7 @@ seq2gif_SOURCES = main.c util.c pseudo.c terminal.c function.c \
 				  dcs.h parse.h gifsave89.h \
 				  wcwidth.h malloc_stub.h
 seq2gif_CFLAGS = $(MAYBE_COVERAGE)
+seq2gif_LDADD = -lm
 
 test: all
 	for ttyfile in tests/data/*.tty; do ./seq2gif -i "$$ttyfile" -o /dev/null; done
@@ -21,6 +22,9 @@ test: all
 	for palette in xxxx vga cmd win powershell app putty mirc xterm ubuntu and solarized solarized256; do \
 	  ./seq2gif -p "$$palette" -i tests/data/color16.tty -o /dev/null 2>/dev/null; \
 	done
+	for dither in none fs; do for map in rgb332 xterm256; do \
+	  ./seq2gif -d $$dither -m $$map -i tests/data/ls.tty -o /dev/null; \
+	done; done
 
 coveralls: test
 	coveralls -E '.*\.h' -e tests -e glyph -e m4

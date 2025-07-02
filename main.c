@@ -27,6 +27,8 @@
 #include "gifsave89.h"
 #include "color.h"
 
+#include <assert.h>
+#include <math.h>
 #include <stdio.h>
 
 #ifdef HAVE_STDLIB_H
@@ -57,6 +59,17 @@
 # define O_BINARY _O_BINARY
 #endif  /* !defined(O_BINARY) && !defined(_O_BINARY) */
 
+struct colormapping_t {
+    uint32_t (*pixel2index)(uint32_t pixel);
+    void (*set_colormap)(int colormap[COLORS * BYTES_PER_PIXEL + 1]);
+};
+
+enum dithering_type {
+    dithering_none,
+    dithering_floyd_steinberg,
+    dithering_floyd_steinberg_linearRGB,
+};
+
 struct settings_t {
     int width;
     int height;
@@ -74,6 +87,8 @@ struct settings_t {
     int render_interval;
     double play_speed;
     const uint32_t* palette16;
+    struct colormapping_t *cmap;
+    int dithering;
 };
 
 enum cmap_bitfield {
@@ -99,12 +114,12 @@ static void pb_die(struct pseudobuffer *pb)
     free(pb->buf);
 }
 
-static void set_colormap(int colormap[COLORS * BYTES_PER_PIXEL + 1])
+static void set_colormap_xterm256(int colormap[COLORS * BYTES_PER_PIXEL + 1])
 {
     int i, ci, r, g, b;
     uint8_t index;
 
-    /* colormap: terminal 256color
+    /* colormap: terminal 256color */
     for (i = 0; i < COLORS; i++) {
         ci = i * BYTES_PER_PIXEL;
 
@@ -116,10 +131,16 @@ static void set_colormap(int colormap[COLORS * BYTES_PER_PIXEL + 1])
         colormap[ci + 1] = g;
         colormap[ci + 2] = b;
     }
-    */
 
-    /* colormap: red/green: 3bit blue: 2bit
-    */
+    colormap[COLORS * BYTES_PER_PIXEL] = -1;
+}
+
+static void set_colormap_rgb332(int colormap[COLORS * BYTES_PER_PIXEL + 1])
+{
+    int i, ci, r, g, b;
+    uint8_t index;
+
+    /* colormap: red/green: 3bit blue: 2bit */
     for (i = 0; i < COLORS; i++) {
         index = (uint8_t) i;
         ci = i * BYTES_PER_PIXEL;
@@ -135,7 +156,57 @@ static void set_colormap(int colormap[COLORS * BYTES_PER_PIXEL + 1])
     colormap[COLORS * BYTES_PER_PIXEL] = -1;
 }
 
-static uint32_t pixel2index(uint32_t pixel)
+static uint32_t pixel2index_xterm256_grayscale(uint8_t intensity)
+{
+    if (intensity < 4) {
+        return 16; /* black */
+    } else if (intensity > 246) {
+        return 231; /* white */
+    } else if (intensity >= 92 && (intensity - 52) % 40 < 5) {
+        return 16 + (intensity - 52) / 40 * 43; /* 6x6x6 color cube */
+    } else {
+        uint32_t index = (intensity - 3) / 10;
+        if (index >= 24) index = 23;
+        return 232 + index; /* 24 gray scale */
+    }
+}
+
+static uint32_t pixel2index_xterm256(uint32_t pixel)
+{
+    /* pixel is always 24bpp */
+    uint32_t r, g, b;
+    uint32_t r6, g6, b6;
+    int i;
+
+    /* colormap: terminal 256color */
+    /* basic colors */
+    for (i = 0; i < 16; i++)
+        if (color_list[i] == (pixel & bit_mask[24]))
+            return i;
+
+    /* split r, g, b bits */
+    r = (pixel >> 16) & bit_mask[8];
+    g = (pixel >> 8)  & bit_mask[8];
+    b = (pixel >> 0)  & bit_mask[8];
+
+    /* gray scale */
+    if (r == g && r == b)
+        return pixel2index_xterm256_grayscale(r);
+
+    /* 6x6x6 color cube */
+    r6 = r < 48 ? 0 : 1 + (int) (r - 75) / 40;
+    g6 = g < 48 ? 0 : 1 + (int) (g - 75) / 40;
+    b6 = b < 48 ? 0 : 1 + (int) (b - 75) / 40;
+
+    if (r6 == g6 && r6 == b6) {
+        uint32_t brightness = (299 * r + 587 * g + 114 * b + 500) / 1000;
+        return pixel2index_xterm256_grayscale(brightness);
+    }
+
+    return 16 + (r6 * 36) + (g6 * 6) + b6;
+}
+
+static uint32_t pixel2index_rgb332(uint32_t pixel)
 {
     /* pixel is always 24bpp */
     uint32_t r, g, b;
@@ -145,30 +216,25 @@ static uint32_t pixel2index(uint32_t pixel)
     g = (pixel >> 8)  & bit_mask[8];
     b = (pixel >> 0)  & bit_mask[8];
 
-    /* colormap: terminal 256color
-    if (r == g && r == b) { // 24 gray scale
-        r = 24 * r / COLORS;
-        return 232 + r;
-    }                       // 6x6x6 color cube
-
-    r = 6 * r / COLORS;
-    g = 6 * g / COLORS;
-    b = 6 * b / COLORS;
-
-    return 16 + (r * 36) + (g * 6) + b;
-    */
-
-    /* colormap: red/green: 3bit blue: 2bit
-    */
-    // get MSB ..._MASK bits
-    r = (r >> (8 - RED_MASK))   & bit_mask[RED_MASK];
-    g = (g >> (8 - GREEN_MASK)) & bit_mask[GREEN_MASK];
-    b = (b >> (8 - BLUE_MASK))  & bit_mask[BLUE_MASK];
+    /* colormap: red/green: 3bit blue: 2bit */
+    r = (r * bit_mask[RED_MASK  ] + bit_mask[7]) / bit_mask[8];
+    g = (g * bit_mask[GREEN_MASK] + bit_mask[7]) / bit_mask[8];
+    b = (b * bit_mask[BLUE_MASK ] + bit_mask[7]) / bit_mask[8];
 
     return (r << RED_SHIFT) | (g << GREEN_SHIFT) | (b << BLUE_SHIFT);
 }
 
-static void apply_colormap(struct pseudobuffer *pb, unsigned char *img)
+static struct colormapping_t cmap_rgb332 = {
+    pixel2index_rgb332,
+    set_colormap_rgb332,
+};
+
+static struct colormapping_t cmap_xterm256 = {
+    pixel2index_xterm256,
+    set_colormap_xterm256,
+};
+
+static void apply_colormap_pixelwise(struct colormapping_t *cmap, struct pseudobuffer *pb, unsigned char *img)
 {
     int w, h;
     uint32_t pixel = 0;
@@ -177,10 +243,191 @@ static void apply_colormap(struct pseudobuffer *pb, unsigned char *img)
         for (w = 0; w < pb->width; w++) {
             memcpy(&pixel, pb->buf + h * pb->line_length
                 + w * pb->bytes_per_pixel, pb->bytes_per_pixel);
-            *(img + h * pb->width + w) = pixel2index(pixel) & bit_mask[BITS_PER_BYTE];
+            *(img + h * pb->width + w) = cmap->pixel2index(pixel) & bit_mask[BITS_PER_BYTE];
         }
     }
 }
+
+static void propagate_pixel_error(uint8_t *pixel, const int *err, int num, int den) {
+    for (int i = 0; i < BYTES_PER_PIXEL; i++) {
+        int value = (int) pixel[i] - err[i] * num / den;
+        if (value < 0)
+            value = 0;
+        else if (value > bit_mask[BITS_PER_BYTE])
+            value = bit_mask[BITS_PER_BYTE];
+        pixel[i] = (uint8_t) value;
+    }
+}
+
+static void apply_colormap_dithered(struct colormapping_t *cmap, const int *colormap, struct pseudobuffer *pb, unsigned char *img)
+{
+    /* assert(pb->bytes_per_pixel == BYTES_PER_PIXEL); */
+    int h, w, hskip = pb->line_length, wskip = pb->bytes_per_pixel;
+    uint8_t* buffer;
+
+    buffer = malloc(pb->height * hskip + 1);
+    memcpy(buffer, pb->buf, pb->height * hskip);
+
+    for (h = 0; h < pb->height; h++) {
+        for (w = 0; w < pb->width; w++) {
+            int err[3];
+            uint8_t *pixel = buffer + h * hskip + w * wskip;
+
+            uint32_t const color24 = pixel[0] | (uint32_t) pixel[1] << 8 | (uint32_t) pixel[2] << 16;
+            int const index = cmap->pixel2index(color24) & bit_mask[BITS_PER_BYTE];
+            int const indexed_b = colormap[index * BYTES_PER_PIXEL + 2];
+            int const indexed_g = colormap[index * BYTES_PER_PIXEL + 1];
+            int const indexed_r = colormap[index * BYTES_PER_PIXEL + 0];
+
+            img[h * pb->width + w] = index;
+            err[0] = indexed_b - (int) pixel[0];
+            err[1] = indexed_g - (int) pixel[1];
+            err[2] = indexed_r - (int) pixel[2];
+
+            if (w + 1 < pb->width)
+                propagate_pixel_error(pixel + wskip, err, 7, 16);
+            if (h + 1 < pb->height) {
+                if (w > 0)
+                    propagate_pixel_error(pixel + hskip - wskip, err, 3, 16);
+                propagate_pixel_error(pixel + hskip, err, 5, 16);
+                if (w + 1 < pb->width)
+                    propagate_pixel_error(pixel + hskip + wskip, err, 1, 16);
+            }
+        }
+    }
+
+    free(buffer);
+}
+
+static uint16_t *linear_RGB_stol_table = NULL;
+struct linear_RGB_record_ltos {
+    int index;
+    uint32_t thresh;
+};
+static const int linear_RGB_ltos_shift = 4;
+static struct linear_RGB_record_ltos *linear_RGB_ltos_table = NULL;
+
+static void linear_RGB_initialize() {
+    if (linear_RGB_stol_table) return;
+
+    linear_RGB_stol_table = (uint16_t *) malloc(sizeof (uint16_t) * 256);
+    for (int i = 0; i < 256; i++) {
+        double const intensity = i / 255.0;
+        double const linear = intensity <= 0.04045 ? intensity / 12.92 : pow((intensity + 0.055) / 1.055, 2.4);
+        linear_RGB_stol_table[i] = (uint16_t) round(linear * 0xFFFF);
+    }
+
+    uint32_t const value_max = 0x10000;
+    uint32_t block = 0;
+    uint32_t block_width = 1 << linear_RGB_ltos_shift;
+    uint32_t iblock = 0;
+    linear_RGB_ltos_table = (struct linear_RGB_record_ltos *) malloc(sizeof(struct linear_RGB_record_ltos) * (value_max / block_width));
+    for (int index = 0; index < 256; index++) {
+        uint32_t const range_end =
+            index == 255 ? value_max :
+            (linear_RGB_stol_table[index] + linear_RGB_stol_table[index + 1] + 1) / 2;
+
+        assert(block < range_end);
+        for (; block + block_width < range_end; block += block_width) {
+            linear_RGB_ltos_table[iblock].index = index;
+            linear_RGB_ltos_table[iblock].thresh = value_max;
+            iblock++;
+        }
+        linear_RGB_ltos_table[iblock].index = index;
+        linear_RGB_ltos_table[iblock].thresh = range_end;
+        iblock++;
+        block += block_width;
+    }
+    assert(iblock == value_max / block_width);
+}
+
+/* Convert 8-bit sRGB value to 16-bit linear RGB value. */
+static uint16_t linear_RGB_stol(uint8_t value) {
+    return linear_RGB_stol_table[value];
+}
+
+/* Convert 16-bit linear RGB value to the nearest 8-bit sRGB value. */
+static uint8_t linear_RGB_ltos(uint16_t value) {
+    int i = value >> linear_RGB_ltos_shift;
+    return value < linear_RGB_ltos_table[i].thresh ? linear_RGB_ltos_table[i].index : linear_RGB_ltos_table[i].index + 1;
+}
+
+static void propagate_pixel_error_u16(uint16_t *pixel, const int *err, int num, int den) {
+    for (int i = 0; i < BYTES_PER_PIXEL; i++) {
+        int value = (int) pixel[i] - err[i] * num / den;
+        if (value < 0)
+            value = 0;
+        else if (value > 0xFFFF)
+            value = 0xFFFF;
+        pixel[i] = (uint16_t) value;
+    }
+}
+
+static void apply_colormap_dithered_in_linear_RGB(struct colormapping_t *cmap, const int *colormap, struct pseudobuffer *pb, unsigned char *img)
+{
+    /* assert(pb->bytes_per_pixel == BYTES_PER_PIXEL); */
+    int y, x, hskip = pb->line_length, wskip = pb->bytes_per_pixel;
+    uint16_t* buffer;
+
+    linear_RGB_initialize();
+
+    buffer = malloc(pb->height * pb->width * BYTES_PER_PIXEL * sizeof(uint16_t));
+    for (y = 0; y < pb->height; y++) {
+        for (x = 0; x < pb->width; x++) {
+            uint32_t pixel = *(uint32_t *) (pb->buf + y * hskip + x * wskip);
+            buffer[(y * pb->width + x) * BYTES_PER_PIXEL + 0] = linear_RGB_stol(pixel >> 0  & 0xFF); // B
+            buffer[(y * pb->width + x) * BYTES_PER_PIXEL + 1] = linear_RGB_stol(pixel >> 8  & 0xFF); // G
+            buffer[(y * pb->width + x) * BYTES_PER_PIXEL + 2] = linear_RGB_stol(pixel >> 16 & 0xFF); // R
+        }
+    }
+
+    for (y = 0; y < pb->height; y++) {
+        for (x = 0; x < pb->width; x++) {
+            int err[3];
+            uint16_t* pixel = buffer + (y * pb->width + x) * BYTES_PER_PIXEL;
+            uint32_t color24 =
+                linear_RGB_ltos(pixel[0]) | // B
+                linear_RGB_ltos(pixel[1]) << 8 |// G
+                linear_RGB_ltos(pixel[2]) << 16; // R
+
+            int index = cmap->pixel2index(color24) & bit_mask[BITS_PER_BYTE];
+            *(img + y * pb->width + x) = index;
+            int value_r = linear_RGB_stol(colormap[index * BYTES_PER_PIXEL + 0]);
+            int value_g = linear_RGB_stol(colormap[index * BYTES_PER_PIXEL + 1]);
+            int value_b = linear_RGB_stol(colormap[index * BYTES_PER_PIXEL + 2]);
+            err[0] = value_b - (int) pixel[0];
+            err[1] = value_g - (int) pixel[1];
+            err[2] = value_r - (int) pixel[2];
+
+            if (x + 1 < pb->width)
+                propagate_pixel_error_u16(pixel + wskip, err, 7, 16);
+            if (y + 1 < pb->height) {
+                propagate_pixel_error_u16(pixel + hskip, err, 5, 16);
+                if (x > 0)
+                    propagate_pixel_error_u16(pixel + hskip - wskip, err, 3, 16);
+                if (x + 1 < pb->width)
+                    propagate_pixel_error_u16(pixel + hskip + wskip, err, 1, 16);
+            }
+        }
+    }
+
+    free(buffer);
+}
+
+static void apply_colormap(struct settings_t * const settings, const int *colormap, struct pseudobuffer *pb, unsigned char *img) {
+    switch (settings->dithering) {
+    case dithering_floyd_steinberg:
+        apply_colormap_dithered(settings->cmap, colormap, pb, img);
+        break;
+    case dithering_floyd_steinberg_linearRGB:
+        apply_colormap_dithered_in_linear_RGB(settings->cmap, colormap, pb, img);
+        break;
+    default:
+        apply_colormap_pixelwise(settings->cmap, pb, img);
+        break;
+    }
+}
+
 
 static size_t write_gif(unsigned char *gifimage, int size, FILE *f)
 {
@@ -254,13 +501,25 @@ static void show_help()
             "                                       'powershell', 'app', 'putty', 'mirc',\n"
             "                                       'xterm', 'ubuntu', and 'solarized',\n"
             "                                       'solarized256'. (default: 'vga').\n"
+            "-m COLORMAP, --colormap=COLORMAP       specify a colormap from the following\n"
+            "                                       list (default: xterm256):\n"
+            "                                         rgb332   -> R:3bit, G:3bit, B:2bit\n"
+            "                                         xterm256 -> xterm 256color\n"
+            "-d DITHER, --diffuse=DITHER            specify the dithering type (default:\n"
+            "                                       fs-sRGB).  The dithering type is one of\n"
+            "                                       the following values: 'none' does not\n"
+            "                                       perform dithering. 'fs' performs the\n"
+            "                                       Floyd-Steinberg dithering in the 16-bit\n"
+            "                                       linear RGB space. 'fs-sRGB' performs\n"
+            "                                       Floyd-Steinberg dithering in the sRGB\n"
+            "                                       space.\n"
            );
 }
 
 static int parse_args(int argc, char *argv[], struct settings_t *psettings)
 {
     int n;
-    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:I:s:p:";
+    char const *optstring = "w:h:HVl:f:b:c:t:jr:i:o:I:s:p:m:d:";
 #ifdef HAVE_GETOPT_LONG
     int long_opt;
     int option_index;
@@ -281,6 +540,8 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
         {"render-interval",   required_argument,  &long_opt, 'I'},
         {"play-speed",        required_argument,  &long_opt, 's'},
         {"palette16",         required_argument,  &long_opt, 'p'},
+        {"colormap",          required_argument,  &long_opt, 'm'},
+        {"diffuse",           required_argument,  &long_opt, 'd'},
         {0, 0, 0, 0}
     };
 #endif  /* HAVE_GETOPT_LONG */
@@ -403,6 +664,23 @@ static int parse_args(int argc, char *argv[], struct settings_t *psettings)
                     goto argerr;
                 }
             }
+        case 'm':
+            if (strcmp(optarg, "rgb332") == 0)
+                psettings->cmap = &cmap_rgb332;
+            else if (strcmp(optarg, "xterm256") == 0)
+                psettings->cmap = &cmap_xterm256;
+            else
+                goto argerr;
+            break;
+        case 'd':
+            if (strcmp(optarg, "none") == 0)
+                psettings->dithering = dithering_none;
+            else if (strcmp(optarg, "fs-sRGB") == 0)
+                 psettings->dithering = dithering_floyd_steinberg;
+            else if (strcmp(optarg, "fs") == 0)
+                psettings->dithering = dithering_floyd_steinberg_linearRGB;
+           else
+                goto argerr;
             break;
         default:
             goto argerr;
@@ -547,6 +825,8 @@ int main(int argc, char *argv[])
         20,     /* render_interval */
         1.0,    /* play_speed */
         NULL,   /* palette16 */
+        &cmap_xterm256, /* cmap */
+        dithering_floyd_steinberg, /* dithering */
     };
 
     if (parse_args(argc, argv, &settings) != 0) {
@@ -578,7 +858,7 @@ int main(int argc, char *argv[])
 
     /* init gif */
     img = (unsigned char *) ecalloc(pb.width * pb.height, 1);
-    set_colormap(colormap);
+    settings.cmap->set_colormap(colormap);
     if (!(gsdata = newgif((void **) &gifimage, pb.width, pb.height, colormap, 0))) {
         free(img);
         term_die(&term);
@@ -639,7 +919,7 @@ int main(int argc, char *argv[])
             if (!is_render_deferred) {
                 /* take screenshot */
                 refresh(&pb, &term);
-                apply_colormap(&pb, img);
+                apply_colormap(&settings, colormap, &pb, img);
             }
 
             is_render_deferred = delay < gif_render_interval;
@@ -660,7 +940,7 @@ int main(int argc, char *argv[])
     if (settings.last_frame_delay > 0) {
         if (nret != EXIT_FAILURE) {
             refresh(&pb, &term);
-            apply_colormap(&pb, img);
+            apply_colormap(&settings, colormap, &pb, img);
         }
         delay = settings.last_frame_delay / 10;
         if (delay < gif_render_interval)
