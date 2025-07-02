@@ -182,6 +182,7 @@ struct terminal {
     int default_fg;                              /* default foreground color */
     int default_bg;                              /* default background color */
     int cursor_color;                            /* corsor color */
+    bool use_bright_instead_of_bold;             /* interpretation of bold attributes */
     int tabwidth;                                /* hardware tabstop */
     wcwidth_func_t fn_wcwidth;                   /* wcwidth strategy */
 };

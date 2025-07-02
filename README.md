@@ -80,6 +80,9 @@ Options:
                                        number.
 -c COLORNO, --cursor-color=COLORNO     specify cursor color palette
                                        number.
+-B, --use-bright-for-bold              use bright colors to render the
+                                       characters with bold attribute instead
+                                       of using bold fonts. (default: disabled)
 -t TABSTOP, --tabstop=TABSTOP          specify hardware tabstop(default: 8)
 -j, --cjkwidth                         treat East Asian Ambiguous width
                                        characters (UAX#11) as wide.
@@ -234,4 +237,3 @@ License
 -------
 
 ![GPLv3](https://raw.githubusercontent.com/saitoha/seq2gif/master/images/gplv3.png)
-
