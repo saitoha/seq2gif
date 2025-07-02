@@ -111,7 +111,7 @@ am_seq2gif_OBJECTS = seq2gif-main.$(OBJEXT) seq2gif-util.$(OBJEXT) \
 	seq2gif-malloc_stub.$(OBJEXT) seq2gif-wcwidth.$(OBJEXT) \
 	seq2gif-color.$(OBJEXT)
 seq2gif_OBJECTS = $(am_seq2gif_OBJECTS)
-seq2gif_LDADD = $(LDADD)
+seq2gif_DEPENDENCIES =
 seq2gif_LINK = $(CCLD) $(seq2gif_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
@@ -307,6 +307,7 @@ seq2gif_SOURCES = main.c util.c pseudo.c terminal.c function.c \
 				  wcwidth.h malloc_stub.h
 
 seq2gif_CFLAGS = $(MAYBE_COVERAGE)
+seq2gif_LDADD = -lm
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
